@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,6 +19,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     //manejo de contactos
     Route::resource('contacts', ContactController::class);
+    //manejo de transacciones
+    Route::resource('transactions', TransactionController::class);
+
+    Route::post('budget/setup', [TransactionController::class, 'setupBudget'])
+        ->name('budget.setup');
 });
 
 require __DIR__.'/auth.php';
