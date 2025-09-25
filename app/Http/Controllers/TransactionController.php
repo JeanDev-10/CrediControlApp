@@ -27,14 +27,19 @@ class TransactionController extends Controller
 
     public function create()
     {
-        return view('transactions.create');
+        $budget = $this->service->getBudget();
+        return view('transactions.create',compact('budget'));
     }
 
     public function store(StoreTransactionRequest $request)
     {
-        $this->service->createTransaction($request->validated());
+        try{
+            $this->service->createTransaction($request->validated());
+            return redirect()->route('transactions.index')->with('success', 'Transacción creada');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error',$e->getMessage());
+        }
 
-        return redirect()->route('transactions.index')->with('success', 'Transacción creada');
     }
 
     public function edit(Transaction $transaction)

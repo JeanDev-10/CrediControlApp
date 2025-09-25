@@ -40,9 +40,9 @@
                             class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2">
                             Cancelar
                         </a>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        <x-terciary-button>
                             Crear
-                        </button>
+                        </x-terciary-button>
                     </div>
                 </form>
             </div>

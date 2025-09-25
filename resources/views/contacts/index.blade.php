@@ -13,7 +13,7 @@
 
                 <div class="overflow-hidden bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     <div class="flex justify-between items-center m-4">
-                        <form method="GET" action="{{ route('contacts.index') }}" class="inline">
+                        <form method="GET" action="{{ route('contacts.create') }}" class="inline">
                             <x-primary-button>Crear Contacto</x-primary-button>
                         </form>
                         <form method="GET" class="flex gap-2">

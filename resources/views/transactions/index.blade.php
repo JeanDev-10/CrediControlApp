@@ -20,18 +20,13 @@
                         <option value="">-- Tipo --</option>
                         <option value="ingreso" @selected(request('type') === 'ingreso')>Ingreso</option>
                         <option value="egreso" @selected(request('type') === 'egreso')>Gasto</option>
-                        <option value="actualizacion" @selected(request('type') === 'actualizacion')>Actualización</option>
+                        <option value="actualizacion" @selected(request('type') === 'actualizacion')>Actualización
+                        </option>
                     </select>
                     <x-primary-button>{{ __('Filtrar') }}</x-primary-button>
                 </form>
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    @if($budget)
-                        {{ __('Saldo actual') }} <span
-                        class="text-green-600 dark:text-green-400">${{ $budget->quantity }}</span>
-                    @else
-                        {{ __('No hay presupuesto configurado') }}
-                    @endif
-                </h2>
+                @include('transactions.partials.budget-user', ['budget' => $budget])
+
             </div>
 
             {{-- Lista --}}
@@ -44,8 +39,8 @@
                     <form method="POST" action="{{ route('budget.setup') }}" class="flex gap-2 flex-col">
                         @csrf
                         <div class="flex gap-2 md:flex-row ">
-                            <x-text-input name="quantity" type="number" step="0.01"
-                                placeholder="Configurar presupuesto" :value="old(key: 'quantity')" />
+                            <x-text-input name="quantity" type="number" step="0.01" placeholder="Configurar presupuesto"
+                                :value="old(key: 'quantity')" />
                             <x-secondary-button type="submit">{{ __('Guardar') }}</x-secondary-button>
                         </div>
                         <x-input-error :messages="$errors->get('quantity')" class="mt-2" />
@@ -97,19 +92,18 @@
                                 <td class="p-2 {{ $color }}">${{ $transaction->after_quantity }}</td>
                                 <td class="p-2">{{ $transaction->created_at }}</td>
                                 <td class="p-2 text-right">
-                                        <div class="flex justify-end gap-2">
-                                            <a href="{{ route('transactions.edit', $transaction) }}">
-                                                <x-primary-button>{{ __('Editar') }}</x-primary-button>
-                                            </a>
-                                            <form method="POST"
-                                                action="{{ route('transactions.destroy', $transaction) }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <x-danger-button onclick="return confirm('¿Eliminar transacción?')">
-                                                    {{ __('Eliminar') }}
-                                                </x-danger-button>
-                                            </form>
-                                        </div>
+                                    <div class="flex justify-end gap-2">
+                                        <a href="{{ route('transactions.edit', $transaction) }}">
+                                            <x-primary-button>{{ __('Editar') }}</x-primary-button>
+                                        </a>
+                                        <form method="POST" action="{{ route('transactions.destroy', $transaction) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-danger-button onclick="return confirm('¿Eliminar transacción?')">
+                                                {{ __('Eliminar') }}
+                                            </x-danger-button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

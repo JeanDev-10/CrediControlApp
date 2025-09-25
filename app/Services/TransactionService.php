@@ -27,7 +27,10 @@ class TransactionService
             if (! $budget) {
                 throw new \Exception('Debes configurar tu presupuesto primero.');
             }
-
+            //verificar que haya disponibilidad de dinero
+            if($data['type']=='egreso' && $data['quantity']>$budget->quantity){
+                throw new \Exception('No hay suficiente dinero en el presupuesto para realizar esta transacción.');
+            }
             $lastTransaction = $this->transactionRepo->latestByUser($userId);
             $previus = $lastTransaction?->after_quantity ?? $budget->quantity;
 
@@ -62,9 +65,6 @@ class TransactionService
 
         try {
             $transaction = $this->transactionRepo->find($id);
-            if (! $transaction) {
-                throw new \Exception('Transacción no encontrada.');
-            }
             // Solo última transacción puede editar
             $lastTransaction = $this->transactionRepo->latestByUser(Auth::id());
             if ($transaction->id !== $lastTransaction->id) {
