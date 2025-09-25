@@ -25,12 +25,30 @@ class TransactionPolicy
         if ($transaction->user_id !== $user->id) {
             return false;
         }
-
         // Debe ser la última transacción
         $latest = $this->transactionRepository->latestByUser($user->id);
 
         return $latest && $latest->id === $transaction->id;
     }
+    /**
+     * Determina si el usuario puede ver la vista de edit transacción.
+     */
+    public function edit(User $user, Transaction $transaction)
+    {
+        // Solo el dueño
+        if ($transaction->user_id !== $user->id) {
+            return false;
+        }
+         // que no sea actualizacion
+        if ($transaction->type == 'Actualizacion') {
+            return false;
+        }
+        // Debe ser la última transacción
+        $latest = $this->transactionRepository->latestByUser($user->id);
+
+        return $latest && $latest->id === $transaction->id;
+    }
+
     /**
      * Determina si el usuario puede actualizar la transacción.
      */
@@ -40,7 +58,10 @@ class TransactionPolicy
         if ($transaction->user_id !== $user->id) {
             return false;
         }
-
+        // que no sea actualizacion
+        if ($transaction->type == 'Actualizacion') {
+            return false;
+        }
         // Debe ser la última transacción
         $latest = $this->transactionRepository->latestByUser($user->id);
 

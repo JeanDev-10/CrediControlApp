@@ -13,7 +13,7 @@ class ContactService
 
     public function getAll(array $filters)
     {
-        return $this->repository->all($filters, 10);
+        return $this->repository->filter($filters, 10);
     }
 
     public function getById(int $id)

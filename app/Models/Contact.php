@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
+use App\Policies\ContactPolicy;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+
+#[UsePolicy(ContactPolicy::class)]
 
 class Contact extends Model
 {
     /** @use HasFactory<\Database\Factories\ContactFactory> */
     use HasFactory;
+
     protected $fillable = [
         'name',
         'lastname',
@@ -32,6 +37,7 @@ class Contact extends Model
             set: fn ($value) => strtolower($value),
         );
     }
+
     protected function lastname(): Attribute
     {
         return Attribute::make(

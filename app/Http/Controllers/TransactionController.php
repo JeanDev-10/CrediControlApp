@@ -44,7 +44,7 @@ class TransactionController extends Controller
 
     public function edit(Transaction $transaction)
     {
-        $this->authorize('update', $transaction);
+        $this->authorize('edit', $transaction);
         $budget = $this->service->getBudget();
         return view('transactions.edit', compact('transaction','budget'));
     }
@@ -68,7 +68,7 @@ class TransactionController extends Controller
 
     public function setupBudget(SetupBudgetRequest $request)
     {
-        $this->service->setupBudget($request->validated()->quantity);
+        $this->service->setupBudget($request->validated()['quantity']);
 
         return redirect()->route('transactions.index')->with('success', 'Presupuesto configurado');
     }
