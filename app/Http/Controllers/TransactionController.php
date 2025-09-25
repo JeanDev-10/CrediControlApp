@@ -45,8 +45,8 @@ class TransactionController extends Controller
     public function edit(Transaction $transaction)
     {
         $this->authorize('update', $transaction);
-
-        return view('transactions.edit', compact('transaction'));
+        $budget = $this->service->getBudget();
+        return view('transactions.edit', compact('transaction','budget'));
     }
 
     public function update(UpdateTransactionRequest $request, Transaction $transaction)

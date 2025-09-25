@@ -15,7 +15,7 @@ class UpdateTransactionRequest extends FormRequest
     {
         return [
             'description' => 'required|string|max:255',
-            'type' => 'required|in:ingreso,egreso,update',
+            'type' => 'required|in:ingreso,egreso',
             'quantity' => 'required|numeric|min:0.01',
         ];
     }
