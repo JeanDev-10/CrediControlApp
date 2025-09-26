@@ -16,7 +16,7 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
         $query = $this->model->where('user_id', auth()->id());
 
         if (! empty($filters['name'])) {
-            $query->where('type', $filters['name']);
+            $query->where('name', $filters['name']);
         }
         if (! empty($filters['lastname'])) {
             $query->where('lastname', 'like', "%{$filters['lastname']}%");

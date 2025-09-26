@@ -93,9 +93,12 @@
                                 <td class="p-2">{{ $transaction->created_at }}</td>
                                 <td class="p-2 text-right">
                                     <div class="flex justify-end gap-2">
-                                        <a href="{{ route('transactions.edit', $transaction) }}">
+                                        @can('update', $transaction)
+                                            <a href="{{ route('transactions.edit', $transaction) }}">
                                             <x-primary-button>{{ __('Editar') }}</x-primary-button>
                                         </a>
+                                        @endcan
+                                        @can('delete', $transaction)
                                         <form method="POST" action="{{ route('transactions.destroy', $transaction) }}">
                                             @csrf
                                             @method('DELETE')
@@ -103,6 +106,7 @@
                                                 {{ __('Eliminar') }}
                                             </x-danger-button>
                                         </form>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

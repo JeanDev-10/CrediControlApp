@@ -11,9 +11,9 @@ class ContactService
     {
     }
 
-    public function getAll(array $filters)
+    public function getAll(array $filters, int $perPage = 10)
     {
-        return $this->repository->filter($filters, 10);
+        return $this->repository->filter($filters, $perPage);
     }
 
     public function getById(int $id)

@@ -124,7 +124,7 @@ class TransactionService
         try {
         $userId = Auth::id();
         $budget = $this->budgetRepo->getByUser($userId);
-
+        $previusQuantity = 0;
         if (! $budget) {
             $budget = $this->budgetRepo->create(['user_id' => $userId, 'quantity' => $quantity]);
         } else {
@@ -137,7 +137,7 @@ class TransactionService
             'description' => 'Actualización de presupuesto',
             'type' => 'actualizacion',
             'quantity' => $quantity,
-            'previus_quantity' => $previusQuantity!=0?$previusQuantity:0,
+            'previus_quantity' => $previusQuantity,
             'after_quantity' => $quantity,
             'user_id' => $userId,
         ]);
