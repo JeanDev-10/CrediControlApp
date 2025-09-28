@@ -10,6 +10,7 @@
     <div class="py-10">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8">
+                <x-auth-session-error class="mb-4" :status="session('error')" />
                 <form method="POST" action="{{ route('transactions.update', $transaction) }}" class="space-y-6">
                     @csrf
                     @method('PUT')

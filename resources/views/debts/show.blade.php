@@ -16,15 +16,14 @@
                     </div>
                     <div>
                         <strong>Cantidad:</strong>
-                        <p>{{ $debt->quantity }}</p>
+                        <p>${{ $debt->quantity }}</p>
                     </div>
                     <div>
                         <strong>Contacto:</strong>
                         <div class="flex items-center gap-3">
-                            <p>{{ $debt->contact->name }} {{ $debt->contact->lastname }} {{$debt->contact->phone}}</p>
-                            <a href="{{ route("contacts.show", $debt->contact) }}">
-                                <x-terciary-button>Ver Contacto</x-terciary-button>
-                            </a>
+                            <a href="{{ route("contacts.show", $debt->contact) }}"
+                                class="text-blue-700 hover:text-blue-600 dark:text-blue-300 hover:text-blue-200">{{ $debt->contact->name }}
+                                {{ $debt->contact->lastname }} {{$debt->contact->phone}}</a>
                         </div>
                     </div>
                     <div>
@@ -43,24 +42,30 @@
                 </div>
             </div>
 
-                <div class="mt-5 flex justify-end gap-3">
-                    @can('update', $debt)
-                        <a href="{{ route('debts.edit', $debt) }}">
-                            <x-primary-button>Editar</x-primary-button>
-                        </a>
-                    @endcan
-                    <a href="{{ route('debts.index') }}">
-                        <x-secondary-button>Volver</x-secondary-button>
+            <div class="mt-5 flex justify-end gap-3">
+                @can('markAsPaid', $debt)
+                    <form action="{{ route('debts.pay', $debt) }}" method="POST">
+                        @csrf
+                        <x-primary-button onclick="return confirm('Marcar como pagada?')">Marcar pagada</x-primary-button>
+                    </form>
+                @endcan
+                @can('update', $debt)
+                    <a href="{{ route('debts.edit', $debt) }}">
+                        <x-terciary-button>Editar</x-terciary-button>
                     </a>
-                    @can('delete', $debt)
-                        <form method="POST" action="{{ route('debts.destroy', $debt) }}"
-                            onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta deuda?');">
-                            @csrf
-                            @method('DELETE')
-                            <x-danger-button>Eliminar</x-danger-button>
-                        </form>
-                    @endcan
-                </div>
+                @endcan
+                <a href="{{ route('debts.index') }}">
+                    <x-secondary-button>Volver</x-secondary-button>
+                </a>
+                @can('delete', $debt)
+                    <form method="POST" action="{{ route('debts.destroy', $debt) }}"
+                        onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta deuda?');">
+                        @csrf
+                        @method('DELETE')
+                        <x-danger-button>Eliminar</x-danger-button>
+                    </form>
+                @endcan
+            </div>
         </div>
     </div>
 </x-app-layout>

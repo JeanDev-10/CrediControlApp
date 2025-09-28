@@ -95,26 +95,25 @@
                                     <div class="flex justify-end gap-2">
                                         @can('update', $transaction)
                                             <a href="{{ route('transactions.edit', $transaction) }}">
-                                            <x-primary-button>{{ __('Editar') }}</x-primary-button>
-                                        </a>
+                                                <x-primary-button>{{ __('Editar') }}</x-primary-button>
+                                            </a>
                                         @endcan
                                         @can('delete', $transaction)
-                                        <form method="POST" action="{{ route('transactions.destroy', $transaction) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <x-danger-button onclick="return confirm('¿Eliminar transacción?')">
-                                                {{ __('Eliminar') }}
-                                            </x-danger-button>
-                                        </form>
+                                            <form method="POST" action="{{ route('transactions.destroy', $transaction) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-danger-button onclick="return confirm('¿Eliminar transacción?')">
+                                                    {{ __('Eliminar') }}
+                                                </x-danger-button>
+                                            </form>
                                         @endcan
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="p-4 text-center text-gray-500 dark:text-gray-400">
-                                    No hay transacciones registradas
-                                </td>
+                                <td colspan="6" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No hay
+                                    transacciones.</td>
                             </tr>
                         @endforelse
                     </tbody>

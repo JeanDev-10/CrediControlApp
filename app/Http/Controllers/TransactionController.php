@@ -28,16 +28,18 @@ class TransactionController extends Controller
     public function create()
     {
         $budget = $this->service->getBudget();
-        return view('transactions.create',compact('budget'));
+
+        return view('transactions.create', compact('budget'));
     }
 
     public function store(StoreTransactionRequest $request)
     {
-        try{
+        try {
             $this->service->createTransaction($request->validated());
+
             return redirect()->route('transactions.index')->with('success', 'Transacción creada');
-        }catch(\Exception $e){
-            return redirect()->back()->with('error',$e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
     }
@@ -46,15 +48,19 @@ class TransactionController extends Controller
     {
         $this->authorize('edit', $transaction);
         $budget = $this->service->getBudget();
-        return view('transactions.edit', compact('transaction','budget'));
+
+        return view('transactions.edit', compact('transaction', 'budget'));
     }
 
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
-        $this->authorize('update', $transaction);
-        $this->service->updateTransaction($transaction->id, $request->validated());
-
-        return redirect()->route('transactions.index')->with('success', 'Transacción actualizada');
+        try {
+            $this->authorize('update', $transaction);
+            $this->service->updateTransaction($transaction->id, $request->validated());
+            return redirect()->route('transactions.index')->with('success', 'Transacción actualizada');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     public function destroy(Transaction $transaction)

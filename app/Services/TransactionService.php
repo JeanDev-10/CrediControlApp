@@ -72,6 +72,9 @@ class TransactionService
             }
 
             $budget = $this->budgetRepo->getByUser(Auth::id());
+            if (! $budget) {
+                throw new \Exception('Debes configurar tu presupuesto primero.');
+            }
             $previus = $transaction->previus_quantity;
             $after = $data['type'] === 'ingreso'
                 ? $previus + $data['quantity']
