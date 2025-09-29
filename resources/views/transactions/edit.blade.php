@@ -30,8 +30,8 @@
                         <select id="type" name="type"
                             class="w-full mt-1 rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500"
                             required>
-                            <option value="ingreso" @selected($transaction->type === 'ingreso')>Ingreso</option>
-                            <option value="egreso" @selected($transaction->type === 'egreso')>Gasto</option>
+                            <option value="ingreso" @selected($transaction->type === 'Ingreso')>Ingreso</option>
+                            <option value="egreso" @selected($transaction->type === 'Egreso')>Gasto</option>
                         </select>
                         <x-input-error :messages="$errors->get('type')" class="mt-2" />
                     </div>
