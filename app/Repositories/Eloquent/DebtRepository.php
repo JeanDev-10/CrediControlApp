@@ -35,6 +35,10 @@ class DebtRepository extends BaseRepository implements DebtRepositoryInterface
         if (!empty($filters['status'])) {
             $query->where('status', $filters['status']);
         }
+        if (!empty($filters['debt_id'])) {
+            $query->where('id', $filters['debt_id']);
+        }
+
 
         return $query->latest('created_at')->paginate($perPage)->withQueryString();
     }

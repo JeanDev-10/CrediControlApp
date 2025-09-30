@@ -5,7 +5,7 @@
         <div class="grid grid-cols-3 gap-4 mt-5">
             <div>
                 <strong>Descripción:</strong>
-                <a href="{{ route("debts.show",$debt) }}" class="text-blue-400">{{ $debt->description }}</a>
+                <a href="{{ route("debts.show", $debt) }}" class="text-blue-400">{{ $debt->description }}</a>
             </div>
             <div>
                 <strong>Cantidad:</strong>
@@ -36,10 +36,9 @@
                 </form>
             @endcan
             @can('markAsPaid', $debt)
-                <form action="{{ route('pays.create', $debt) }}" method="GET">
-                    @csrf
+                <a href="{{ route('pays.create', ['debt_id' => $debt->id]) }}">
                     <x-secondary-button>Hacer pago</x-secondary-button>
-                </form>
+                </a>
             @endcan
             @can('update', $debt)
                 <a href="{{ route('debts.edit', $debt) }}">

@@ -19,6 +19,13 @@ class DebtSeeder extends Seeder
                 'contact_id' => rand(1, 20),
             ]);
         });
+        Debt::factory()->count(30)->create([
+            'user_id' => 2,
+        ])->each(function ($debt) {
+            $debt->update([
+                'contact_id' => rand(1, 20),
+            ]);
+        });
 
         /* Debt::factory()->count(30)->create([
             "user_id" => 2

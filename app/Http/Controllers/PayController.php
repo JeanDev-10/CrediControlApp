@@ -34,9 +34,11 @@ class PayController extends Controller
         return view('pays.show', compact('pay'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $debts=$this->debtRepository->filter(["status"=>"pendiente"],10000);
+        $debt_id=$request->query('debt_id');
+        $debts=$this->debtRepository->filter(["status"=>"pendiente","debt_id"=>$debt_id],10000);
+
         return view('pays.create',compact('debts'));
     }
 

@@ -57,7 +57,7 @@
                                         {{ $pay->debt->contact->name ?? '-' }} {{ $pay->debt->contact->lastname ?? '' }}
                                     </a>
                                 </td>
-                                <td class="px-4 py-3 text-center">${{ $pay->quantity }}</td>
+                                <td class="px-4 py-3 text-center text-green-600 dark:text-green-400">${{ $pay->quantity }}</td>
                                 <td class="px-4 py-3 text-center">{{ $pay->debt->description }}</td>
                                 <td class="px-4 py-3 text-center">{{ $pay->date->format("Y/m/d") }}</td>
                                 <td class="px-4 py-3 text-center">

@@ -21,7 +21,7 @@
                 <div class="grid grid-cols-3 gap-4 text-gray-700 dark:text-gray-300">
                     <div>
                         <strong>Cantidad:</strong>
-                        <p>${{ $pay->quantity }}</p>
+                        <p class="text-green-600 dark:text-green-400">${{ $pay->quantity }}</p>
                     </div>
                     <div>
                         <strong>Fecha de pago:</strong>
@@ -44,7 +44,7 @@
                     <div class="grid grid-cols-3 gap-2 mt-2">
                         @foreach($pay->images as $image)
                             <img src="{{ $image->url }}" alt="Imagen del pago {{ $pay->id }}"
-                                class="w-full h-32 object-cover rounded cursor-pointer preview-img">
+                                class="w-full h-32 object-cover rounded cursor-pointer preview-img" alt="imagen del pago">
                         @endforeach
                     </div>
                 </div>
