@@ -17,18 +17,23 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('contacts.index')" :active="request()->routeIs('contacts.index')">
+                    <x-nav-link :href="route('contacts.index')" :active="request()->routeIs('contacts.*')">
                         {{ __('Contactos') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.index')">
+                    <x-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.*')">
                         {{ __('Transacciones') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('debts.index')" :active="request()->routeIs('debts.index')">
+                    <x-nav-link :href="route('debts.index')" :active="request()->routeIs('debts.*')">
                         {{ __('Deudas') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('pays.index')" :active="request()->routeIs('pays.*')">
+                        {{ __('Pagos') }}
                     </x-nav-link>
                 </div>
             </div>

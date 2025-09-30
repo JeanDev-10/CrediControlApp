@@ -16,7 +16,7 @@ class StoreDebtRequest extends FormRequest
         return [
             'quantity' => 'required|numeric|min:0.01',
             'description' => 'required|string|max:255',
-            'date_start' => 'required|date',
+            'date_start' => 'required|date|before_or_equal:today',
             'contact_id' => 'required|exists:contacts,id',
             'status' => 'nullable|in:pendiente,pagada',
         ];

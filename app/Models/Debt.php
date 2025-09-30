@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Policies\DebtPolicy;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,6 +39,10 @@ class Debt extends Model
     {
         return $this->belongsTo(Contact::class);
     }
+    public function pays()
+    {
+        return $this->hasMany(Pay::class);
+    }
 
     protected function description(): Attribute
     {
@@ -47,6 +52,18 @@ class Debt extends Model
 
             // 👀 Al guardar en la BD → en minúsculas
             set: fn ($value) => strtolower($value),
+        );
+    }
+    protected function createdAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Carbon::parse($value)->format('d/m/Y H:i'),
+        );
+    }
+    protected function updatedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Carbon::parse($value)->format('d/m/Y H:i'),
         );
     }
 }

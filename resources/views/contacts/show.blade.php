@@ -25,12 +25,12 @@
                     </div>
                     <div>
                         <x-input-label value="Creado" />
-                        <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $contact->created_at->format('d/m/Y H:i') }}
+                        <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $contact->created_at }}
                         </p>
                     </div>
                     <div>
                         <x-input-label value="Última actualización" />
-                        <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $contact->updated_at->format('d/m/Y H:i') }}
+                        <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $contact->updated_at }}
                         </p>
                     </div>
                 </div>
