@@ -10,21 +10,14 @@
             <x-auth-session-error class="mb-4" :status="session('error')" />
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
+            {{-- Datos del contacto --}}
+            @include("contacts.components.card-contact", ['contact' => $pay->debt->contact, 'showActions' => false])
+            {{-- Datos de la Deuda --}}
+            @include("debts.components.card-debt", ['debt' => $pay->debt, 'showActions' => false])
+            {{-- Datos del Pago --}}
 
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
-                <h3 class="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">Datos del pago</h3>
-                <div class="grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300">
-                    <div>
-                        <strong>Nombre del contacto:</strong>
-                        <p>{{ $pay->debt->contact->name }} {{$pay->debt->contact->lastname}}</p>
-                    </div>
-                    <div>
-                        <strong>Descripción de la deuda:</strong>
-                        <p>{{ $pay->debt->description}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">Editar pago</h3>
                 <form method="POST" action="{{ route('pays.update', $pay) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -100,48 +93,48 @@
     </div>
 </x-app-layout>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const input = document.getElementById("images");
-    const previewContainer = document.getElementById("preview-container");
-    const modal = document.getElementById("image-modal");
-    const modalImg = document.getElementById("modal-img");
-    const closeModal = document.getElementById("close-modal");
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("images");
+        const previewContainer = document.getElementById("preview-container");
+        const modal = document.getElementById("image-modal");
+        const modalImg = document.getElementById("modal-img");
+        const closeModal = document.getElementById("close-modal");
 
-    // Previsualización
-    input.addEventListener("change", function () {
-        previewContainer.innerHTML = "";
+        // Previsualización
+        input.addEventListener("change", function () {
+            previewContainer.innerHTML = "";
 
-        Array.from(this.files).forEach(file => {
-            if (!file.type.startsWith("image/")) return;
+            Array.from(this.files).forEach(file => {
+                if (!file.type.startsWith("image/")) return;
 
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const img = document.createElement("img");
-                img.src = e.target.result;
-                img.classList.add("w-full", "h-24", "object-cover", "rounded", "border", "cursor-pointer");
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.classList.add("w-full", "h-24", "object-cover", "rounded", "border", "cursor-pointer");
 
-                // Al hacer click -> mostrar modal
-                img.addEventListener("click", () => {
-                    modal.classList.remove("hidden");
-                    modalImg.src = img.src;
-                });
+                    // Al hacer click -> mostrar modal
+                    img.addEventListener("click", () => {
+                        modal.classList.remove("hidden");
+                        modalImg.src = img.src;
+                    });
 
-                previewContainer.appendChild(img);
-            };
-            reader.readAsDataURL(file);
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Cerrar modal
+        closeModal.addEventListener("click", () => {
+            modal.classList.add("hidden");
+        });
+
+        // Cerrar modal al hacer click fuera de la imagen
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.classList.add("hidden");
+            }
         });
     });
-
-    // Cerrar modal
-    closeModal.addEventListener("click", () => {
-        modal.classList.add("hidden");
-    });
-
-    // Cerrar modal al hacer click fuera de la imagen
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-            modal.classList.add("hidden");
-        }
-    });
-});
 </script>
