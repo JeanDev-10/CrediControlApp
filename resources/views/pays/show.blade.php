@@ -37,7 +37,7 @@
                 <div class="grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300">
                     <div>
                         <strong>Descripción:</strong>
-                        <a href="{{ route('debts.show', $pay->debt->contact) }}"
+                        <a href="{{ route('debts.show', $pay->debt) }}"
                             class="text-blue-700 dark:text-blue-300 hover:underline">
                             {{ $pay->debt->description }}
                         </a>
@@ -84,11 +84,13 @@
                     <h3 class="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">Imágenes</h3>
                     <div class="grid grid-cols-3 gap-2 mt-2">
                         @foreach($pay->images as $image)
-                            <img src="{{ $image->url }}" class="w-full h-32 object-cover rounded">
+                            <img src="{{ $image->url }}" alt="Imagen del pago {{ $pay->id }}"
+                                class="w-full h-32 object-cover rounded cursor-pointer preview-img">
                         @endforeach
                     </div>
                 </div>
             @endif
+
 
             {{-- Acciones --}}
             <div class="flex justify-end gap-3">
@@ -109,7 +111,50 @@
                     </form>
                 @endcan
             </div>
-
+        </div>
+        <!-- Modal -->
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 items-center justify-center p-4">
+        <div class="relative w-full max-w-4xl">
+            <button id="close-modal"
+                class="absolute top-3 right-3 z-50 bg-gray-900/80 text-white rounded-full p-1 hover:bg-gray-800"
+                aria-label="Cerrar">✕</button>
+            <img id="modal-img" src="" class="mx-auto max-h-[80vh] max-w-full object-contain rounded shadow-lg" />
         </div>
     </div>
+    </div>
+
 </x-app-layout>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const imgs = document.querySelectorAll(".preview-img");
+        const modal = document.getElementById("image-modal");
+        const modalImg = document.getElementById("modal-img");
+        const closeModal = document.getElementById("close-modal");
+
+        imgs.forEach(img => {
+            img.addEventListener("click", function () {
+                modalImg.src = this.src;
+                modal.classList.remove("hidden");
+            });
+        });
+
+        closeModal.addEventListener("click", () => {
+            modal.classList.add("hidden");
+            modalImg.src = "";
+        });
+
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.classList.add("hidden");
+                modalImg.src = "";
+            }
+        });
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                modal.classList.add("hidden");
+                modalImg.src = "";
+            }
+        });
+    });
+</script>

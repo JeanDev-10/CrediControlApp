@@ -19,7 +19,6 @@ class PayController extends Controller
     use AuthorizesRequests;
     public function __construct(protected DebtRepositoryInterface $debtRepository, protected PayService $payService, protected ImageService $imageService) {}
 
-
     public function index(Request $request)
     {
         $pays = $this->payService->list($request->all());

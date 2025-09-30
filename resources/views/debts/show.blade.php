@@ -49,6 +49,12 @@
                         <x-primary-button onclick="return confirm('Marcar como pagada?')">Marcar pagada</x-primary-button>
                     </form>
                 @endcan
+                @can('markAsPaid', $debt)
+                    <form action="{{ route('pays.create', $debt) }}" method="GET">
+                        @csrf
+                        <x-primary-button>Hacer pago</x-primary-button>
+                    </form>
+                @endcan
                 @can('update', $debt)
                     <a href="{{ route('debts.edit', $debt) }}">
                         <x-terciary-button>Editar</x-terciary-button>

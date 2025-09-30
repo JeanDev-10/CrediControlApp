@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Policies\PayPolicy;
+use App\Services\Interfaces\ImageServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -20,6 +21,16 @@ class Pay extends Model
         'date' => 'date',
     ];
 
+    protected static function booted()
+{
+    static::deleting(function (Pay $pay) {
+        $imageService = app(ImageServiceInterface::class);
+
+        foreach ($pay->images as $image) {
+            $imageService->deleteImage($image->image_uuid); // Elimina físicamente
+        }
+    });
+}
     public function debt()
     {
         return $this->belongsTo(Debt::class);
