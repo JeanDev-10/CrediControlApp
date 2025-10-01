@@ -6,11 +6,11 @@
     </x-slot>
 
     <div class="py-6">
-        <x-auth-session-status class="mb-4" :status="session('success')" />
-        <x-auth-session-error class="mb-4" :status="session('error')" />
+
 
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
-
+ <x-auth-session-status class="mb-4" :status="session('success')" />
+        <x-auth-session-error class="mb-4" :status="session('error')" />
             {{-- Datos de la Deuda --}}
             @include("debts.components.card-debt", ['debt' => $pay->debt, 'showActions' => false])
             {{-- Datos del contacto --}}
@@ -60,12 +60,12 @@
                     <x-secondary-button>Volver</x-secondary-button>
                 </a>
                 @can('update', $pay)
-                    <a href="{{ route('pays.edit', $pay) }}">
+                    <a href="{{ route('pays.edit', ['pay'=>$pay, 'redirect_to' => route('pays.show', $pay->id)]) }}">
                         <x-terciary-button>Editar</x-terciary-button>
                     </a>
                 @endcan
                 @can('delete', $pay)
-                    <form action="{{ route('pays.destroy', $pay) }}" method="POST"
+                    <form action="{{ route('pays.destroy', ['pay'=>$pay,'redirect_to'=>route('debts.show', $pay->debt)]) }}" method="POST"
                         onsubmit="return confirm('Eliminar pago?');">
                         @csrf
                         @method('DELETE')

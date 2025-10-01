@@ -13,6 +13,7 @@
                 {{-- Formulario de creación de pago --}}
                 <form method="POST" action="{{ route('pays.store') }}" enctype="multipart/form-data">
                     @csrf
+                      <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
 
                     <div class="mb-4">
                         <x-input-label for="quantity" value="Cantidad" />

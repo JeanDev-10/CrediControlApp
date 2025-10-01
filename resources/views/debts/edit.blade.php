@@ -13,6 +13,7 @@
                 <form method="POST" action="{{ route('debts.update', $debt) }}">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
 
                     <!-- Descripción -->
                     <div class="mb-4">

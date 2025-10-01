@@ -23,6 +23,10 @@ class DebtService
     {
         return $this->debtRepo->find($id);
     }
+    public function getByIdWithPaysFiltered(array $filters, int $id, int $perPage = 10)
+    {
+        return $this->debtRepo->getPaysByDebt($filters, $id, $perPage);
+    }
 
     public function create(array $data): Debt
     {
@@ -42,7 +46,9 @@ class DebtService
                 // no se permiten modificaciones si ya está pagada
                 throw new \Exception('No se puede modificar una deuda pagada.');
             }
-            return $this->debtRepo->update($id, $data);
+            $debt_updated=$this->debtRepo->update($id, $data);
+            $this->recalculateDebtStatus($debt_updated);
+            return $debt_updated;
         });
     }
 
@@ -64,5 +70,24 @@ class DebtService
             $debt->save();
             return $debt;
         });
+    }
+    protected function recalculateDebtStatus($debt): void
+    {
+        // Reload to get up-to-date relations
+        $debt->refresh();
+
+        // Sum all pays' quantities
+        // NOTE: Pay model uses 'quantity' column
+        $totalPaid = $debt->pays()->sum('quantity');
+
+        if ($totalPaid >= $debt->quantity) {
+            if ($debt->status !== 'pagada') {
+                $debt->update(['status' => 'pagada']);
+            }
+        } else {
+            if ($debt->status !== 'pendiente') {
+                $debt->update(['status' => 'pendiente']);
+            }
+        }
     }
 }

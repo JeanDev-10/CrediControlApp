@@ -21,7 +21,7 @@
                 <form method="POST" action="{{ route('pays.update', $pay) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-
+                    <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
                     <div class="mb-4">
                         <x-input-label for="quantity" value="Cantidad" />
                         <x-text-input id="quantity" name="quantity" type="number" step="0.01" class="w-full mt-1"

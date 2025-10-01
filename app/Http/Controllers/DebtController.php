@@ -14,7 +14,7 @@ class DebtController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(protected DebtService $service,protected ContactService $contactService) {}
+    public function __construct(protected DebtService $service, protected ContactService $contactService) {}
 
     public function index(Request $request)
     {
@@ -26,32 +26,40 @@ class DebtController extends Controller
 
     public function create(Request $request)
     {
-        $contact_id=$request->query('contact_id');
-        $contacts=$this->contactService->getAll(['contact_id'=>$contact_id],10000);
-        return view('debts.create',compact('contacts'));
+        $contact_id = $request->query('contact_id');
+        $contacts = $this->contactService->getAll(['contact_id' => $contact_id], 10000);
+
+        return view('debts.create', compact('contacts'));
     }
 
     public function store(StoreDebtRequest $request)
     {
         $this->authorize('create', Debt::class);
         $this->service->create($request->validated());
-         $redirectUrl = $request->input('redirect_to');
+        $redirectUrl = $request->input('redirect_to');
+
         return redirect($redirectUrl ?? route('debts.index'))
             ->with('success', 'Deuda creada correctamente');
     }
 
-    public function show(Debt $debt)
+    public function show(Debt $debt, Request $request)
     {
         $this->authorize('view', $debt);
+        $result = $this->service->getByIdWithPaysFiltered($request->all(), $debt->id, 10);
 
-        return view('debts.show', compact('debt'));
+        $pays = $result['pays'];
+        $totalPaid = $result['totalPaid'];
+        $remaining = max(0, $debt->quantity - $totalPaid); // nunca negativo
+
+        return view('debts.show', compact('debt', 'pays','totalPaid','remaining'));
     }
 
     public function edit(Debt $debt)
     {
         $this->authorize('update', $debt);
-        $contacts=$this->contactService->getAll([],10000);
-        return view('debts.edit', compact('debt','contacts'));
+        $contacts = $this->contactService->getAll([], 10000);
+
+        return view('debts.edit', compact('debt', 'contacts'));
     }
 
     public function update(UpdateDebtRequest $request, Debt $debt)
@@ -59,18 +67,24 @@ class DebtController extends Controller
         try {
             $this->authorize('update', $debt);
             $this->service->update($debt->id, $request->validated());
-            return redirect()->route('debts.index')->with('success', 'Deuda actualizada.');
+
+            $redirectUrl = $request->input('redirect_to');
+
+            return redirect($redirectUrl ?? route('debts.index'))
+                ->with('success', 'Deuda actualizada correctamente');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
-    public function destroy(Debt $debt)
+    public function destroy(Debt $debt, Request $request)
     {
         $this->authorize('delete', $debt);
         $this->service->delete($debt->id);
+        $redirectUrl = $request->input('redirect_to');
 
-        return redirect()->route('debts.index')->with('success', 'Deuda eliminada.');
+        return redirect($redirectUrl ?? route('debts.index'))
+            ->with('success', 'Deuda eliminada correctamente');
     }
 
     public function markAsPaid(Debt $debt)

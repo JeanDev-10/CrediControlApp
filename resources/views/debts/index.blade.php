@@ -60,7 +60,12 @@
                     <tbody class="border-b border-gray-200 dark:border-gray-700 text-black dark:text-gray-100">
                         @forelse($debts as $debt)
                             <tr>
-                                <td class="px-4 py-3">{{ $debt->description }}</td>
+                                <td class="px-4 py-3">
+                                    <a href="{{ route('debts.show', $debt) }}"
+                                        class="text-blue-700 hover:text-blue-600 dark:text-blue-300 hover:text-blue-200">
+                                        {{ $debt->description }}
+                                    </a>
+                                </td>
                                 <td class="px-4 py-3">
                                     <a href="{{ route('contacts.show', $debt->contact) }}"
                                         class="text-blue-700 hover:text-blue-600 dark:text-blue-300 hover:text-blue-200">

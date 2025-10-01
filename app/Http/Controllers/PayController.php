@@ -11,12 +11,12 @@ use App\Services\PayService;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class PayController extends Controller
 {
     use AuthorizesRequests;
+
     public function __construct(protected DebtRepositoryInterface $debtRepository, protected PayService $payService, protected ImageService $imageService) {}
 
     public function index(Request $request)
@@ -36,17 +36,20 @@ class PayController extends Controller
 
     public function create(Request $request)
     {
-        $debt_id=$request->query('debt_id');
-        $debts=$this->debtRepository->filter(["status"=>"pendiente","debt_id"=>$debt_id],10000);
+        $debt_id = $request->query('debt_id');
+        $debts = $this->debtRepository->filter(['status' => 'pendiente', 'debt_id' => $debt_id], 10000);
 
-        return view('pays.create',compact('debts'));
+        return view('pays.create', compact('debts'));
     }
 
     public function store(StorePayRequest $request)
     {
         try {
             $this->payService->create($request->validated(), $request->file('images'));
-            return redirect()->route('pays.index')->with('success', 'Pago creado exitosamente.');
+            $redirectUrl = $request->input('redirect_to');
+
+            return redirect($redirectUrl ?? route('pays.index'))
+                ->with('success', 'Pago creada correctamente');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors())->withInput();
         } catch (Exception $e) {
@@ -67,8 +70,9 @@ class PayController extends Controller
         try {
             $this->authorize('update', $pay);
             $pay = $this->payService->update($pay->id, $request->validated(), $request->file('images'));
-
-            return redirect()->route('pays.index')->with('success', 'Pago actualizado exitosamente.');
+            $redirectUrl = $request->input('redirect_to');
+            return redirect($redirectUrl ?? route('pays.index'))
+                ->with('success', 'Pago actualizado correctamente');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors())->withInput();
         } catch (Exception $e) {
@@ -76,13 +80,14 @@ class PayController extends Controller
         }
     }
 
-    public function destroy(Pay $pay)
+    public function destroy(Pay $pay, Request $request)
     {
         try {
             $this->authorize('delete', $pay);
             $this->payService->delete($pay->id);
-
-            return redirect()->route('pays.index')->with('success', 'Pago eliminado correctamente.');
+            $redirectUrl = $request->input('redirect_to');
+            return redirect($redirectUrl ?? route('pays.index'))
+                ->with('success', 'Pago eliminado correctamente');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
         } catch (Exception $e) {
@@ -93,9 +98,10 @@ class PayController extends Controller
     public function destroyImage(string $id)
     {
         try {
-            $image=$this->imageService->get($id);
+            $image = $this->imageService->get($id);
             $this->authorize('deleteImage', $image->pay);
             $this->payService->deleteImage($id);
+
             return back()->with('success', 'Imagen eliminada correctamente.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());

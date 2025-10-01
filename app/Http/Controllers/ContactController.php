@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Contacts\StoreContactRequest;
 use App\Http\Requests\Contacts\UpdateContactRequest;
 use App\Models\Contact;
-use App\Models\Transaction;
 use App\Services\ContactService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -15,10 +14,10 @@ class ContactController extends Controller
     use AuthorizesRequests;
 
     public function __construct(protected ContactService $service) {}
+
     /**
      * Display a listing of the resource.
      */
-
     public function index(Request $request)
     {
         $filters = $request->only(['name', 'lastname']);
@@ -43,6 +42,7 @@ class ContactController extends Controller
         $data = $request->validated();
         $data['user_id'] = auth()->id();
         $this->service->create($data);
+
         return redirect()->route('contacts.index')->with('success', 'Contacto creado correctamente.');
     }
 
@@ -52,9 +52,11 @@ class ContactController extends Controller
     public function show(Contact $contact, Request $request)
     {
         $this->authorize('show', $contact);
-        $debts = $this->service->getByIdWithDebtsFiltered($request->all(),$contact->id,10);
-        return view('contacts.show', compact('contact','debts'));
+        $debts = $this->service->getByIdWithDebtsFiltered($request->all(), $contact->id, 10);
+
+        return view('contacts.show', compact('contact', 'debts'));
     }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -62,6 +64,7 @@ class ContactController extends Controller
     {
         $contact = $this->service->getById($id);
         $this->authorize('edit', $contact);
+
         return view('contacts.edit', compact('contact'));
     }
 
@@ -73,7 +76,10 @@ class ContactController extends Controller
         $data = $request->validated();
         $this->authorize('update', $contact);
         $this->service->update($contact->id, $data);
-        return redirect()->route('contacts.index')->with('success', 'Contacto actualizado correctamente.');
+        $redirectUrl = $request->input('redirect_to');
+
+        return redirect($redirectUrl ?? route('contacts.index'))
+            ->with('success', 'Contacto actualizado correctamente');
     }
 
     /**
@@ -83,6 +89,7 @@ class ContactController extends Controller
     {
         $this->authorize('delete', $contact);
         $this->service->delete($contact->id);
+
         return redirect()->route('contacts.index')->with('success', 'Contacto eliminado correctamente.');
     }
 }

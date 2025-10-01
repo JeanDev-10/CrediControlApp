@@ -36,7 +36,7 @@
                             value="{{ old('date_start') }}" required />
                         <x-input-error :messages="$errors->get('date_start')" class="mt-2" />
                     </div>
-                   <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
+                    <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
                     <!-- Contacto con buscador -->
                     <div class="mb-4">
                         <x-input-label for="contact_id" value="Contacto" />

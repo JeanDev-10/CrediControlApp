@@ -33,7 +33,7 @@
         {{-- Acciones --}}
         <div class="flex justify-end gap-3 mt-4">
             @can('update', $contact)
-            <a href="{{ route('contacts.edit', $contact) }}">
+            <a href="{{ route('contacts.edit', ['contact'=>$contact,'redirect_to' => route('contacts.show', $contact)]) }}">
                 <x-primary-button>Editar</x-primary-button>
             </a>
             @endcan

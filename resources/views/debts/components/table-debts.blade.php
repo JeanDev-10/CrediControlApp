@@ -58,14 +58,14 @@
                         <td class="px-4 py-3 text-center">
                             <div class="flex flex-wrap justify-center gap-2">
                                 @can('update', $debt)
-                                    <a href="{{ route('debts.edit', $debt) }}">
+                                    <a href="{{ route('debts.edit', ['debt'=>$debt,'redirect_to' => route('contacts.show', $contact)]) }}">
                                         <x-terciary-button>Editar</x-terciary-button>
                                     </a>
                                 @endcan
                                 <a href="{{ route('debts.show', $debt) }}"
                                     class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm">Ver</a>
                                 @can('delete', $debt)
-                                    <form action="{{ route('debts.destroy', $debt) }}" method="POST">
+                                    <form action="{{ route('debts.destroy', ['debt'=>$debt,'redirect_to' => route('contacts.show', $contact)]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <x-danger-button onclick="return confirm('Eliminar deuda?')">Eliminar</x-danger-button>

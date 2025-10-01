@@ -42,4 +42,29 @@ class DebtRepository extends BaseRepository implements DebtRepositoryInterface
         return $query->latest('created_at')->paginate($perPage)->withQueryString();
     }
 
+    public function getPaysByDebt(array $filters, $id, $perPage = 10)
+    {
+        $debt = $this->model->find($id);
+        // Relación de pagos de esa deuda
+        $query = $debt->pays()->newQuery();
+        // Total pagado (SIN paginación)
+        $totalPaid = (clone $query)->sum('quantity');
+
+        // Filtros sobre los pagos
+        if (! empty($filters['quantity'])) {
+            $query->where('quantity', 'like', '%'.$filters['quantity'].'%');
+        }
+
+        if (! empty($filters['date'])) {
+            $query->whereDate('date', $filters['date']);
+        }
+        $pays = $query->latest()->paginate($perPage)->withQueryString();
+
+
+
+        return [
+            'pays' => $pays,
+            'totalPaid' => $totalPaid,
+        ];
+    }
 }
