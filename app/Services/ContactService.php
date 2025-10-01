@@ -20,6 +20,10 @@ class ContactService
     {
         return $this->repository->find($id);
     }
+    public function getByIdWithDebtsFiltered(array $filters,int $id, $perPage = 10)
+    {
+        return $this->repository->getDebtsByContact($id,$filters,$perPage);
+    }
 
     public function create(array $data)
     {

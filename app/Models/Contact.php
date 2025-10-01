@@ -27,6 +27,10 @@ class Contact extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function debts()
+    {
+        return $this->HasMany(Debt::class);
+    }
 
     protected function name(): Attribute
     {

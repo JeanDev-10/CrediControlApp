@@ -8,7 +8,8 @@
     <div class="py-6">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
-                <x-auth-session-error class="mb-4" :status="session('status')" />
+                <x-auth-session-status class="mb-4" :status="session('success')" />
+                <x-auth-session-error class="mb-4" :status="session('error')" />
                 {{-- Formulario de creación de pago --}}
                 <form method="POST" action="{{ route('pays.store') }}" enctype="multipart/form-data">
                     @csrf

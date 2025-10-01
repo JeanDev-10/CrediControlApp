@@ -6,6 +6,9 @@
     </x-slot>
 
     <div class="py-6">
+        <x-auth-session-status class="mb-4" :status="session('success')" />
+        <x-auth-session-error class="mb-4" :status="session('error')" />
+
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             {{-- Datos de la Deuda --}}

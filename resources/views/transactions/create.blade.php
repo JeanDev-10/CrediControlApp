@@ -11,6 +11,7 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8">
                 <x-auth-session-error class="mb-4" :status="session('error')" />
+                <x-auth-session-status class="mb-4" :status="session('success')" />
                 <form method="POST" action="{{ route('transactions.store') }}" class="space-y-6">
                     @csrf
 

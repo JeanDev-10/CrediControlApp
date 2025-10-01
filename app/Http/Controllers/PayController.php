@@ -46,11 +46,11 @@ class PayController extends Controller
     {
         try {
             $this->payService->create($request->validated(), $request->file('images'));
-            return redirect()->route('pays.index')->with('status', 'Pago creado exitosamente.');
+            return redirect()->route('pays.index')->with('success', 'Pago creado exitosamente.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors())->withInput();
         } catch (Exception $e) {
-            return back()->with('status', 'Error: '.$e->getMessage())->withInput();
+            return back()->with('error', 'Error: '.$e->getMessage())->withInput();
         }
     }
 
@@ -68,7 +68,7 @@ class PayController extends Controller
             $this->authorize('update', $pay);
             $pay = $this->payService->update($pay->id, $request->validated(), $request->file('images'));
 
-            return redirect()->route('pays.index')->with('status', 'Pago actualizado exitosamente.');
+            return redirect()->route('pays.index')->with('success', 'Pago actualizado exitosamente.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors())->withInput();
         } catch (Exception $e) {
@@ -82,11 +82,11 @@ class PayController extends Controller
             $this->authorize('delete', $pay);
             $this->payService->delete($pay->id);
 
-            return redirect()->route('pays.index')->with('status', 'Pago eliminado correctamente.');
+            return redirect()->route('pays.index')->with('success', 'Pago eliminado correctamente.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
         } catch (Exception $e) {
-            return back()->with('status', 'Error: '.$e->getMessage());
+            return back()->with('error', 'Error: '.$e->getMessage());
         }
     }
 
@@ -96,11 +96,11 @@ class PayController extends Controller
             $image=$this->imageService->get($id);
             $this->authorize('deleteImage', $image->pay);
             $this->payService->deleteImage($id);
-            return back()->with('status', 'Imagen eliminada correctamente.');
+            return back()->with('success', 'Imagen eliminada correctamente.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
         } catch (Exception $e) {
-            return back()->with('status', 'Error: '.$e->getMessage());
+            return back()->with('error', 'Error: '.$e->getMessage());
         }
     }
 
@@ -111,11 +111,11 @@ class PayController extends Controller
             $this->authorize('deleteImages', $pay);
             $this->payService->deleteAllImagesByPayId($id);
 
-            return back()->with('status', 'Todas las imágenes fueron eliminadas.');
+            return back()->with('success', 'Todas las imágenes fueron eliminadas.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
         } catch (Exception $e) {
-            return back()->with('status', 'Error: '.$e->getMessage());
+            return back()->with('error', 'Error: '.$e->getMessage());
         }
     }
 }

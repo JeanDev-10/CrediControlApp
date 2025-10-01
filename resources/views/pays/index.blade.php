@@ -8,7 +8,8 @@
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            <x-auth-session-status class="mb-4" :status="session('status')" />
+            <x-auth-session-status class="mb-4" :status="session('success')" />
+            <x-auth-session-error class="mb-4" :status="session('error')" />
 
             {{-- Filtros --}}
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
@@ -20,13 +21,12 @@
                     </div>
                     <div>
                         <x-input-label for="quantity" value="Cantidad" />
-                        <x-text-input id="quantity" name="quantity" type="number" step="0.01" class="w-full mt-1" placeholder="10"
-                            :value="request('quantity')" />
+                        <x-text-input id="quantity" name="quantity" type="number" step="0.01" class="w-full mt-1"
+                            placeholder="10" :value="request('quantity')" />
                     </div>
                     <div>
                         <x-input-label for="date" value="Fecha" />
-                        <x-text-input id="date" name="date" type="date" class="w-full mt-1"
-                            :value="request('date')" />
+                        <x-text-input id="date" name="date" type="date" class="w-full mt-1" :value="request('date')" />
                     </div>
                     <x-secondary-button type="submit" class="mt-4">Filtrar</x-secondary-button>
                     <a href="{{ route('pays.create') }}" class="ml-auto mt-4">
@@ -57,7 +57,8 @@
                                         {{ $pay->debt->contact->name ?? '-' }} {{ $pay->debt->contact->lastname ?? '' }}
                                     </a>
                                 </td>
-                                <td class="px-4 py-3 text-center text-green-600 dark:text-green-400">${{ $pay->quantity }}</td>
+                                <td class="px-4 py-3 text-center text-green-600 dark:text-green-400">${{ $pay->quantity }}
+                                </td>
                                 <td class="px-4 py-3 text-center">{{ $pay->debt->description }}</td>
                                 <td class="px-4 py-3 text-center">{{ $pay->date->format("Y/m/d") }}</td>
                                 <td class="px-4 py-3 text-center">
@@ -79,7 +80,8 @@
                                             <form action="{{ route('pays.destroy', $pay) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <x-danger-button onclick="return confirm('Eliminar pago?')">Eliminar</x-danger-button>
+                                                <x-danger-button
+                                                    onclick="return confirm('Eliminar pago?')">Eliminar</x-danger-button>
                                             </form>
                                         @endcan
                                     </div>
@@ -87,7 +89,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No hay pagos.</td>
+                                <td colspan="5" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No hay pagos.
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>

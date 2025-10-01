@@ -24,10 +24,10 @@ class DebtController extends Controller
         return view('debts.index', compact('debts'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $this->authorize('create', Debt::class);
-        $contacts=$this->contactService->getAll([],10000);
+        $contact_id=$request->query('contact_id');
+        $contacts=$this->contactService->getAll(['contact_id'=>$contact_id],10000);
         return view('debts.create',compact('contacts'));
     }
 
@@ -35,8 +35,9 @@ class DebtController extends Controller
     {
         $this->authorize('create', Debt::class);
         $this->service->create($request->validated());
-
-        return redirect()->route('debts.index')->with('success', 'Deuda creada correctamente.');
+         $redirectUrl = $request->input('redirect_to');
+        return redirect($redirectUrl ?? route('debts.index'))
+            ->with('success', 'Deuda creada correctamente');
     }
 
     public function show(Debt $debt)

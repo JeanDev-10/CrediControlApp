@@ -9,6 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             <x-auth-session-status class="mb-4" :status="session('success')" />
+            <x-auth-session-error class="mb-4" :status="session('error')" />
 
             {{-- Filtros --}}
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
@@ -87,7 +88,8 @@
                                             <form action="{{ route('debts.destroy', $debt) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <x-danger-button onclick="return confirm('Eliminar deuda?')">Eliminar</x-danger-button>
+                                                <x-danger-button
+                                                    onclick="return confirm('Eliminar deuda?')">Eliminar</x-danger-button>
                                             </form>
                                         @endcan
                                     </div>
@@ -95,7 +97,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No hay deudas.</td>
+                                <td colspan="6" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No hay
+                                    deudas.</td>
                             </tr>
                         @endforelse
                     </tbody>

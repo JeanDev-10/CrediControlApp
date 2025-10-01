@@ -12,14 +12,14 @@ class DebtSeeder extends Seeder
      */
     public function run(): void
     {
-        Debt::factory()->count(30)->create([
+        Debt::factory()->count(100)->create([
             'user_id' => 1,
         ])->each(function ($debt) {
             $debt->update([
                 'contact_id' => rand(1, 20),
             ]);
         });
-        Debt::factory()->count(30)->create([
+        Debt::factory()->count(20)->create([
             'user_id' => 2,
         ])->each(function ($debt) {
             $debt->update([

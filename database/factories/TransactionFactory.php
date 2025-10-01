@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class TransactionFactory extends Factory
             'quantity' => $this->faker->randomFloat(2, 1, 1000),
             'previus_quantity' => $this->faker->randomFloat(2, 1, 1000),
             'after_quantity' => $this->faker->randomFloat(2, 1, 1000),
+            'user_id' => User::factory(), // Relaciona con un usuario de prueba
         ];
     }
 }

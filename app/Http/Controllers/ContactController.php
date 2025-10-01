@@ -49,11 +49,11 @@ class ContactController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id)
+    public function show(Contact $contact, Request $request)
     {
-        $contact = $this->service->getById($id);
         $this->authorize('show', $contact);
-        return view('contacts.show', compact('contact'));
+        $debts = $this->service->getByIdWithDebtsFiltered($request->all(),$contact->id,10);
+        return view('contacts.show', compact('contact','debts'));
     }
     /**
      * Show the form for editing the specified resource.

@@ -7,6 +7,8 @@
 
     <div class="py-6">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <x-auth-session-status class="mb-4" :status="session('success')" />
+            <x-auth-session-error class="mb-4" :status="session('error')" />
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
                 <form method="POST" action="{{ route('debts.store') }}">
                     @csrf
@@ -34,7 +36,7 @@
                             value="{{ old('date_start') }}" required />
                         <x-input-error :messages="$errors->get('date_start')" class="mt-2" />
                     </div>
-
+                   <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
                     <!-- Contacto con buscador -->
                     <div class="mb-4">
                         <x-input-label for="contact_id" value="Contacto" />

@@ -6,6 +6,8 @@
     </x-slot>
 
     <div class="py-6">
+        <x-auth-session-status class="mb-4" :status="session('success')" />
+        <x-auth-session-error class="mb-4" :status="session('error')" />
         <div class="mx-auto max-w-2xl sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
                 <form method="POST" action="{{ route('contacts.update', $contact) }}">
