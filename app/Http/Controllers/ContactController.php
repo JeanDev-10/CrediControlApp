@@ -1,19 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Requests\Contacts\StoreContactRequest;
 use App\Http\Requests\Contacts\UpdateContactRequest;
 use App\Models\Contact;
 use App\Services\ContactService;
+use App\Services\UserService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class ContactController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(protected ContactService $service) {}
+    public function __construct(protected ContactService $service, protected UserService $userService) {}
 
     /**
      * Display a listing of the resource.
@@ -40,7 +42,7 @@ class ContactController extends Controller
     public function store(StoreContactRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = $this->userService->getUserLoggedIn()->id;
         $this->service->create($data);
 
         return redirect()->route('contacts.index')->with('success', 'Contacto creado correctamente.');
@@ -91,5 +93,16 @@ class ContactController extends Controller
         $this->service->delete($contact->id);
 
         return redirect()->route('contacts.index')->with('success', 'Contacto eliminado correctamente.');
+    }
+    /**
+         * export to pdf contacts.
+         */
+    public function export(Request $request)
+    {
+        $filters = $request->only(['name', 'lastname']);
+        $contacts = $this->service->exportAll($filters);
+        $user=$this->userService->getUserLoggedIn();
+         $pdf = Pdf::loadView('pdf.contacts', compact('contacts','user'));
+        return $pdf->stream('mis-contactos.pdf');
     }
 }

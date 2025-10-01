@@ -48,4 +48,17 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
 
         return $query->latest()->paginate($perPage)->withQueryString();
     }
+    public function getAllForExport(array $filters = [])
+    {
+        $query = $this->model->where('user_id', auth()->id());
+
+        if (! empty($filters['name'])) {
+            $query->where('name', 'like', "%{$filters['name']}%");
+        }
+        if (! empty($filters['lastname'])) {
+            $query->where('lastname', 'like', "%{$filters['lastname']}%");
+        }
+
+        return $query->latest()->get(); // 👈 sin paginar
+    }
 }

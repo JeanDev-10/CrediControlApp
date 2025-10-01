@@ -21,6 +21,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // manejo de contactos
     Route::resource('contacts', ContactController::class);
+    //reporte de contactos
+    Route::get('contacts/export/pdf', [ContactController::class, 'export'])
+    ->name('contacts.export');
     // manejo de transacciones
     Route::resource('transactions', TransactionController::class);
     // crear actualizar mi presupuesto
