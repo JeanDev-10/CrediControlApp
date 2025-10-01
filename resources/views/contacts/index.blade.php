@@ -4,11 +4,10 @@
             {{ __('Contactos') }}
         </h2>
     </x-slot>
-
     <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-5">
             <x-auth-session-status class="mb-4" :status="session('success')" />
-        <x-auth-session-error class="mb-4" :status="session('error')" />
+            <x-auth-session-error class="mb-4" :status="session('error')" />
 
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 flex justify-between items-center">
                 <form method="GET" class="flex gap-2">
@@ -18,6 +17,14 @@
                         :value="request('lastname')" autofocus autocomplete="lastname" placeholder="Apellido" />
                     <x-secondary-button type="submit">Buscar</x-secondary-button>
                 </form>
+                <div>
+                    <a target="_blank"
+                        href="{{ route('contacts.export', ['name' => request('name'), 'lastname' => request('lastname')]) }}">
+                        <x-terciary-button>
+                            Exportar PDF
+                        </x-terciary-button>
+                    </a>
+                </div>
                 <form method="GET" action="{{ route('contacts.create') }}" class="inline">
                     <x-primary-button>Crear Contacto</x-primary-button>
                 </form>
@@ -47,7 +54,7 @@
                                 <td class="px-6 py-4 text-black dark:text-gray-100">
                                     <a href="{{ route('contacts.edit', $contact) }}"
                                         class='inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150'>Editar</a>
-                                         <a
+                                    <a
                                         href="{{ route('contacts.show', $contact) }}"><x-secondary-button>Ver</x-secondary-button></a>
                                     <form method="POST" action="{{ route('contacts.destroy', $contact) }}" class="inline">
                                         @csrf

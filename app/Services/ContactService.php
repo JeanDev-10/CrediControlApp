@@ -6,10 +6,7 @@ use App\Repositories\Interfaces\ContactRepositoryInterface;
 
 class ContactService
 {
-
-    public function __construct(protected ContactRepositoryInterface $repository)
-    {
-    }
+    public function __construct(protected ContactRepositoryInterface $repository) {}
 
     public function getAll(array $filters, int $perPage = 10)
     {
@@ -20,9 +17,10 @@ class ContactService
     {
         return $this->repository->find($id);
     }
-    public function getByIdWithDebtsFiltered(array $filters,int $id, $perPage = 10)
+
+    public function getByIdWithDebtsFiltered(array $filters, int $id, $perPage = 10)
     {
-        return $this->repository->getDebtsByContact($id,$filters,$perPage);
+        return $this->repository->getDebtsByContact($id, $filters, $perPage);
     }
 
     public function create(array $data)
@@ -38,5 +36,10 @@ class ContactService
     public function delete(int $id)
     {
         return $this->repository->delete($id);
+    }
+
+    public function exportAll(array $filters = [])
+    {
+        return $this->repository->getAllForExport($filters);
     }
 }
