@@ -92,7 +92,7 @@
                                     <div class="flex flex-wrap justify-center gap-2">
                                         @can('update', $debt)
                                             <a href="{{ route('debts.edit', $debt) }}">
-                                                <x-terciary-button>Editar</x-terciary-button>
+                                                <x-terciary-button type="button">Editar</x-terciary-button>
                                             </a>
                                         @endcan
                                         <a href="{{ route('debts.show', $debt) }}"

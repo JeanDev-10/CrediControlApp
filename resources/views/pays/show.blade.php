@@ -61,7 +61,7 @@
                 </a>
                 @can('update', $pay)
                     <a href="{{ route('pays.edit', ['pay'=>$pay, 'redirect_to' => route('pays.show', $pay->id)]) }}">
-                        <x-terciary-button>Editar</x-terciary-button>
+                        <x-terciary-button type="button">Editar</x-terciary-button>
                     </a>
                 @endcan
                 @can('delete', $pay)

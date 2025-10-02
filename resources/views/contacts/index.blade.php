@@ -18,15 +18,14 @@
                     <x-secondary-button type="submit">Buscar</x-secondary-button>
                 </form>
                 <div>
-                    <a target="_blank"
-                        href="{{ route('contacts.export', request()->only(["name","lastname"]))}}">
+                    <a target="_blank" href="{{ route('contacts.export', request()->only(["name", "lastname"]))}}">
                         <x-terciary-button type="button">
                             Exportar PDF
                         </x-terciary-button>
                     </a>
-                    <form method="GET" action="{{ route('contacts.create') }}" class="inline mx-2">
-                    <x-primary-button>Crear Contacto</x-primary-button>
-                </form>
+                    <a href="{{ route('contacts.create') }}" class="inline mx-2">
+                        <x-primary-button type="button">Crear Contacto</x-primary-button>
+                    </a>{{-- --}}
                 </div>
 
             </div>
@@ -54,7 +53,7 @@
                                 <td class="px-6 py-4 text-black dark:text-gray-100">{{ $contact->updated_at }}</td>
                                 <td class="px-6 py-4 text-black dark:text-gray-100">
                                     <a href="{{ route('contacts.edit', $contact) }}"
-                                        class='inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150'>Editar</a>
+                                        ><x-primary-button type="button">Editar</x-primary-button></a>
                                     <a
                                         href="{{ route('contacts.show', $contact) }}"><x-secondary-button>Ver</x-secondary-button></a>
                                     <form method="POST" action="{{ route('contacts.destroy', $contact) }}" class="inline">

@@ -43,7 +43,7 @@
             @can('update', $contact)
                 <a
                     href="{{ route('contacts.edit', ['contact' => $contact, 'redirect_to' => route('contacts.show', $contact)]) }}">
-                    <x-primary-button>Editar</x-primary-button>
+                    <x-primary-button type="button">Editar</x-primary-button>
                 </a>
             @endcan
 
