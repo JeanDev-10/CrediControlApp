@@ -16,5 +16,8 @@ class ContactSeeder extends Seeder
         Contact::factory()->count(20)->create([
             'user_id' => 1, // por ejemplo, el usuario admin
         ]);
+        Contact::factory()->count(20)->create([
+            'user_id' => 2, // por ejemplo, el usuario admin
+        ]);
     }
 }

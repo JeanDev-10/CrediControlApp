@@ -9,8 +9,8 @@ CrediControl es una aplicación web diseñada para ayudarte a llevar el control 
 - Registro y seguimiento de ingresos y egresos con filtros avanzados.
 - Gestión completa de deudas y deudores.
 - Gestión completa de usuarios.
-- Configuración de presupuestos mensuales.
-- Visualización de transacciones por nombre, tipo, fecha o rango de fechas.
+- Configuración de presupuestos.
+- Visualización de transacciones por nombre, tipo, fecha.
 - Seguridad y rendimiento con arquitectura moderna y escalable.
 
 ---
@@ -67,22 +67,19 @@ CrediControl es una aplicación web diseñada para ayudarte a llevar el control 
 - Eliminar una imagen específica asociada a un pago.
 - Eliminar todas las imágenes asociadas a un pago.
 
+### 🕵️‍♂️ Módulo Auditoría *(Futuro)*
+
+- Registrar y consultar acciones realizadas por los usuarios en la aplicación.
+
+---
+
 ### 📈 Módulo Estadísticas *(Futuro)*
 
 - Visualizar gráficas de ingresos y egresos.
 - Ver estadísticas mensuales y anuales.
 - Comparar ingresos vs egresos en un periodo determinado.
 
-### 📲 Módulo Notificaciones *(Futuro)*
 
-- Recibir mensaje por WhatsApp cuando se acerque la fecha de pago de una deuda.
-- Recibir notificación por WhatsApp cuando una deuda haya sido cancelada.
-
-### 🕵️‍♂️ Módulo Auditoría *(Futuro)*
-
-- Registrar y consultar acciones realizadas por los usuarios sobre transacciones y deudas.
-
----
 
 ## 🖼️ Diagramas y Referencias Visuales
 
@@ -107,6 +104,7 @@ composer install
 npm install
 cp .env.example .env
 php artisan key:generate
+php artisan storage:link
 php artisan migrate --seed
 npm run dev
 php artisan serve

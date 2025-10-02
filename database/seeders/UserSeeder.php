@@ -16,15 +16,15 @@ class UserSeeder extends Seeder
         // User::factory(10)->create();
 
         User::create([
-            'name' => 'test user',
-            "lastname" => "apellido",
-            'email' => "test@hotmail.com",
-            "password"=>bcrypt('password1234'),
+            'name' => 'Jean Pierre',
+            "lastname" => "Rodríguez",
+            'email' => "jean@hotmail.com",
+            "password"=>bcrypt('jean1234'),
         ]);
         User::create([
             'name' => 'test user 2',
             "lastname" => "apellido",
-            'email' => "test2@hotmail.com",
+            'email' => "test@hotmail.com",
            "password"=>bcrypt('password1234'),
         ]);
     }

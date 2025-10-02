@@ -8,3 +8,6 @@
 .animate-fade-in {
     animation: fade-in 0.4s ease-out;
 }
+body {
+  transition: background-color .5s, color .5s;
+}

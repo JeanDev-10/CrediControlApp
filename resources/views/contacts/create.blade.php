@@ -6,6 +6,8 @@
     </x-slot>
 
     <div class="py-6">
+        <x-auth-session-status class="mb-4" :status="session('success')" />
+        <x-auth-session-error class="mb-4" :status="session('error')" />
         <div class="mx-auto max-w-2xl sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
                 <form method="POST" action="{{ route('contacts.store') }}">
@@ -40,9 +42,9 @@
                             class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2">
                             Cancelar
                         </a>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        <x-terciary-button>
                             Crear
-                        </button>
+                        </x-terciary-button>
                     </div>
                 </form>
             </div>

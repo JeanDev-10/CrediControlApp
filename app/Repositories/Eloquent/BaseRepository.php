@@ -19,7 +19,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
             }
         }
 
-        return $query->paginate($perPage);
+        return $query->paginate($perPage)->withQueryString();
     }
 
     public function find(int $id)
