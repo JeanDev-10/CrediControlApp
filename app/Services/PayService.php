@@ -39,11 +39,11 @@ class PayService
             }
             // Verifica que el monto no sea mayor al saldo pendiente
             $totalPaid = $debt->pays->sum('quantity'); // Suma de todos los pagos realizados
-            $remainingAmount = $debt->quantity - $totalPaid; // Saldo pendiente
+            $remainingAmount = number_format($debt->quantity - $totalPaid, 2); //saldo pendiente
 
             if ($data['quantity'] > $remainingAmount) {
                 throw ValidationException::withMessages([
-                    'quantity' => 'El monto ingresado no puede ser mayor al saldo pendiente (saldo pendiente: $' .$remainingAmount.")",
+                    'quantity' => 'El monto ingresado no puede ser mayor al saldo pendiente (saldo pendiente: $'.$remainingAmount.')',
                 ]);
             }
             $pay = $this->payRepository->create($data);
@@ -72,14 +72,26 @@ class PayService
 
             // Verifica que el monto actualizado no supere el saldo restante
             $totalPaid = $debt->pays->sum('quantity') - $pay->quantity; // Suma de todos los pagos, excluyendo el pago actual
-            $remainingAmount = $debt->quantity - $totalPaid;
+            $remainingAmount = number_format($debt->quantity - $totalPaid, 2);
+
+            // Si el saldo pendiente es menor que cero, significa que los pagos ya son mayores a la deuda total
+            if ($remainingAmount < 0) {
+                $remainingAmount = 0; // Evitar valores negativos
+            }
 
             // Calcula la diferencia entre el monto actualizado y el pago original
             $amountDifference = $data['quantity'] - $pay->quantity;
 
+            // Verifica si la diferencia es mayor que el saldo pendiente
             if ($amountDifference > $remainingAmount) {
                 throw ValidationException::withMessages([
-                    'quantity' => 'El monto actualizado no puede ser mayor al saldo pendiente (saldo pendiente : $' .$remainingAmount.")",
+                    'quantity' => 'El monto actualizado no puede ser mayor al saldo pendiente (saldo pendiente: $'.$remainingAmount.')',
+                ]);
+            }
+            // Verifica si el pago actualizado es menor o igual al saldo restante
+            if ($data['quantity'] > $remainingAmount) {
+                throw ValidationException::withMessages([
+                    'quantity' => 'El monto ingresado no puede ser mayor al saldo pendiente (saldo pendiente: $'.$remainingAmount.')',
                 ]);
             }
             $pay = $this->payRepository->update($id, $data);

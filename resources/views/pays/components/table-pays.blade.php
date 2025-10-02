@@ -23,7 +23,7 @@
                     <strong class="text-xl">
                         Restante:
                         <span class="text-red-600 dark:text-red-400">
-                            ${{ $remaining }}
+                            ${{ number_format($remaining,2) }}
                         </span>
                     </strong>
                 @endif
