@@ -7,6 +7,8 @@ use App\Http\Requests\Debts\UpdateDebtRequest;
 use App\Models\Debt;
 use App\Services\ContactService;
 use App\Services\DebtService;
+use App\Services\UserService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,7 @@ class DebtController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(protected DebtService $service, protected ContactService $contactService) {}
+    public function __construct(protected DebtService $service, protected ContactService $contactService, protected UserService $userService) {}
 
     public function index(Request $request)
     {
@@ -51,7 +53,7 @@ class DebtController extends Controller
         $totalPaid = $result['totalPaid'];
         $remaining = max(0, $debt->quantity - $totalPaid); // nunca negativo
 
-        return view('debts.show', compact('debt', 'pays','totalPaid','remaining'));
+        return view('debts.show', compact('debt', 'pays', 'totalPaid', 'remaining'));
     }
 
     public function edit(Debt $debt)
@@ -93,5 +95,14 @@ class DebtController extends Controller
         $this->service->markAsPaid($debt->id);
 
         return redirect()->route('debts.index')->with('success', 'Deuda marcada como pagada.');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $filters = $request->only(['description', 'contact_name', 'date_start', 'status']);
+        $debts = $this->service->filterForExport($filters);
+        $user = $this->userService->getUserLoggedIn();
+        $pdf = Pdf::loadView('pdf.debts.index', compact('debts', 'user'));
+        return $pdf->stream('deudas.pdf'); // 👈 se abre en navegador
     }
 }

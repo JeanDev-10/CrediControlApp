@@ -24,10 +24,11 @@
                             Exportar PDF
                         </x-terciary-button>
                     </a>
-                </div>
-                <form method="GET" action="{{ route('contacts.create') }}" class="inline">
+                    <form method="GET" action="{{ route('contacts.create') }}" class="inline mx-2">
                     <x-primary-button>Crear Contacto</x-primary-button>
                 </form>
+                </div>
+
             </div>
 
             <div class="overflow-hidden bg-white dark:bg-gray-800 shadow sm:rounded-lg">

@@ -67,4 +67,31 @@ class DebtRepository extends BaseRepository implements DebtRepositoryInterface
             'totalPaid' => $totalPaid,
         ];
     }
+    public function getAllWithoutPagination(array $filters = []){
+        $query = $this->model->where('user_id', auth()->id());
+
+        if (! empty($filters['description'])) {
+            $query->where('description', 'like', "%{$filters['description']}%");
+        }
+
+        if (! empty($filters['contact_name'])) {
+            $query->whereHas('contact', function ($q) use ($filters) {
+                $q->where('name', 'like', "%{$filters['contact_name']}%")
+                    ->orWhere('lastname', 'like', "%{$filters['contact_name']}%");
+            });
+        }
+
+        if (! empty($filters['date_start'])) {
+            $query->whereDate('date_start', '>=', $filters['date_start']);
+        }
+
+        if (! empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+        if (! empty($filters['debt_id'])) {
+            $query->where('id', $filters['debt_id']);
+        }
+
+        return $query->latest('created_at')->get();
+    }
 }

@@ -90,4 +90,8 @@ class DebtService
             }
         }
     }
+    public function filterForExport(array $filters = [])
+    {
+        return $this->debtRepo->getAllWithoutPagination($filters);
+    }
 }

@@ -33,6 +33,9 @@ Route::middleware('auth')->group(function () {
         ->name('budget.setup');
     // manejo de deudas
     Route::resource('debts', DebtController::class);
+    //reporte de deudas
+    Route::get('debts/export/pdf', [DebtController::class, 'exportPdf'])->name('debts.export');
+
     // marcar deuda como pagada
     Route::post('debts/{debt}/pay', [DebtController::class, 'markAsPaid'])->name('debts.pay');
     // crud de pagos

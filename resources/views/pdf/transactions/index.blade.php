@@ -11,10 +11,12 @@
     </style>
 </head>
 <body>
-    <h2>Reporte de Transacciones de {{ $user->name }} {{ $user->lastname }} </h2>
+    <h2>Usuario: {{ $user->name }} {{ $user->lastname }} </h2>
+    <h2>Reporte de mis Transacciones </h2>
     <table>
         <thead>
             <tr>
+                <th>#</th>
                 <th>Descripción</th>
                 <th>Tipo</th>
                 <th>Cantidad</th>
@@ -24,8 +26,9 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($transactions as $tx)
+            @foreach($transactions as $index=>$tx)
                 <tr>
+                    <td>{{ $index+1 }}</td>
                     <td>{{ $tx->description }}</td>
                     <td>{{ ucfirst($tx->type) }}</td>
                     <td>${{ number_format($tx->quantity) }}</td>

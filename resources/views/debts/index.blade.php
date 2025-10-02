@@ -4,7 +4,6 @@
             {{ __('Deudas') }}
         </h2>
     </x-slot>
-
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
@@ -13,7 +12,8 @@
 
             {{-- Filtros --}}
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
-                <form method="GET" action="{{ route('debts.index') }}" class="flex flex-wrap gap-3 items-center">
+                <form method="GET" action="{{ route('debts.index') }}"
+                    class="flex flex-wrap gap-3 items-center justify-center">
                     <div>
                         <x-input-label for="description" value="Descripción" />
                         <x-text-input id="description" name="description" type="text" class="w-full mt-1"
@@ -39,9 +39,16 @@
                         </select>
                     </div>
                     <x-secondary-button type="submit" class="mt-4">Filtrar</x-secondary-button>
-                    <a href="{{ route('debts.create') }}" class="ml-auto mt-4">
+                    <a target="_blank" class="ml-auto mt-4"
+                        href="{{ route('debts.export', ['status' => request('status'), 'date_start' => request('date_start'), 'description' => request("description"), "contact_name" => request("contact_name")])}}">
+                        <x-terciary-button type="button">
+                            Exportar PDF
+                        </x-terciary-button>
+                    </a>
+                    <a href="{{ route('debts.create') }}" class="mt-4">
                         <x-primary-button type="button">{{ __('Nueva Deuda') }}</x-primary-button>
                     </a>
+
                 </form>
             </div>
 

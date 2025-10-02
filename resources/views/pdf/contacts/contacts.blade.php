@@ -11,7 +11,8 @@
     </style>
 </head>
 <body>
-    <h2>Reporte contactos de {{$user->name}} {{$user->lastname}}</h2>
+    <h2>Usuario: {{ $user->name }} {{ $user->lastname }} </h2>
+    <h2>Reporte de mis contactos</h2>
     <table>
         <thead>
             <tr>

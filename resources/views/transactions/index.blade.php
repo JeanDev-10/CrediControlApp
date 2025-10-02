@@ -32,17 +32,6 @@
             {{-- Lista --}}
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <a href="{{ route('transactions.create') }}">
-                        <x-primary-button>{{ __('Nueva Transacción') }}</x-primary-button>
-                    </a>
-                    <div>
-                        <a target="_blank"
-                            href="{{ route('transactions.export',["type"=>request("type"),"date"=>request("date"),"description"=>request("description")]) }}">
-                            <x-terciary-button>
-                                Exportar PDF
-                            </x-terciary-button>
-                        </a>
-                    </div>
                     <form method="POST" action="{{ route('budget.setup') }}" class="flex gap-2 flex-col">
                         @csrf
                         <div class="flex gap-2 md:flex-row ">
@@ -52,6 +41,18 @@
                         </div>
                         <x-input-error :messages="$errors->get('quantity')" class="mt-2" />
                     </form>
+                    <div>
+                        <a target="_blank"
+                            href="{{ route('transactions.export', ["type" => request("type"), "date" => request("date"), "description" => request("description")]) }}">
+                            <x-terciary-button>
+                                Exportar PDF
+                            </x-terciary-button>
+                        </a>
+                        <a class="mx-2" href="{{ route('transactions.create') }}">
+                            <x-primary-button>{{ __('Nueva Transacción') }}</x-primary-button>
+                        </a>
+
+                    </div>
                 </div>
 
                 <table class="w-full border-collapse text-left">
