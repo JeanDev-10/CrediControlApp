@@ -39,8 +39,9 @@
                         </select>
                     </div>
                     <x-secondary-button type="submit" class="mt-4">Filtrar</x-secondary-button>
+
                     <a target="_blank" class="ml-auto mt-4"
-                        href="{{ route('debts.export', ['status' => request('status'), 'date_start' => request('date_start'), 'description' => request("description"), "contact_name" => request("contact_name")])}}">
+                        href="{{ route('debts.export', request()->only(['description', 'contact_name', 'date_start', 'status'])) }}">
                         <x-terciary-button type="button">
                             Exportar PDF
                         </x-terciary-button>

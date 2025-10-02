@@ -11,7 +11,8 @@
     </style>
 </head>
 <body>
-    <h2>Usuario: {{ $user->name }} {{ $user->lastname }}</h2>
+    <p><strong>Generado por:</strong> {{ $user->name }} {{ $user->lastname }}</p>
+    <p><strong>Fecha:</strong> {{ now()->format('d/m/Y H:i') }}</p>
 
     @if(collect($filters)->filter()->isNotEmpty())
         <h4>Filtros aplicados:</h4>
@@ -32,7 +33,7 @@
         <p>No se aplicaron filtros.</p>
     @endif
 
-    <h2>Reporte de Pagos</h2>
+    <h2>Reporte de pagos</h2>
     <table>
         <thead>
             <tr>
@@ -45,7 +46,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($pays as $index => $pay)
+            @forelse($pays as $index => $pay)
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $pay->debt->contact->name ?? '-' }} {{ $pay->debt->contact->lastname ?? '' }}</td>
@@ -54,7 +55,11 @@
                     <td>{{ $pay->date->format('d/m/Y') }}</td>
                     <td>{{ ucfirst($pay->debt->status) }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="6" style="text-align: center; color: #777;">No se encontraron pagos.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </body>

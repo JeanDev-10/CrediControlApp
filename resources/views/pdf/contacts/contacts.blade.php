@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Reporte de Contactos</title>
+    <title>Reporte de contactos</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
@@ -30,7 +30,8 @@
 </head>
 
 <body>
-    <h2>Usuario: {{ $user->name }} {{ $user->lastname }} </h2>
+    <p><strong>Generado por:</strong> {{ $user->name }} {{ $user->lastname }}</p>
+    <p><strong>Fecha:</strong> {{ now()->format('d/m/Y H:i') }}</p>
     @if(collect($filters)->filter()->isNotEmpty())
         <h4>Filtros aplicados:</h4>
         <ul>
@@ -58,7 +59,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($contacts as $index => $contact)
+            @forelse($contacts as $index => $contact)
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $contact->name }}</td>
@@ -67,7 +68,11 @@
                     <td>{{ $contact->created_at }}</td>
                     <td>{{ $contact->updated_at }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="6" style="text-align: center; color: #777;">No se encontraron contactos.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </body>

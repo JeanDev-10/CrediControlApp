@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-use Barryvdh\DomPDF\Facade\Pdf;
+
 use App\Http\Requests\Contacts\StoreContactRequest;
 use App\Http\Requests\Contacts\UpdateContactRequest;
 use App\Models\Contact;
 use App\Services\ContactService;
 use App\Services\UserService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 
 class ContactController extends Controller
 {
@@ -94,15 +94,34 @@ class ContactController extends Controller
 
         return redirect()->route('contacts.index')->with('success', 'Contacto eliminado correctamente.');
     }
+
     /**
-         * export to pdf contacts.
-         */
+     * export to pdf contacts.
+     */
     public function export(Request $request)
     {
         $filters = $request->only(['name', 'lastname']);
         $contacts = $this->service->exportAll($filters);
-        $user=$this->userService->getUserLoggedIn();
-         $pdf = Pdf::loadView('pdf.contacts.contacts', compact('contacts','user','filters'));
+        $user = $this->userService->getUserLoggedIn();
+        $pdf = Pdf::loadView('pdf.contacts.contacts', compact('contacts', 'user', 'filters'));
+
         return $pdf->stream('mis-contactos.pdf');
+    }
+
+    public function exportContactWithDebtsToPdf(Contact $contact, Request $request)
+    {
+         $this->authorize('show', $contact);
+
+        $filters = $request->only(['description', 'date_start', 'status']);
+        $debts = $this->service->getByIdWithDebtsWithoutFiltered($filters, $contact->id); // sin paginar
+
+        $pdf = Pdf::loadView('pdf.contacts.contacts-with-debts', [
+            'user' => $this->userService->getUserLoggedIn(),
+            'contact' => $contact,
+            'debts' => $debts,
+            'filters' => $filters,
+        ]);
+
+        return $pdf->stream("reporte-contacto-{$contact->id}.pdf");
     }
 }

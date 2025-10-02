@@ -19,7 +19,7 @@
                 </form>
                 <div>
                     <a target="_blank"
-                        href="{{ route('contacts.export', ['name' => request('name'), 'lastname' => request('lastname')]) }}">
+                        href="{{ route('contacts.export', request()->only(["name","lastname"]))}}">
                         <x-terciary-button>
                             Exportar PDF
                         </x-terciary-button>

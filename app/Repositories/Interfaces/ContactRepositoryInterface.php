@@ -8,4 +8,5 @@ interface ContactRepositoryInterface extends BaseRepositoryInterface
     public function filter(array $filters, int $perPage = 10);
     public function getDebtsByContact($id, array $filters = [], $perPage = 10);
     public function getAllForExport(array $filters = []);
+    public function getDebtsByContactWithoutFilters($id, array $filters = []);
 }

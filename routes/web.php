@@ -24,6 +24,9 @@ Route::middleware('auth')->group(function () {
     //reporte de contactos
     Route::get('contacts/export/pdf', [ContactController::class, 'export'])
     ->name('contacts.export');
+    //reporte de contacto con deudas
+    Route::get('contacts/{contact}/debts/export/pdf', [ContactController::class, 'exportContactWithDebtsToPdf'])
+    ->name('contacts.exportWithDebts');
     // manejo de transacciones
     Route::resource('transactions', TransactionController::class);
     //reporte de transacciones

@@ -30,7 +30,7 @@
                     </div>
                     <x-secondary-button type="submit" class="mt-4">Filtrar</x-secondary-button>
                     <a target="_blank" class="ml-auto mt-4"
-                        href="{{ route('pays.export', ['contact_name' => request('contact_name'), 'date' => request('date'), 'quantity' => request("quantity")])}}">
+                        href="{{ route('pays.export', request()->only(['contact_name', 'quantity', 'date'])) }}">
                         <x-terciary-button type="button">
                             Exportar PDF
                         </x-terciary-button>

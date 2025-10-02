@@ -43,7 +43,7 @@
                     </form>
                     <div>
                         <a target="_blank"
-                            href="{{ route('transactions.export', ["type" => request("type"), "date" => request("date"), "description" => request("description")]) }}">
+                            href="{{ route('transactions.export', request()->only(['description','date','type'])) }}">
                             <x-terciary-button>
                                 Exportar PDF
                             </x-terciary-button>

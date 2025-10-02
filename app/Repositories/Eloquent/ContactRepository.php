@@ -48,6 +48,25 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
 
         return $query->latest()->paginate($perPage)->withQueryString();
     }
+    public function getDebtsByContactWithoutFilters($id, array $filters = [])
+    {
+        $contact = $this->model->find($id);
+        $query = $contact->debts(); // Ya está filtrado por contacto
+
+        if (! empty($filters['description'])) {
+            $query->where('description', 'like', '%'.$filters['description'].'%');
+        }
+
+        if (! empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (! empty($filters['date_start'])) {
+            $query->whereDate('date_start', '>=', $filters['date_start']);
+        }
+
+        return $query->latest()->get();
+    }
     public function getAllForExport(array $filters = [])
     {
         $query = $this->model->where('user_id', auth()->id());

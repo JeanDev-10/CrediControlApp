@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Reporte de Transacciones</title>
+    <title>Reporte de transacciones</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
@@ -30,7 +30,8 @@
 </head>
 
 <body>
-    <h2>Usuario: {{ $user->name }} {{ $user->lastname }} </h2>
+    <p><strong>Generado por:</strong> {{ $user->name }} {{ $user->lastname }}</p>
+    <p><strong>Fecha:</strong> {{ now()->format('d/m/Y H:i') }}</p>
     @if(collect($filters)->filter()->isNotEmpty())
         <h4>Filtros aplicados:</h4>
         <ul>
@@ -47,7 +48,7 @@
     @else
         <p>No se aplicaron filtros.</p>
     @endif
-    <h2>Reporte de mis Transacciones </h2>
+    <h2>Reporte de mis transacciones </h2>
     <table>
         <thead>
             <tr>
@@ -61,7 +62,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($transactions as $index => $tx)
+            @forelse($transactions as $index => $tx)
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $tx->description }}</td>
@@ -71,7 +72,11 @@
                     <td>${{ number_format($tx->after_quantity) }}</td>
                     <td>{{ $tx->created_at }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="7" style="text-align: center; color: #777;">No se encontraron transacciones.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </body>
