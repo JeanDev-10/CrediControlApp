@@ -102,7 +102,7 @@ class DebtController extends Controller
         $filters = $request->only(['description', 'contact_name', 'date_start', 'status']);
         $debts = $this->service->filterForExport($filters);
         $user = $this->userService->getUserLoggedIn();
-        $pdf = Pdf::loadView('pdf.debts.index', compact('debts', 'user'));
+        $pdf = Pdf::loadView('pdf.debts.index', compact('debts', 'user','filters'));
         return $pdf->stream('deudas.pdf'); // 👈 se abre en navegador
     }
 }

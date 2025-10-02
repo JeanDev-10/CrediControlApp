@@ -12,6 +12,24 @@
 </head>
 <body>
     <h2>Usuario: {{ $user->name }} {{ $user->lastname }} </h2>
+    @if(collect($filters)->filter()->isNotEmpty())
+        <h4>Filtros aplicados:</h4>
+        <ul>
+            @if(!empty($filters['description']))
+                <li><strong>Descripción:</strong> {{ $filters['description'] }}</li>
+            @endif
+
+            @if(!empty($filters['contact_name']))
+                <li><strong>Nombre del contacto:</strong> {{ $filters['contact_name'] }}</li>
+            @endif
+            @if(!empty($filters['date_start']))
+                <li><strong>Fecha de inicio:</strong> {{ $filters['date_start'] }}</li>
+            @endif
+            @if(!empty($filters['status']))
+                <li><strong>Estado:</strong> {{ $filters['status'] }}</li>
+            @endif
+        </ul>
+    @endif
     <h2>Reporte de Deudas </h2>
     <table>
         <thead>
