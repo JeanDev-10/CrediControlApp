@@ -55,6 +55,7 @@ class TransactionController extends Controller
     {
         $this->authorize('edit', $transaction);
         $budget = $this->service->getBudget();
+        $budget['quantity'] = $transaction->previus_quantity;
 
         return view('transactions.edit', compact('transaction', 'budget'));
     }

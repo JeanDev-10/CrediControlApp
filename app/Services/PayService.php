@@ -37,7 +37,15 @@ class PayService
                     'debt' => 'La deuda ya está pagada, no se pueden registrar más pagos.',
                 ]);
             }
+            // Verifica que el monto no sea mayor al saldo pendiente
+            $totalPaid = $debt->pays->sum('quantity'); // Suma de todos los pagos realizados
+            $remainingAmount = $debt->quantity - $totalPaid; // Saldo pendiente
 
+            if ($data['quantity'] > $remainingAmount) {
+                throw ValidationException::withMessages([
+                    'quantity' => 'El monto ingresado no puede ser mayor al saldo pendiente (saldo pendiente: $' .$remainingAmount.")",
+                ]);
+            }
             $pay = $this->payRepository->create($data);
 
             if ($files) {
@@ -59,6 +67,21 @@ class PayService
     public function update(int $id, array $data, $files = null)
     {
         return DB::transaction(function () use ($id, $data, $files) {
+            $pay = $this->payRepository->find($id);
+            $debt = $pay->debt;
+
+            // Verifica que el monto actualizado no supere el saldo restante
+            $totalPaid = $debt->pays->sum('quantity') - $pay->quantity; // Suma de todos los pagos, excluyendo el pago actual
+            $remainingAmount = $debt->quantity - $totalPaid;
+
+            // Calcula la diferencia entre el monto actualizado y el pago original
+            $amountDifference = $data['quantity'] - $pay->quantity;
+
+            if ($amountDifference > $remainingAmount) {
+                throw ValidationException::withMessages([
+                    'quantity' => 'El monto actualizado no puede ser mayor al saldo pendiente (saldo pendiente : $' .$remainingAmount.")",
+                ]);
+            }
             $pay = $this->payRepository->update($id, $data);
             if ($files) {
                 $uploaded = $this->imageService->uploadImages($files, 'crediapp/pays');
@@ -103,6 +126,7 @@ class PayService
             return $this->payRepository->delete($id);
         });
     }
+
     /**
      * Delete a single image by its uuid.
      */
@@ -172,6 +196,7 @@ class PayService
             }
         }
     }
+
     public function getAllWithoutPagination(array $filters = [])
     {
         return $this->payRepository->getAllWithoutPagination($filters);

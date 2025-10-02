@@ -76,7 +76,7 @@ class TransactionService
                 throw new \Exception('Debes configurar tu presupuesto primero.');
             }
             // verificar que haya disponibilidad de dinero
-            if ($data['type'] == 'egreso' && $data['quantity'] > $budget->quantity) {
+            if ($data['type'] == 'egreso' && $data['quantity'] > ($budget->quantity+$transaction->quantity)) {
                 throw new \Exception('No hay suficiente dinero en el presupuesto para realizar esta transacción.');
             }
             $previus = $transaction->previus_quantity;

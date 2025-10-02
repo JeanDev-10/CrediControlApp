@@ -21,7 +21,6 @@
                             value="{{ old('quantity') }}" required />
                         <x-input-error :messages="$errors->get('quantity')" class="mt-2" />
                             <x-input-error :messages="$errors->get('debt')" class="mt-2" />
-
                     </div>
                     <div class="mb-4">
                         <x-input-label for="date" value="Fecha" />
