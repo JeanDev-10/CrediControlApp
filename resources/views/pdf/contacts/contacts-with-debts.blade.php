@@ -76,6 +76,8 @@
                     <th>Cantidad</th>
                     <th>Fecha inicio</th>
                     <th>Estado</th>
+                    <th>Creado</th>
+                    <th>Actualizado</th>
                 </tr>
             </thead>
             <tbody>
@@ -84,12 +86,14 @@
                         <td>{{ $i+1 }}</td>
                         <td>{{ ucfirst($debt->description) }}</td>
                         <td>${{ number_format($debt->quantity) }}</td>
-                        <td>{{ $debt->date_start->format("d-m-Y") }}</td>
+                        <td>{{ $debt->date_start->format("d/m/Y") }}</td>
                         <td>{{ ucfirst($debt->status) }}</td>
+                        <td>{{ $debt->created_at }}</td>
+                        <td>{{ $debt->updated_at }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" style="text-align: center; color: #777;">No se encontraron deudas para este contacto.</td>
+                        <td colspan="7" style="text-align: center; color: #777;">No se encontraron deudas para este contacto.</td>
                     </tr>
                 @endforelse
             </tbody>

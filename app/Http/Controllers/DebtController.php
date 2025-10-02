@@ -102,7 +102,21 @@ class DebtController extends Controller
         $filters = $request->only(['description', 'contact_name', 'date_start', 'status']);
         $debts = $this->service->filterForExport($filters);
         $user = $this->userService->getUserLoggedIn();
-        $pdf = Pdf::loadView('pdf.debts.index', compact('debts', 'user','filters'));
+        $pdf = Pdf::loadView('pdf.debts.index', compact('debts', 'user', 'filters'));
+
         return $pdf->stream('deudas.pdf'); // 👈 se abre en navegador
+    }
+
+    public function exportDebtWithPaysToPdf(Debt $debt, Request $request)
+    {
+        $filters = $request->only(['quantity', 'date']);
+        $result = $this->service->getByIdWithPaysFilteredWithoutPagination($filters, $debt->id);
+        $pays = $result['pays'];
+        $totalPaid = $result['totalPaid'];
+        $remaining = $debt->quantity - $totalPaid; // nunca negativo
+        $user = $this->userService->getUserLoggedIn();
+        $pdf = Pdf::loadView('pdf.debts.debts-with-pays', compact('pays', 'debt', 'user', 'filters','totalPaid','remaining'));
+
+        return $pdf->stream("reporte-deuda-{$debt->id}.pdf"); // 👈 se abre en navegador
     }
 }

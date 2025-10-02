@@ -10,4 +10,6 @@ interface DebtRepositoryInterface extends BaseRepositoryInterface
 
     public function getPaysByDebt(array $filters, $id, $perPage = 10);
     public function getAllWithoutPagination(array $filters = []);
+    public function getPaysByDebtWithoutPagination(array $filters, $id);
+
 }

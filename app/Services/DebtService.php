@@ -27,6 +27,10 @@ class DebtService
     {
         return $this->debtRepo->getPaysByDebt($filters, $id, $perPage);
     }
+    public function getByIdWithPaysFilteredWithoutPagination(array $filters, int $id)
+    {
+        return $this->debtRepo->getPaysByDebtWithoutPagination($filters, $id);
+    }
 
     public function create(array $data): Debt
     {

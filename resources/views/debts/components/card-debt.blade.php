@@ -42,6 +42,13 @@
 
     @if($showActions)
         <div class="mt-5 flex justify-end gap-3 flex-wrap">
+            <div>
+                <a target="_blank" href="{{ route('debts.exportWithPays', ["debt"=>$debt] + request()->only(['quantity','date'])) }}">
+                    <x-terciary-button>
+                        Exportar PDF
+                    </x-terciary-button>
+                </a>
+            </div>
             @can('markAsPaid', $debt)
                 <form action="{{ route('debts.pay', $debt) }}" method="POST">
                     @csrf
