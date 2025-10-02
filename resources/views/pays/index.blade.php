@@ -29,7 +29,13 @@
                         <x-text-input id="date" name="date" type="date" class="w-full mt-1" :value="request('date')" />
                     </div>
                     <x-secondary-button type="submit" class="mt-4">Filtrar</x-secondary-button>
-                    <a href="{{ route('pays.create') }}" class="ml-auto mt-4">
+                    <a target="_blank" class="ml-auto mt-4"
+                        href="{{ route('pays.export', ['contact_name' => request('contact_name'), 'date' => request('date'), 'quantity' => request("quantity")])}}">
+                        <x-terciary-button type="button">
+                            Exportar PDF
+                        </x-terciary-button>
+                    </a>
+                    <a href="{{ route('pays.create') }}" class="mt-4">
                         <x-primary-button type="button">{{ __('Nuevo Pago') }}</x-primary-button>
                     </a>
                 </form>

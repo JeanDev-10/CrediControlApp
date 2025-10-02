@@ -8,6 +8,8 @@ use App\Models\Pay;
 use App\Repositories\Interfaces\DebtRepositoryInterface;
 use App\Services\ImageService;
 use App\Services\PayService;
+use App\Services\UserService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -17,7 +19,7 @@ class PayController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(protected DebtRepositoryInterface $debtRepository, protected PayService $payService, protected ImageService $imageService) {}
+    public function __construct(protected DebtRepositoryInterface $debtRepository, protected PayService $payService, protected ImageService $imageService,protected UserService $userService) {}
 
     public function index(Request $request)
     {
@@ -71,6 +73,7 @@ class PayController extends Controller
             $this->authorize('update', $pay);
             $pay = $this->payService->update($pay->id, $request->validated(), $request->file('images'));
             $redirectUrl = $request->input('redirect_to');
+
             return redirect($redirectUrl ?? route('pays.index'))
                 ->with('success', 'Pago actualizado correctamente');
         } catch (ValidationException $e) {
@@ -86,6 +89,7 @@ class PayController extends Controller
             $this->authorize('delete', $pay);
             $this->payService->delete($pay->id);
             $redirectUrl = $request->input('redirect_to');
+
             return redirect($redirectUrl ?? route('pays.index'))
                 ->with('success', 'Pago eliminado correctamente');
         } catch (ValidationException $e) {
@@ -123,5 +127,15 @@ class PayController extends Controller
         } catch (Exception $e) {
             return back()->with('error', 'Error: '.$e->getMessage());
         }
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $filters = $request->only(['contact_name', 'quantity', 'date']);
+        $pays = $this->payService->getAllWithoutPagination($filters);
+        $user = $this->userService->getUserLoggedIn();
+        $pdf = Pdf::loadView('pdf.pays.index', compact('pays', 'user', 'filters'));
+
+        return $pdf->stream('pagos.pdf'); // abre vista previa
     }
 }

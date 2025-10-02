@@ -40,6 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::post('debts/{debt}/pay', [DebtController::class, 'markAsPaid'])->name('debts.pay');
     // crud de pagos
     Route::resource('pays', PayController::class);
+    //reporte de pagos
+    Route::get('pays/export/pdf', [PayController::class, 'exportPdf'])->name('pays.export');
+
     // Eliminar una imagen específica de un pago
     Route::delete('pays/images/{id}', [PayController::class, 'destroyImage'])
         ->name('pays.images.destroy');

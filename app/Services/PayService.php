@@ -172,4 +172,8 @@ class PayService
             }
         }
     }
+    public function getAllWithoutPagination(array $filters = [])
+    {
+        return $this->payRepository->getAllWithoutPagination($filters);
+    }
 }

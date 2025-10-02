@@ -42,6 +42,8 @@
                 <li><strong>Apellidos:</strong> {{ $filters['lastname'] }}</li>
             @endif
         </ul>
+    @else
+        <p>No se aplicaron filtros.</p>
     @endif
     <h2>Reporte de mis contactos</h2>
     <table>
