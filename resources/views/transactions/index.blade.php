@@ -48,7 +48,7 @@
                                 Exportar PDF
                             </x-terciary-button>
                         </a>
-                        <a class="mx-2" href="{{ route('transactions.create') }}">
+                        <a class="ml-2" href="{{ route('transactions.create') }}">
                             <x-primary-button>{{ __('Nueva Transacción') }}</x-primary-button>
                         </a>
 

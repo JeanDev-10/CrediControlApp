@@ -12,6 +12,20 @@
 </head>
 <body>
     <h2>Usuario: {{ $user->name }} {{ $user->lastname }} </h2>
+    @if(collect($filters)->filter()->isNotEmpty())
+        <h4>Filtros aplicados:</h4>
+        <ul>
+            @if(!empty($filters['description']))
+                <li><strong>Descripción:</strong> {{ $filters['description'] }}</li>
+            @endif
+            @if(!empty($filters['type']))
+                <li><strong>Tipo:</strong> {{ $filters['type'] }}</li>
+            @endif
+            @if(!empty($filters['date']))
+                <li><strong>Fecha:</strong> {{ $filters['date'] }}</li>
+            @endif
+        </ul>
+    @endif
     <h2>Reporte de mis Transacciones </h2>
     <table>
         <thead>

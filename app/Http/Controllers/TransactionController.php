@@ -92,7 +92,7 @@ class TransactionController extends Controller
         $filters = $request->only(['description', 'type', 'date']);
         $transactions = $this->service->getAllWithoutPagination($filters);
         $user = $this->userService->getUserLoggedIn();
-        $pdf = Pdf::loadView('pdf.transactions.index', compact('transactions', 'user'));
+        $pdf = Pdf::loadView('pdf.transactions.index', compact('transactions', 'user','filters'));
         return $pdf->stream('mis-transacciones.pdf'); // abre vista previa
     }
 }
