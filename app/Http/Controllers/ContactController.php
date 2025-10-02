@@ -102,7 +102,7 @@ class ContactController extends Controller
         $filters = $request->only(['name', 'lastname']);
         $contacts = $this->service->exportAll($filters);
         $user=$this->userService->getUserLoggedIn();
-         $pdf = Pdf::loadView('pdf.contacts', compact('contacts','user'));
+         $pdf = Pdf::loadView('pdf.contacts.contacts', compact('contacts','user'));
         return $pdf->stream('mis-contactos.pdf');
     }
 }

@@ -27,8 +27,8 @@ class TransactionService
             if (! $budget) {
                 throw new \Exception('Debes configurar tu presupuesto primero.');
             }
-            //verificar que haya disponibilidad de dinero
-            if($data['type']=='egreso' && $data['quantity']>$budget->quantity){
+            // verificar que haya disponibilidad de dinero
+            if ($data['type'] == 'egreso' && $data['quantity'] > $budget->quantity) {
                 throw new \Exception('No hay suficiente dinero en el presupuesto para realizar esta transacción.');
             }
             $lastTransaction = $this->transactionRepo->latestByUser($userId);
@@ -125,34 +125,41 @@ class TransactionService
         DB::beginTransaction();
 
         try {
-        $userId = Auth::id();
-        $budget = $this->budgetRepo->getByUser($userId);
-        $previusQuantity = 0;
-        if (! $budget) {
-            $budget = $this->budgetRepo->create(['user_id' => $userId, 'quantity' => $quantity]);
-        } else {
-            $previusQuantity = $budget->quantity;
-            $this->budgetRepo->update($budget->id, ['quantity' => $quantity]);
-        }
+            $userId = Auth::id();
+            $budget = $this->budgetRepo->getByUser($userId);
+            $previusQuantity = 0;
+            if (! $budget) {
+                $budget = $this->budgetRepo->create(['user_id' => $userId, 'quantity' => $quantity]);
+            } else {
+                $previusQuantity = $budget->quantity;
+                $this->budgetRepo->update($budget->id, ['quantity' => $quantity]);
+            }
 
-        // Registrar como transacción
-        $transaction=$this->transactionRepo->create([
-            'description' => 'Actualización de presupuesto',
-            'type' => 'actualizacion',
-            'quantity' => $quantity,
-            'previus_quantity' => $previusQuantity,
-            'after_quantity' => $quantity,
-            'user_id' => $userId,
-        ]);
-        DB::commit();
+            // Registrar como transacción
+            $transaction = $this->transactionRepo->create([
+                'description' => 'Actualización de presupuesto',
+                'type' => 'actualizacion',
+                'quantity' => $quantity,
+                'previus_quantity' => $previusQuantity,
+                'after_quantity' => $quantity,
+                'user_id' => $userId,
+            ]);
+            DB::commit();
+
             return $transaction;
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
         }
     }
+
     public function getBudget()
     {
         return $this->budgetRepo->getByUser(Auth::id());
+    }
+
+    public function getAllWithoutPagination(array $filters = [])
+    {
+        return $this->transactionRepo->getAllWithoutPagination($filters);
     }
 }

@@ -7,6 +7,8 @@ use App\Http\Requests\Transactions\StoreTransactionRequest;
 use App\Http\Requests\Transactions\UpdateTransactionRequest;
 use App\Models\Transaction;
 use App\Services\TransactionService;
+use App\Services\UserService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,7 @@ class TransactionController extends Controller
 {
     use AuthorizesRequests; // Add this line
 
-    public function __construct(protected TransactionService $service) {}
+    public function __construct(protected TransactionService $service, protected UserService $userService) {}
 
     public function index(Request $request)
     {
@@ -43,6 +45,11 @@ class TransactionController extends Controller
         }
 
     }
+    public function show(Transaction $transaction)
+    {
+        $this->authorize('show', $transaction);
+        return view('transactions.index');
+    }
 
     public function edit(Transaction $transaction)
     {
@@ -57,6 +64,7 @@ class TransactionController extends Controller
         try {
             $this->authorize('update', $transaction);
             $this->service->updateTransaction($transaction->id, $request->validated());
+
             return redirect()->route('transactions.index')->with('success', 'Transacción actualizada');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
@@ -77,5 +85,14 @@ class TransactionController extends Controller
         $this->service->setupBudget($request->validated()['quantity']);
 
         return redirect()->route('transactions.index')->with('success', 'Presupuesto configurado');
+    }
+
+    public function export(Request $request)
+    {
+        $filters = $request->only(['description', 'type', 'date']);
+        $transactions = $this->service->getAllWithoutPagination($filters);
+        $user = $this->userService->getUserLoggedIn();
+        $pdf = Pdf::loadView('pdf.transactions.index', compact('transactions', 'user'));
+        return $pdf->stream('mis-transacciones.pdf'); // abre vista previa
     }
 }

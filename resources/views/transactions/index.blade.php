@@ -35,7 +35,14 @@
                     <a href="{{ route('transactions.create') }}">
                         <x-primary-button>{{ __('Nueva Transacción') }}</x-primary-button>
                     </a>
-
+                    <div>
+                        <a target="_blank"
+                            href="{{ route('transactions.export',["type"=>request("type"),"date"=>request("date"),"description"=>request("description")]) }}">
+                            <x-terciary-button>
+                                Exportar PDF
+                            </x-terciary-button>
+                        </a>
+                    </div>
                     <form method="POST" action="{{ route('budget.setup') }}" class="flex gap-2 flex-col">
                         @csrf
                         <div class="flex gap-2 md:flex-row ">

@@ -26,6 +26,8 @@ Route::middleware('auth')->group(function () {
     ->name('contacts.export');
     // manejo de transacciones
     Route::resource('transactions', TransactionController::class);
+    //reporte de transacciones
+    Route::get('transactions/export/pdf', [TransactionController::class, 'export'])->name('transactions.export');
     // crear actualizar mi presupuesto
     Route::post('budget/setup', [TransactionController::class, 'setupBudget'])
         ->name('budget.setup');

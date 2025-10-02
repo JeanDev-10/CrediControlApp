@@ -30,6 +30,24 @@ class TransactionRepository extends BaseRepository implements TransactionReposit
         if (! empty($filters['date'])) {
             $query->whereDate('created_at', $filters['date']);
         }
+
         return $query->latest()->paginate($perPage)->withQueryString();
+    }
+
+    public function getAllWithoutPagination(array $filters = [])
+    {
+        $query = $this->model->where('user_id', auth()->id());
+
+        if (! empty($filters['description'])) {
+            $query->where('description', 'like', "%{$filters['description']}%");
+        }
+
+        if (! empty($filters['type'])) {
+            $query->where('type', $filters['type']);
+        }
+        if (! empty($filters['date'])) {
+            $query->whereDate('created_at', $filters['date']);
+        }
+        return $query->latest()->get();
     }
 }
