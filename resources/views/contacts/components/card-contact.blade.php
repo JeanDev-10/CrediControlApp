@@ -35,7 +35,7 @@
         <div class="flex justify-end gap-3 mt-4">
             <div>
                 <a target="_blank" href="{{ route('contacts.exportWithDebts', ["contact"=>$contact]+ request()->only(['description','date_start','status'])) }}">
-                    <x-terciary-button>
+                    <x-terciary-button type="button">
                         Exportar PDF
                     </x-terciary-button>
                 </a>

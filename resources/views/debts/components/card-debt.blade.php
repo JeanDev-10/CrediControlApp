@@ -44,7 +44,7 @@
         <div class="mt-5 flex justify-end gap-3 flex-wrap">
             <div>
                 <a target="_blank" href="{{ route('debts.exportWithPays', ["debt"=>$debt] + request()->only(['quantity','date'])) }}">
-                    <x-terciary-button>
+                    <x-terciary-button type="button">
                         Exportar PDF
                     </x-terciary-button>
                 </a>

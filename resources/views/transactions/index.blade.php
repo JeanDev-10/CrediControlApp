@@ -44,7 +44,7 @@
                     <div>
                         <a target="_blank"
                             href="{{ route('transactions.export', request()->only(['description','date','type'])) }}">
-                            <x-terciary-button>
+                            <x-terciary-button type="button">
                                 Exportar PDF
                             </x-terciary-button>
                         </a>
