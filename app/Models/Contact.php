@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use App\Observers\ContactObserver;
 use App\Policies\ContactPolicy;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[UsePolicy(ContactPolicy::class)]
-
+#[ObservedBy([ContactObserver::class])]
 class Contact extends Model
 {
     /** @use HasFactory<\Database\Factories\ContactFactory> */

@@ -52,7 +52,7 @@
                             Cancelar
                         </a>
                         <x-terciary-button>
-                            Actualziar
+                            Actualizar
                         </x-terciary-button>
                     </div>
                 </form>

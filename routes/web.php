@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\PayController;
@@ -55,6 +56,14 @@ Route::middleware('auth')->group(function () {
     // Eliminar todas las imágenes de un pago
     Route::delete('pays/{pay}/images', [PayController::class, 'destroyAllImages'])
         ->name('pays.images.destroyAll');
+
+    //auditar
+    Route::get('/audit', [AuditController::class, 'index'])->name('audit.index');
+    //exportar a pdf auditoria
+    // routes/web.php
+Route::get('/audit/export/pdf', [AuditController::class, 'exportPdf'])->name('audits.export');
+
+
 });
 
 require __DIR__.'/auth.php';

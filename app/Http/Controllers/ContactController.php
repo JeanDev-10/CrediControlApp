@@ -24,7 +24,9 @@ class ContactController extends Controller
     {
         $filters = $request->only(['name', 'lastname']);
         $contacts = $this->service->getAll($filters);
-
+        activity()
+            ->causedBy(auth()->user())
+            ->log('Consultó listado de contactos');
         return view('contacts.index', compact('contacts'));
     }
 
@@ -44,7 +46,6 @@ class ContactController extends Controller
         $data = $request->validated();
         $data['user_id'] = $this->userService->getUserLoggedIn()->id;
         $this->service->create($data);
-
         return redirect()->route('contacts.index')->with('success', 'Contacto creado correctamente.');
     }
 
@@ -55,7 +56,10 @@ class ContactController extends Controller
     {
         $this->authorize('show', $contact);
         $debts = $this->service->getByIdWithDebtsFiltered($request->all(), $contact->id, 10);
-
+         activity()
+            ->performedOn($contact)
+            ->causedBy(auth()->user())
+            ->log('Consultó detalle de un contacto');
         return view('contacts.show', compact('contact', 'debts'));
     }
 
@@ -104,7 +108,9 @@ class ContactController extends Controller
         $contacts = $this->service->exportAll($filters);
         $user = $this->userService->getUserLoggedIn();
         $pdf = Pdf::loadView('pdf.contacts.contacts', compact('contacts', 'user', 'filters'));
-
+        activity()
+            ->causedBy(auth()->user())
+            ->log('Generó PDF de contactos');
         return $pdf->stream('mis-contactos.pdf');
     }
 
@@ -121,7 +127,9 @@ class ContactController extends Controller
             'debts' => $debts,
             'filters' => $filters,
         ]);
-
+        activity()
+            ->causedBy(auth()->user())
+            ->log('Generó PDF de contactos con deudas');
         return $pdf->stream("reporte-contacto-{$contact->id}.pdf");
     }
 }
