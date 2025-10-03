@@ -8,10 +8,12 @@ CrediControl es una aplicación web diseñada para ayudarte a llevar el control 
 
 - Registro y seguimiento de ingresos y egresos con filtros avanzados.
 - Gestión completa de deudas y deudores.
-- Gestión completa de usuarios.
+- Gestión completa de contactos.
 - Configuración de presupuestos.
 - Visualización de transacciones por nombre, tipo, fecha.
 - Seguridad y rendimiento con arquitectura moderna y escalable.
+- Generación de reportes en pdf.
+- Auditoria de cada acción realizada.
 
 ---
 
@@ -30,13 +32,13 @@ CrediControl es una aplicación web diseñada para ayudarte a llevar el control 
 - Como usuario autenticado quiero poder ver mi perfil personal para revisar mi información.
 - Como usuario autenticado quiero poder cerrar sesión de forma segura para proteger mi cuenta y evitar accesos no autorizados.
 
-### 👤 Módulo Usuario
+### 👤 Módulo Contacto
 
-- Obtener todos los usuarios registrados para gestionar el sistema.
-- Obtener un usuario específico junto con sus deudas para visualizar su estado financiero.
-- Filtrar deudas de usuarios por descripción o fecha.
-- Editar la información de un usuario existente.
-- Eliminar un usuario del sistema.
+- Obtener todos los contactos registrados para gestionar el sistema.
+- Obtener un contactos específico junto con sus deudas para visualizar su estado financiero.
+- Filtrar deudas de contactos por descripción o fecha.
+- Editar la información de un contactos existente.
+- Eliminar un contactos del sistema.
 
 ### 💸 Módulo Transacciones
 
@@ -44,8 +46,7 @@ CrediControl es una aplicación web diseñada para ayudarte a llevar el control 
 - Editar una transacción.
 - Eliminar una transacción.
 - Obtener todas mis transacciones.
-- Filtrar transacciones por descripción, tipo, fecha de inicio, fecha de fin o rango de fechas.
-- Obtener los detalles de una transacción específica.
+- Filtrar transacciones por descripción, tipo, fecha de inicio.
 - Configurar mi presupuesto inicial.
 
 ### 🧾 Módulo Deudas
@@ -67,7 +68,7 @@ CrediControl es una aplicación web diseñada para ayudarte a llevar el control 
 - Eliminar una imagen específica asociada a un pago.
 - Eliminar todas las imágenes asociadas a un pago.
 
-### 🕵️‍♂️ Módulo Auditoría *(Futuro)*
+### 🕵️‍♂️ Módulo Auditoría
 
 - Registrar y consultar acciones realizadas por los usuarios en la aplicación.
 
