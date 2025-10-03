@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use App\Observers\PayObserver;
 use App\Policies\PayPolicy;
 use App\Services\Interfaces\ImageServiceInterface;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[UsePolicy(PayPolicy::class)]
+#[ObservedBy(PayObserver::class)]
 class Pay extends Model
 {
     /** @use HasFactory<\Database\Factories\PayFactory> */

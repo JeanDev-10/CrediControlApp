@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use App\Observers\TransactionObserver;
 use App\Policies\TransactionPolicy;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[UsePolicy(TransactionPolicy::class)]
+#[ObservedBy([TransactionObserver::class])]
+
 class Transaction extends Model
 {
     /** @use HasFactory<\Database\Factories\TransactionFactory> */
@@ -56,12 +60,14 @@ class Transaction extends Model
             set: fn ($value) => strtolower($value),
         );
     }
+
     protected function createdAt(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => Carbon::parse($value)->format('d/m/Y H:i'),
         );
     }
+
     protected function updatedAt(): Attribute
     {
         return Attribute::make(

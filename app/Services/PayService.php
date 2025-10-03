@@ -12,10 +12,13 @@ use Illuminate\Validation\ValidationException;
 
 class PayService
 {
-    public function __construct(protected PayRepositoryInterface $payRepository, protected ImageServiceInterface $imageService, protected ImageRepositoryInterface $imageRepository, protected DebtRepositoryInterface $debtRepository) {}
+    public function __construct(protected PayRepositoryInterface $payRepository, protected ImageServiceInterface $imageService, protected ImageRepositoryInterface $imageRepository, protected DebtRepositoryInterface $debtRepository,protected UserService $userService) {}
 
     public function list(array $filters = [], int $perPage = 10)
     {
+        activity()
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Consultó listado de pagos');
         return $this->payRepository->filter($filters, $perPage);
     }
 
@@ -23,7 +26,10 @@ class PayService
     {
         $pay = $this->payRepository->find($id);
         $pay->load(['images', 'debt.contact']);
-
+activity()
+            ->performedOn($pay)
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Consultó detalle de un pago');
         return $pay;
     }
 
@@ -39,11 +45,11 @@ class PayService
             }
             // Verifica que el monto no sea mayor al saldo pendiente
             $totalPaid = $debt->pays->sum('quantity'); // Suma de todos los pagos realizados
-            $remainingAmount = $debt->quantity - $totalPaid; // Saldo pendiente
+            $remainingAmount = number_format($debt->quantity - $totalPaid, 2); //saldo pendiente
 
             if ($data['quantity'] > $remainingAmount) {
                 throw ValidationException::withMessages([
-                    'quantity' => 'El monto ingresado no puede ser mayor al saldo pendiente (saldo pendiente: $' .$remainingAmount.")",
+                    'quantity' => 'El monto ingresado no puede ser mayor al saldo pendiente (saldo pendiente: $'.$remainingAmount.')',
                 ]);
             }
             $pay = $this->payRepository->create($data);
@@ -72,14 +78,26 @@ class PayService
 
             // Verifica que el monto actualizado no supere el saldo restante
             $totalPaid = $debt->pays->sum('quantity') - $pay->quantity; // Suma de todos los pagos, excluyendo el pago actual
-            $remainingAmount = $debt->quantity - $totalPaid;
+            $remainingAmount = number_format($debt->quantity - $totalPaid, 2);
+
+            // Si el saldo pendiente es menor que cero, significa que los pagos ya son mayores a la deuda total
+            if ($remainingAmount < 0) {
+                $remainingAmount = 0; // Evitar valores negativos
+            }
 
             // Calcula la diferencia entre el monto actualizado y el pago original
             $amountDifference = $data['quantity'] - $pay->quantity;
 
+            // Verifica si la diferencia es mayor que el saldo pendiente
             if ($amountDifference > $remainingAmount) {
                 throw ValidationException::withMessages([
-                    'quantity' => 'El monto actualizado no puede ser mayor al saldo pendiente (saldo pendiente : $' .$remainingAmount.")",
+                    'quantity' => 'El monto actualizado no puede ser mayor al saldo pendiente (saldo pendiente: $'.$remainingAmount.')',
+                ]);
+            }
+            // Verifica si el pago actualizado es menor o igual al saldo restante
+            if ($data['quantity'] > $remainingAmount) {
+                throw ValidationException::withMessages([
+                    'quantity' => 'El monto ingresado no puede ser mayor al saldo pendiente (saldo pendiente: $'.$remainingAmount.')',
                 ]);
             }
             $pay = $this->payRepository->update($id, $data);
@@ -147,7 +165,10 @@ class PayService
 
             // Delete DB record
             $this->imageRepository->delete($image->id);
-
+            activity()
+            ->performedOn($debt)
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Eliminó una imagen de un pago');
             return true;
         });
     }
@@ -172,7 +193,10 @@ class PayService
             }
 
             $this->imageRepository->deleteByPayId($pay->id);
-
+            activity()
+                ->performedOn($debt)
+                ->causedBy($this->userService->getUserLoggedIn())
+                ->log('Eliminó todas las imagenes de un pago');
             return true;
         });
     }
@@ -199,6 +223,9 @@ class PayService
 
     public function getAllWithoutPagination(array $filters = [])
     {
+        activity()
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Generó PDF de pagos');
         return $this->payRepository->getAllWithoutPagination($filters);
     }
 }
