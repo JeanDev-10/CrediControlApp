@@ -1,46 +1,27 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Services\AuditService;
+use App\Services\UserService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
 
 class AuditController extends Controller
 {
+    public function __construct(protected AuditService $auditService, protected UserService $userService) {}
     public function index(Request $request)
     {
-        $query = Activity::where('causer_id', auth()->id());
-
-        // Filtro por descripción
-        if ($request->filled('description')) {
-            $query->where('description', 'like', '%' . $request->description . '%');
-        }
-
-        // Filtro por fecha
-        if ($request->filled('from') && $request->filled('to')) {
-            $query->whereBetween('created_at', [$request->from, $request->to]);
-        }
-
-        $logs = $query->latest()->paginate(10);
+        $filters = $request->only(['description', 'from', 'to']);
+        $logs=$this->auditService->getAll($filters);
 
         return view('audit.index', compact('logs'));
     }
     public function exportPdf(Request $request)
     {
-        $query = Activity::where('causer_id', auth()->id());
-
-        // Filtro por descripción
-        if ($request->filled('description')) {
-            $query->where('description', 'like', '%' . $request->description . '%');
-        }
-
-        // Filtro por fecha
-        if ($request->filled('from') && $request->filled('to')) {
-            $query->whereBetween('created_at', [$request->from, $request->to]);
-        }
-
-        $logs = $query->latest()->get();
-        $user = auth()->user();
+        $filters = $request->only(['description', 'from', 'to']);
+        $logs=$this->auditService->getAllWithoutPaginations($filters);
+        $user = $this->userService->getUserLoggedIn();
           // Pasar los logs a la vista PDF
         $pdf = Pdf::loadView('pdf.audits.index', compact('logs','user'));
 

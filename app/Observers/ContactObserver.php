@@ -3,9 +3,13 @@
 namespace App\Observers;
 
 use App\Models\Contact;
+use App\Services\UserService;
 use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 class ContactObserver implements  ShouldHandleEventsAfterCommit
 {
+    public function __construct(protected UserService $userService)
+    {
+    }
     /**
      * Handle the Contact "created" event.
      */
@@ -13,7 +17,7 @@ class ContactObserver implements  ShouldHandleEventsAfterCommit
     {
         activity()
             ->performedOn($contact)
-            ->causedBy(auth()->user())
+            ->causedBy($this->userService->getUserLoggedIn())
             ->withProperties(['attributes' => $contact->toArray()])
             ->log('Creó un contacto');
     }
@@ -25,7 +29,7 @@ class ContactObserver implements  ShouldHandleEventsAfterCommit
     {
          activity()
             ->performedOn($contact)
-            ->causedBy(auth()->user())
+            ->causedBy($this->userService->getUserLoggedIn())
             ->withProperties([
                 'old' => $contact->getOriginal(),
                 'new' => $contact->getChanges()
@@ -40,7 +44,7 @@ class ContactObserver implements  ShouldHandleEventsAfterCommit
     {
          activity()
             ->performedOn($contact)
-            ->causedBy(auth()->user())
+            ->causedBy($this->userService->getUserLoggedIn())
             ->withProperties(['attributes' => $contact->toArray()])
             ->log('Eliminó un contacto');
     }
