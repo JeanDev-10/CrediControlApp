@@ -47,7 +47,7 @@ class DebtController extends Controller
     public function show(Debt $debt, Request $request)
     {
         $this->authorize('view', $debt);
-        $result = $this->service->getByIdWithPaysFiltered($request->all(), $debt->id, 10);
+        $result = $this->service->getByIdWithPaysFiltered($request->all(), $debt->id, 10,$debt);
 
         $pays = $result['pays'];
         $totalPaid = $result['totalPaid'];

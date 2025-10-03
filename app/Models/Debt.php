@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use App\Observers\DebtObserver;
 use App\Policies\DebtPolicy;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[UsePolicy(DebtPolicy::class)]
+#[ObservedBy([DebtObserver::class])]
+
 class Debt extends Model
 {
     /** @use HasFactory<\Database\Factories\DebtFactory> */

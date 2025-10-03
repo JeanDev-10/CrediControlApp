@@ -27,7 +27,7 @@ class ContactService
         activity()
             ->performedOn($contact)
             ->causedBy($this->userService->getUserLoggedIn())
-            ->log('Consultó detalle de un contacto');
+            ->log('Consultó detalle de un contacto con sus deudas');
 
         return $this->repository->getDebtsByContact($id, $filters, $perPage);
     }
