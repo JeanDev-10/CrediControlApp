@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use App\Observers\TransactionObserver;
 use App\Policies\TransactionPolicy;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[UsePolicy(TransactionPolicy::class)]
+#[ObservedBy([TransactionObserver::class])]
+
 class Transaction extends Model
 {
     /** @use HasFactory<\Database\Factories\TransactionFactory> */

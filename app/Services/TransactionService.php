@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionService
 {
-    public function __construct(protected TransactionRepositoryInterface $transactionRepo, protected BudgetRepositoryInterface $budgetRepo) {}
+    public function __construct(protected TransactionRepositoryInterface $transactionRepo, protected BudgetRepositoryInterface $budgetRepo, protected UserService $userService) {}
 
     public function getTransactions(array $filters = [], int $perPage = 10)
     {
+        activity()
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Consultó listado de transacciones');
         return $this->transactionRepo->filter($filters, $perPage);
     }
 
@@ -148,6 +151,9 @@ class TransactionService
                 'after_quantity' => $quantity,
                 'user_id' => $userId,
             ]);
+            activity()
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Modificó su presupuesto');
             DB::commit();
 
             return $transaction;
@@ -164,6 +170,9 @@ class TransactionService
 
     public function getAllWithoutPagination(array $filters = [])
     {
+        activity()
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Exportó listado de transacciones');
         return $this->transactionRepo->getAllWithoutPagination($filters);
     }
 }
