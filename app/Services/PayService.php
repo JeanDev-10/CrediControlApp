@@ -12,10 +12,13 @@ use Illuminate\Validation\ValidationException;
 
 class PayService
 {
-    public function __construct(protected PayRepositoryInterface $payRepository, protected ImageServiceInterface $imageService, protected ImageRepositoryInterface $imageRepository, protected DebtRepositoryInterface $debtRepository) {}
+    public function __construct(protected PayRepositoryInterface $payRepository, protected ImageServiceInterface $imageService, protected ImageRepositoryInterface $imageRepository, protected DebtRepositoryInterface $debtRepository,protected UserService $userService) {}
 
     public function list(array $filters = [], int $perPage = 10)
     {
+        activity()
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Consultó listado de pagos');
         return $this->payRepository->filter($filters, $perPage);
     }
 
@@ -23,7 +26,10 @@ class PayService
     {
         $pay = $this->payRepository->find($id);
         $pay->load(['images', 'debt.contact']);
-
+activity()
+            ->performedOn($pay)
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Consultó detalle de un pago');
         return $pay;
     }
 
@@ -159,7 +165,10 @@ class PayService
 
             // Delete DB record
             $this->imageRepository->delete($image->id);
-
+            activity()
+            ->performedOn($debt)
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Eliminó una imagen de un pago');
             return true;
         });
     }
@@ -184,7 +193,10 @@ class PayService
             }
 
             $this->imageRepository->deleteByPayId($pay->id);
-
+            activity()
+                ->performedOn($debt)
+                ->causedBy($this->userService->getUserLoggedIn())
+                ->log('Eliminó todas las imagenes de un pago');
             return true;
         });
     }
@@ -211,6 +223,9 @@ class PayService
 
     public function getAllWithoutPagination(array $filters = [])
     {
+        activity()
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Generó PDF de pagos');
         return $this->payRepository->getAllWithoutPagination($filters);
     }
 }
