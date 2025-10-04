@@ -10,6 +10,7 @@ use Illuminate\Validation\Rules\Password;
 
 class PasswordController extends Controller
 {
+    public function __construct(protected \App\Services\UserService $userService) {}
     /**
      * Update the user's password.
      */
@@ -23,7 +24,9 @@ class PasswordController extends Controller
         $request->user()->update([
             'password' => Hash::make($validated['password']),
         ]);
-
+        activity()
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Actualizó su contraseña');
         return back()->with('status', 'Contraseña actualizada exitosamente.');
     }
 }

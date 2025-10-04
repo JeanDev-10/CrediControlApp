@@ -11,6 +11,7 @@ use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
+    public function __construct(protected \App\Services\UserService $userService) {}
     /**
      * Display the login view.
      */
@@ -27,7 +28,9 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
+        activity()
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Inició sesión');
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
@@ -36,12 +39,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        activity()
+            ->causedBy($this->userService->getUserLoggedIn())
+            ->log('Cerró sesión');
         Auth::guard('web')->logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
-
         return redirect('/');
     }
 }
