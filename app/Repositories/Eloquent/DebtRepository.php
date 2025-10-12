@@ -117,4 +117,22 @@ class DebtRepository extends BaseRepository implements DebtRepositoryInterface
 
         return $query->latest('created_at')->get();
     }
+    public function getTopContactsWithPendingDebts($limit = 10, $from = null, $to = null)
+    {
+        $query = $this->model
+            ->selectRaw('contact_id, COUNT(*) as total_debts, SUM(quantity) as total_amount')
+            ->where('status', 'pendiente')
+            ->where('user_id', auth()->id())
+            ->groupBy('contact_id')
+            ->orderByDesc('total_amount');
+
+        if ($from) {
+            $query->whereDate('date_start', '>=', $from);
+        }
+        if ($to) {
+            $query->whereDate('date_start', '<=', $to);
+        }
+
+        return $query->with('contact')->limit($limit)->get();
+    }
 }
