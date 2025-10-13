@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Repositories\Eloquent\AuditRepository as EloquentAuditRepository;
 use App\Repositories\Eloquent\BudgetRepository;
 use App\Repositories\Eloquent\ContactRepository;
+use App\Repositories\Eloquent\DashboardRepository;
 use App\Repositories\Eloquent\DebtRepository;
 use App\Repositories\Eloquent\ImageRepository;
 use App\Repositories\Eloquent\PayRepository;
@@ -12,6 +13,7 @@ use App\Repositories\Eloquent\TransactionRepository;
 use App\Repositories\Interfaces\AuditRepositoryInterface;
 use App\Repositories\Interfaces\BudgetRepositoryInterface;
 use App\Repositories\Interfaces\ContactRepositoryInterface;
+use App\Repositories\Interfaces\DashboardRepositoryInterface;
 use App\Repositories\Interfaces\DebtRepositoryInterface;
 use App\Repositories\Interfaces\ImageRepositoryInterface;
 use App\Repositories\Interfaces\PayRepositoryInterface;
@@ -36,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ImageServiceInterface::class, ImageServiceLocal::class);
         $this->app->bind(ImageRepositoryInterface::class, ImageRepository::class);
         $this->app->bind(AuditRepositoryInterface::class, EloquentAuditRepository::class);
+        $this->app->bind(DashboardRepositoryInterface::class, DashboardRepository::class);
     }
 
     /**

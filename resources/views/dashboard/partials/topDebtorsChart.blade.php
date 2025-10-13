@@ -31,7 +31,7 @@
 
         {{-- Gráfico --}}
         <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 text-gray-800 dark:text-gray-100 w-full mx-auto">
-            <canvas id="topDebtorsChart" height="120"></canvas>
+            <canvas id="topDebtorsChart"></canvas>
         </div>
 
 
