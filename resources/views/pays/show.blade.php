@@ -6,22 +6,20 @@
     </x-slot>
 
     <div class="py-6">
-
-
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <x-auth-session-status class="mb-4" :status="session('success')" />
             <x-auth-session-error class="mb-4" :status="session('error')" />
+
             {{-- Datos de la Deuda --}}
             @include("debts.components.card-debt", ['debt' => $pay->debt, 'showActions' => false])
+
             {{-- Datos del contacto --}}
             @include("contacts.components.card-contact", ['contact' => $pay->debt->contact, 'showActions' => false])
-
-
 
             {{-- Datos del Pago --}}
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
                 <h3 class="font-semibold mb-4 text-gray-700 dark:text-gray-300">Datos del pago</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 ">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <div>
                         <x-input-label value="Cantidad:" />
                         <p class="text-green-600 dark:text-green-400">${{ $pay->quantity }}</p>
@@ -40,6 +38,7 @@
                     </div>
                 </div>
             </div>
+
             {{-- Imágenes --}}
             @if($pay->images->count() > 0)
                 <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
@@ -52,7 +51,6 @@
                     </div>
                 </div>
             @endif
-
 
             {{-- Acciones --}}
             <div class="flex justify-end gap-3">
@@ -74,37 +72,42 @@
                 @endcan
             </div>
         </div>
+
         <!-- Modal -->
         <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 items-center justify-center p-4">
-            <div class="relative w-full max-w-4xl">
+            <div class="relative w-full max-h-screen overflow-hidden">
                 <button id="close-modal"
                     class="absolute top-3 right-3 z-50 bg-gray-900/80 text-white rounded-full p-1 hover:bg-gray-800"
                     aria-label="Cerrar">✕</button>
-                <img id="modal-img" src="" class="mx-auto max-h-[80vh] max-w-full object-contain rounded shadow-lg" />
+                <img id="modal-img" src="" class="m-auto max-h-[90vh] max-w-full object-contain rounded shadow-lg" />
             </div>
         </div>
     </div>
 
 </x-app-layout>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const imgs = document.querySelectorAll(".preview-img");
+        const imgs = document.querySelectorAll(".preview-img"); // Todas las imágenes dentro del contenedor
         const modal = document.getElementById("image-modal");
         const modalImg = document.getElementById("modal-img");
         const closeModal = document.getElementById("close-modal");
 
+        // Mostrar modal al hacer click en una imagen
         imgs.forEach(img => {
             img.addEventListener("click", function () {
-                modalImg.src = this.src;
-                modal.classList.remove("hidden");
+                modalImg.src = this.src; // Establece la imagen seleccionada en el modal
+                modal.classList.remove("hidden"); // Muestra el modal
             });
         });
 
+        // Cerrar modal
         closeModal.addEventListener("click", () => {
-            modal.classList.add("hidden");
-            modalImg.src = "";
+            modal.classList.add("hidden"); // Ocultar el modal
+            modalImg.src = ""; // Limpiar la imagen mostrada
         });
 
+        // Cerrar modal al hacer clic fuera de la imagen
         modal.addEventListener("click", (e) => {
             if (e.target === modal) {
                 modal.classList.add("hidden");
@@ -112,6 +115,7 @@
             }
         });
 
+        // Cerrar el modal al presionar la tecla Escape
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") {
                 modal.classList.add("hidden");
