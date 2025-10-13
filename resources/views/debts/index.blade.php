@@ -35,7 +35,7 @@
                         </select>
                     </div>
                     <x-secondary-button type="submit" class="mt-4 w-full sm:w-auto">Filtrar</x-secondary-button>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 sm:gap-2 sm:ml-5">
+                    <div class="grid grid-cols-2 gap-2 sm:ml-5">
                         <a target="_blank" class="mt-4" href="{{ route('debts.export', request()->only(['description', 'contact_name', 'date_start', 'status'])) }}">
                             <x-terciary-button type="button">Exportar PDF</x-terciary-button>
                         </a>

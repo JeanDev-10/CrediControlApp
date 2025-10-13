@@ -20,7 +20,7 @@
                 </form>
 
                 <!-- Acciones -->
-                <div class="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
+                <div class="grid grid-cols-2 gap-2 sm:gap-0 w-full lg:w-auto ">
                     <a target="_blank" href="{{ route('contacts.export', request()->only(['name', 'lastname'])) }}">
                         <x-terciary-button type="button">Exportar PDF</x-terciary-button>
                     </a>

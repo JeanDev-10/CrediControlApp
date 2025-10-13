@@ -10,17 +10,21 @@
             <x-auth-session-status class="mb-4" :status="session('success')" />
 
             {{-- Filtros --}}
-            <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+            <div
+                class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                 <form method="GET" action="{{ route('transactions.index') }}" class="flex flex-wrap gap-4 items-center">
-                    <x-text-input name="description" placeholder="Compra de comida" value="{{ request('description') }}" class="w-full md:w-auto" />
+                    <x-text-input name="description" placeholder="Compra de comida" value="{{ request('description') }}"
+                        class="w-full md:w-auto" />
                     <x-text-input name="date" type="date" value="{{ request('date') }}" class="w-full md:w-auto" />
-                    <select name="type" class="rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 w-full md:w-auto">
+                    <select name="type"
+                        class="rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 w-full md:w-auto">
                         <option value="">-- Tipo --</option>
                         <option value="ingreso" @selected(request('type') === 'ingreso')>Ingreso</option>
                         <option value="egreso" @selected(request('type') === 'egreso')>Gasto</option>
-                        <option value="actualizacion" @selected(request('type') === 'actualizacion')>Actualización</option>
+                        <option value="actualizacion" @selected(request('type') === 'actualizacion')>Actualización
+                        </option>
                     </select>
-                    <x-primary-button>{{ __('Filtrar') }}</x-primary-button>
+                    <x-secondary-button type="submit" class="w-full sm:w-auto">Filtrar</x-secondary-button>
                 </form>
                 @include('transactions.partials.budget-user', ['budget' => $budget])
             </div>
@@ -31,14 +35,16 @@
                     <form method="POST" action="{{ route('budget.setup') }}" class="flex gap-2 flex-col sm:flex-row">
                         @csrf
                         <div class="flex gap-2">
-                            <x-text-input name="quantity" type="number" step="0.01" placeholder="Configurar presupuesto" :value="old('quantity')" class="w-full sm:w-auto" />
+                            <x-text-input name="quantity" type="number" step="0.01" placeholder="Configurar presupuesto"
+                                :value="old('quantity')" class="w-full sm:w-auto" />
                             <x-secondary-button type="submit">{{ __('Guardar') }}</x-secondary-button>
                         </div>
                         <x-input-error :messages="$errors->get('quantity')" class="mt-2" />
                     </form>
 
                     <div class="flex gap-2 mt-4 sm:mt-0">
-                        <a target="_blank" href="{{ route('transactions.export', request()->only(['description','date','type'])) }}">
+                        <a target="_blank"
+                            href="{{ route('transactions.export', request()->only(['description', 'date', 'type'])) }}">
                             <x-terciary-button type="button">Exportar PDF</x-terciary-button>
                         </a>
                         <a href="{{ route('transactions.create') }}" class="ml-2">
@@ -98,7 +104,8 @@
                                                 <form method="POST" action="{{ route('transactions.destroy', $transaction) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <x-danger-button onclick="return confirm('¿Eliminar transacción?')">{{ __('Eliminar') }}</x-danger-button>
+                                                    <x-danger-button
+                                                        onclick="return confirm('¿Eliminar transacción?')">{{ __('Eliminar') }}</x-danger-button>
                                                 </form>
                                             @endcan
                                         </div>
@@ -106,7 +113,8 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No hay transacciones.</td>
+                                    <td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No hay
+                                        transacciones.</td>
                                 </tr>
                             @endforelse
                         </tbody>
