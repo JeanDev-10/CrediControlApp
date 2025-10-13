@@ -3,16 +3,16 @@
     {{-- Filtros --}}
     <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 text-black dark:text-gray-100">
         <div class="flex flex-wrap justify-between items-center gap-6">
-            <strong class="text-xl">Pagos</strong>
+            <strong >Pagos</strong>
             <div class="flex items-center gap-6">
-                <strong class="text-xl">
+                <strong>
                     Total a pagar:
                     <span class="text-green-600 dark:text-green-400">
                         ${{ $debt->quantity }}
                     </span>
                 </strong>
 
-                <strong class="text-xl">
+                <strong>
                     Total pagado:
                     <span class="text-green-600 dark:text-green-400">
                         ${{ $totalPaid }}
@@ -20,7 +20,7 @@
                 </strong>
 
                 @if($remaining >= 0)
-                    <strong class="text-xl">
+                    <strong>
                         Restante:
                         <span class="text-red-600 dark:text-red-400">
                             ${{ number_format($remaining,2) }}
@@ -54,7 +54,7 @@
     </div>
 
     {{-- Tabla de pagos --}}
-    <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
+    <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-left">
             <thead class="border-b border-gray-200 dark:border-gray-700 text-black dark:text-gray-100">
                 <tr>
