@@ -33,7 +33,7 @@
             <!-- Tabla de contactos -->
             <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead class="bg-gray-50 dark:bg-gray-700">
+                    <thead class="border-b border-gray-200 dark:border-gray-700 text-black dark:text-gray-100">
                         <tr>
                             <th class="px-4 py-3 text-left text-black dark:text-gray-100">Nombre</th>
                             <th class="px-4 py-3 text-left text-black dark:text-gray-100">Apellido</th>

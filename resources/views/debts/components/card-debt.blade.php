@@ -2,7 +2,7 @@
 <div>
     <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 text-gray-700 dark:text-gray-300">
         <strong>Deuda asociada</strong>
-        <div class="grid grid-cols-3 gap-4 mt-5">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-5">
             <div>
                 <x-input-label value="Descripción" />
 

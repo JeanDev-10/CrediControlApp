@@ -9,8 +9,8 @@
 
 
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
- <x-auth-session-status class="mb-4" :status="session('success')" />
-        <x-auth-session-error class="mb-4" :status="session('error')" />
+            <x-auth-session-status class="mb-4" :status="session('success')" />
+            <x-auth-session-error class="mb-4" :status="session('error')" />
             {{-- Datos de la Deuda --}}
             @include("debts.components.card-debt", ['debt' => $pay->debt, 'showActions' => false])
             {{-- Datos del contacto --}}
@@ -21,22 +21,22 @@
             {{-- Datos del Pago --}}
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
                 <h3 class="font-semibold mb-4 text-gray-700 dark:text-gray-300">Datos del pago</h3>
-                <div class="grid grid-cols-3 gap-4 text-gray-700 dark:text-gray-300">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 ">
                     <div>
-                        <strong>Cantidad:</strong>
+                        <x-input-label value="Cantidad:" />
                         <p class="text-green-600 dark:text-green-400">${{ $pay->quantity }}</p>
                     </div>
                     <div>
-                        <strong>Fecha de pago:</strong>
-                        <p>{{ $pay->date->format('d/m/Y')}}</p>
+                        <x-input-label value="Fecha de pago:" />
+                        <p class="text-gray-900 dark:text-gray-100">{{ $pay->date->format('d/m/Y')}}</p>
                     </div>
                     <div>
-                        <strong>Registro del pago:</strong>
-                        <p>{{ $pay->created_at }}</p>
+                        <x-input-label value="Registro del pago:" />
+                        <p class="text-gray-900 dark:text-gray-100">{{ $pay->created_at }}</p>
                     </div>
                     <div>
-                        <strong>Actualización del registro:</strong>
-                        <p>{{ $pay->updated_at }}</p>
+                        <x-input-label value="Actualización del registro:" />
+                        <p class="text-gray-900 dark:text-gray-100">{{ $pay->updated_at }}</p>
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
             @if($pay->images->count() > 0)
                 <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
                     <h3 class="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">Imágenes</h3>
-                    <div class="grid grid-cols-3 gap-2 mt-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-2">
                         @foreach($pay->images as $image)
                             <img src="{{ $image->url }}" alt="Imagen del pago {{ $pay->id }}"
                                 class="w-full h-32 object-cover rounded cursor-pointer preview-img" alt="imagen del pago">
@@ -60,13 +60,13 @@
                     <x-secondary-button>Volver</x-secondary-button>
                 </a>
                 @can('update', $pay)
-                    <a href="{{ route('pays.edit', ['pay'=>$pay, 'redirect_to' => route('pays.show', $pay->id)]) }}">
+                    <a href="{{ route('pays.edit', ['pay' => $pay, 'redirect_to' => route('pays.show', $pay->id)]) }}">
                         <x-terciary-button type="button">Editar</x-terciary-button>
                     </a>
                 @endcan
                 @can('delete', $pay)
-                    <form action="{{ route('pays.destroy', ['pay'=>$pay,'redirect_to'=>route('debts.show', $pay->debt)]) }}" method="POST"
-                        onsubmit="return confirm('Eliminar pago?');">
+                    <form action="{{ route('pays.destroy', ['pay' => $pay, 'redirect_to' => route('debts.show', $pay->debt)]) }}"
+                        method="POST" onsubmit="return confirm('Eliminar pago?');">
                         @csrf
                         @method('DELETE')
                         <x-danger-button>Eliminar</x-danger-button>

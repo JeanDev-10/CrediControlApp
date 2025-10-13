@@ -48,7 +48,7 @@
                         @endforeach
                     </div>
                     {{-- Contenedor de previsualización --}}
-                    <div id="preview-container" class="grid grid-cols-4 gap-2 mt-3"></div>
+                    <div id="preview-container" class="grid grid-cols-1 sm:grid-cols-4 gap-2 mt-3"></div>
             </div>
             {{-- Modal para imagen expandida --}}
             <div id="image-modal"
@@ -66,7 +66,7 @@
 
             @if($pay->images->count() > 0)
                 <h3 class="mt-6 text-lg font-semibold text-gray-700 dark:text-gray-300">Imágenes actuales</h3>
-                <div class="grid grid-cols-3 gap-2 mt-2">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-2">
                     @foreach($pay->images as $image)
                         <div class="relative border p-1 rounded">
                             <img src="{{ $image->url }}" class="w-full h-32 object-cover rounded">
@@ -81,7 +81,7 @@
                     @endforeach
                 </div>
 
-                <form action="{{ route('pays.images.destroyAll', $pay->id) }}" method="POST" class="mt-4">
+                <form action="{{ route('pays.images.destroyAll', $pay->id) }}" method="POST" class="mt-4 w-3/4 mx-auto sm:w-auto">
                     @csrf @method('DELETE')
                     <x-danger-button onclick="return confirm('Eliminar todas las imágenes?')">Eliminar todas las
                         imágenes</x-danger-button>

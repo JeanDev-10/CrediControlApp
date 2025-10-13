@@ -3,7 +3,7 @@
 <div>
     <div class="mt-1 bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 text-gray-700 dark:text-gray-300">
         <strong>Contacto asociado</strong>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-5">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mt-5">
             <div>
                 <x-input-label value="Nombre" />
                 <a href="{{ route("contacts.show", $contact->id) }}" class="mt-1 text-blue-400">{{ $contact->name }}</a>
