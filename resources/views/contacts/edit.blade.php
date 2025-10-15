@@ -54,6 +54,9 @@
 </x-app-layout>
 <script>
         function confirmExit() {
+            // Obtenemos el valor del campo 'redirect_to'
+            const redirectTo = document.querySelector('[name="redirect_to"]')?.value;
+
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "Perderás los cambios no guardados.",
@@ -64,7 +67,8 @@
                 reverseButtons: false
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '{{ route('contacts.index') }}'; // Redirige a la lista de contactos
+                    // Redirigimos a la URL contenida en el campo 'redirect_to'
+                    window.location.href = redirectTo || '{{ route('contacts.index') }}'; // Si no existe un 'redirect_to', redirige al índice
                 }
             });
         }
