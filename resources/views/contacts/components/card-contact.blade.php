@@ -19,12 +19,12 @@
             </div>
             <div>
                 <x-input-label value="Creado" />
-                <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $contact->created_at }}
+                <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $contact->created_at }}">
                 </p>
             </div>
             <div>
                 <x-input-label value="Última actualización" />
-                <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $contact->updated_at }}
+                <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $contact->updated_at }}">
                 </p>
             </div>
         </div>
@@ -34,7 +34,8 @@
         {{-- Acciones --}}
         <div class="flex justify-end gap-3 mt-4">
             <div>
-                <a target="_blank" href="{{ route('contacts.exportWithDebts', ["contact"=>$contact]+ request()->only(['description','date_start','status'])) }}">
+                <a target="_blank"
+                    href="{{ route('contacts.exportWithDebts', ["contact" => $contact] + request()->only(['description', 'date_start', 'status'])) }}">
                     <x-terciary-button type="button">
                         Exportar PDF
                     </x-terciary-button>
@@ -62,3 +63,15 @@
         </div>
     @endif
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Seleccionamos todas las celdas que tienen las fechas
+        const fechaElements = document.querySelectorAll('.fecha-entrada');
+
+        // Recorremos cada celda y mostramos la fecha relativa
+        fechaElements.forEach((element) => {
+            const fecha = element.getAttribute('data-fecha');
+            element.innerText = dayjs(fecha).fromNow();
+        });
+    });
+</script>

@@ -20,7 +20,7 @@
                 </form>
 
                 <!-- Acciones -->
-                <div class="grid grid-cols-2 gap-2 sm:gap-0 w-full lg:w-auto ">
+                <div class="grid grid-cols-2 gap-2 sm:gap-0 w-full lg:w-auto">
                     <a target="_blank" href="{{ route('contacts.export', request()->only(['name', 'lastname'])) }}">
                         <x-terciary-button type="button">Exportar PDF</x-terciary-button>
                     </a>
@@ -49,8 +49,10 @@
                                 <td class="px-4 py-4 text-black dark:text-gray-100">{{ $contact->name }}</td>
                                 <td class="px-4 py-4 text-black dark:text-gray-100">{{ $contact->lastname }}</td>
                                 <td class="px-4 py-4 text-black dark:text-gray-100">{{ $contact->phone }}</td>
-                                <td class="px-4 py-4 text-black dark:text-gray-100">{{ $contact->created_at }}</td>
-                                <td class="px-4 py-4 text-black dark:text-gray-100">{{ $contact->updated_at }}</td>
+                                <td class="px-4 py-4 text-black dark:text-gray-100 fecha-entrada"
+                                    data-fecha="{{ $contact->created_at }}"></td>
+                                <td class="px-4 py-4 text-black dark:text-gray-100 fecha-entrada"
+                                    data-fecha="{{ $contact->updated_at }}"></td>
                                 <td class="px-4 py-4 text-black dark:text-gray-100 space-y-1 sm:space-y-0 sm:space-x-1 flex flex-col sm:flex-row flex-wrap">
                                     <a href="{{ route('contacts.edit', $contact) }}">
                                         <x-primary-button type="button">Editar</x-primary-button>
@@ -69,7 +71,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No hay contactos.</td>
+                                <td colspan="6" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No hay
+                                    contactos.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -83,3 +86,16 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Seleccionamos todas las celdas que tienen las fechas
+        const fechaElements = document.querySelectorAll('.fecha-entrada');
+
+        // Recorremos cada celda y mostramos la fecha relativa
+        fechaElements.forEach((element) => {
+            const fecha = element.getAttribute('data-fecha');
+            element.innerText = dayjs(fecha).fromNow();
+        });
+    });
+</script>
