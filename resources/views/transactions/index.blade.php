@@ -101,11 +101,11 @@
                                                 </a>
                                             @endcan
                                             @can('delete', $transaction)
-                                                <form method="POST" action="{{ route('transactions.destroy', $transaction) }}">
+                                                <form method="POST" action="{{ route('transactions.destroy', $transaction) }}" id="delete-form-{{ $transaction->id }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <x-danger-button
-                                                        onclick="return confirm('¿Eliminar transacción?')">{{ __('Eliminar') }}</x-danger-button>
+                                                    <x-danger-button type="button"
+                                                        onclick="confirmDelete({{ $transaction->id }})">{{ __('Eliminar') }}</x-danger-button>
                                                 </form>
                                             @endcan
                                         </div>
@@ -139,4 +139,21 @@
             element.innerText = dayjs(fecha).fromNow();
         });
     });
+    function confirmDelete(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, se envía el formulario
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+
 </script>
