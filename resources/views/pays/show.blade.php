@@ -22,7 +22,7 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <div>
                         <x-input-label value="Cantidad:" />
-                        <p class="text-green-600 dark:text-green-400">${{ $pay->quantity }}</p>
+                        <p class="text-green-600 dark:text-green-400">${{ number_format($pay->quantity,2,',','.') }}</p>
                     </div>
                     <div>
                         <x-input-label value="Fecha de pago:" />

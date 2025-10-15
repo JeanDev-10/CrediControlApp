@@ -71,7 +71,7 @@
             <tbody class="border-b border-gray-200 dark:border-gray-700 text-black dark:text-gray-100">
                 @forelse($pays as $pay)
                     <tr>
-                        <td class="px-4 py-3 text-center text-green-600 dark:text-green-400">${{ $pay->quantity }}
+                        <td class="px-4 py-3 text-center text-green-600 dark:text-green-400">${{ number_format($pay->quantity,2,',','.') }}
                         </td>
                         <td class="px-4 py-3 text-center">{{ $pay->date->format("Y/m/d") }}</td>
                         <td class="px-4 py-3 text-center">

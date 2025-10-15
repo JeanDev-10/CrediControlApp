@@ -69,7 +69,7 @@
                                         </a>
                                     </td>
                                     <td class="px-4 py-3 text-center text-green-600 dark:text-green-400">
-                                        ${{ $pay->quantity }}</td>
+                                        ${{ number_format($pay->quantity,2,',','.') }}</td>
                                     <td class="px-4 py-3 text-center">
                                         <a href="{{ route('debts.show', $pay->debt) }}"
                                             class="text-blue-700 hover:text-blue-600 dark:text-blue-300 hover:text-blue-200">
