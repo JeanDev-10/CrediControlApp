@@ -59,7 +59,7 @@
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700 text-black dark:text-gray-100">
                         @foreach($logs as $log)
                             <tr>
-                                <td class="px-4 py-3">{{ $log->created_at }}</td>
+                                <td class="px-4 py-3 fecha-entrada" data-fecha="{{ $log->created_at }}"></td>
                                 <td class="px-4 py-3">{{ $log->description }}</td>
                                 <td class="px-4 py-3">{{ class_basename($log->subject_type) ?? '-' }}</td>
                                 <td class="px-4 py-3">{{ $log->subject_id }}</td>
@@ -84,3 +84,15 @@
         </div>
     </div>
 </x-app-layout>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Seleccionamos todas las celdas que tienen las fechas
+        const fechaElements = document.querySelectorAll('.fecha-entrada');
+
+        // Recorremos cada celda y mostramos la fecha relativa
+        fechaElements.forEach((element) => {
+            const fecha = element.getAttribute('data-fecha');
+            element.innerText = dayjs(fecha).fromNow();
+        });
+    });
+</script>
