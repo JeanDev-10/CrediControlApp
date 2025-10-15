@@ -30,12 +30,12 @@
             <div>
                 <x-input-label value="Creado" />
 
-                <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $debt->created_at }}</p>
+                <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $debt->created_at }}"></p>
             </div>
             <div>
                 <x-input-label value="Última actualización" />
 
-                <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $debt->updated_at }}</p>
+                <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $debt->updated_at }}"></p>
             </div>
         </div>
     </div>
@@ -74,3 +74,15 @@
         </div>
     @endif
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Seleccionamos todas las celdas que tienen las fechas
+        const fechaElements = document.querySelectorAll('.fecha-entrada');
+
+        // Recorremos cada celda y mostramos la fecha relativa
+        fechaElements.forEach((element) => {
+            const fecha = element.getAttribute('data-fecha');
+            element.innerText = dayjs(fecha).fromNow();
+        });
+    });
+</script>
