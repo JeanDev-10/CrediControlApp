@@ -1,19 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Reporte de Deudas por Contacto</title>
     <style>
-        body { font-family: DejaVu Sans, sans-serif; font-size: 12px; color: #333; }
-        h2, h3 { margin: 0; padding: 5px 0; }
-        .section { margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .header { margin-bottom: 20px; }
-        .filters ul { margin: 5px 0 0 15px; padding: 0; }
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 12px;
+            color: #333;
+        }
+
+        h2,
+        h3 {
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .filters ul {
+            margin: 5px 0 0 15px;
+            padding: 0;
+        }
     </style>
 </head>
+
 <body>
     {{-- Usuario que genera el reporte --}}
     <div class="header">
@@ -40,7 +75,13 @@
             </tr>
             <tr>
                 <th>Última actualización</th>
-                <td colspan="3">{{ $contact->updated_at->format('d/m/Y H:i') }}</td>
+                <td>
+                    @if ($contact->created_at != $contact->updated_at)
+                        {{ $contact->updated_at->format('d/m/Y H:i') }}
+                    @else
+                        No ha sido actualizado
+                    @endif
+                </td>
             </tr>
         </table>
     </div>
@@ -83,21 +124,29 @@
             <tbody>
                 @forelse($debts as $i => $debt)
                     <tr>
-                        <td>{{ $i+1 }}</td>
+                        <td>{{ $i + 1 }}</td>
                         <td>{{ ucfirst($debt->description) }}</td>
                         <td>${{ number_format($debt->quantity) }}</td>
                         <td>{{ $debt->date_start->format("d/m/Y") }}</td>
                         <td>{{ ucfirst($debt->status) }}</td>
                         <td>{{ $debt->created_at->format('d/m/Y H:i') }}</td>
-                        <td>{{ $debt->updated_at->format('d/m/Y H:i') }}</td>
+                        <td>
+                            @if ($debt->created_at != $debt->updated_at)
+                                {{ $debt->updated_at->format('d/m/Y H:i') }}
+                            @else
+                                No ha sido actualizado
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" style="text-align: center; color: #777;">No se encontraron deudas para este contacto.</td>
+                        <td colspan="7" style="text-align: center; color: #777;">No se encontraron deudas para este
+                            contacto.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 </body>
+
 </html>

@@ -24,7 +24,12 @@
             </div>
             <div>
                 <x-input-label value="Última actualización" />
+                @if ($contact->created_at!=$contact->updated_at)
                 <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $contact->updated_at }}">
+                @else
+                <p class="mt-1 text-gray-900 dark:text-gray-100">
+                    No ha sido actualizado
+                @endif
                 </p>
             </div>
         </div>

@@ -66,7 +66,13 @@
                     <td>{{ $contact->lastname }}</td>
                     <td>{{ $contact->phone }}</td>
                     <td>{{ $contact->created_at->format('d/m/Y H:i') }}</td>
-                    <td>{{ $contact->updated_at->format('d/m/Y H:i') }}</td>
+                    <td>
+                        @if ($contact->created_at!=$contact->updated_at)
+                            {{ $contact->updated_at->format('d/m/Y H:i') }}
+                        @else
+                            No ha sido actualizado
+                        @endif
+                    </td>
                 </tr>
             @empty
                 <tr>

@@ -11,11 +11,14 @@
             <x-auth-session-error class="mb-4" :status="session('error')" />
 
             <!-- Filtros + Acciones -->
-            <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 flex flex-col lg:flex-row justify-between gap-4 items-start lg:items-center">
+            <div
+                class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 flex flex-col lg:flex-row justify-between gap-4 items-start lg:items-center">
                 <!-- Formulario de búsqueda -->
                 <form method="GET" class="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
-                    <x-text-input id="name" name="name" type="text" class="mt-1 w-full sm:w-48" :value="request('name')" placeholder="Nombre" />
-                    <x-text-input id="lastname" name="lastname" type="text" class="mt-1 w-full sm:w-48" :value="request('lastname')" placeholder="Apellido" />
+                    <x-text-input id="name" name="name" type="text" class="mt-1 w-full sm:w-48" :value="request('name')"
+                        placeholder="Nombre" />
+                    <x-text-input id="lastname" name="lastname" type="text" class="mt-1 w-full sm:w-48"
+                        :value="request('lastname')" placeholder="Apellido" />
                     <x-secondary-button type="submit">Buscar</x-secondary-button>
                 </form>
 
@@ -51,9 +54,14 @@
                                 <td class="px-4 py-4 text-black dark:text-gray-100">{{ $contact->phone }}</td>
                                 <td class="px-4 py-4 text-black dark:text-gray-100 fecha-entrada"
                                     data-fecha="{{ $contact->created_at }}"></td>
-                                <td class="px-4 py-4 text-black dark:text-gray-100 fecha-entrada"
-                                    data-fecha="{{ $contact->updated_at }}"></td>
-                                <td class="px-4 py-4 text-black dark:text-gray-100 space-y-1 sm:space-y-0 sm:space-x-1 flex flex-col sm:flex-row flex-wrap">
+                                @if ($contact->created_at != $contact->updated_at)
+                                    <td class="px-4 py-4 text-black dark:text-gray-100 fecha-entrada"
+                                        data-fecha="{{ $contact->updated_at }}"></td>
+                                @else
+                                    <td class="px-4 py-4 text-black dark:text-gray-100 ">No ha sido actualizado</td>
+                                @endif
+                                <td
+                                    class="px-4 py-4 text-black dark:text-gray-100 space-y-1 sm:space-y-0 sm:space-x-1 flex flex-col sm:flex-row flex-wrap">
                                     <a href="{{ route('contacts.edit', $contact) }}">
                                         <x-primary-button type="button">Editar</x-primary-button>
                                     </a>
