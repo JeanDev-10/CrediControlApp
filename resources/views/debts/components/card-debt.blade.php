@@ -34,8 +34,13 @@
             </div>
             <div>
                 <x-input-label value="Última actualización" />
+                @if ($debt->created_at != $debt->updated_at)
+                    <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $debt->updated_at }}"></p>
+                @else
+                    <p class="mt-1 text-gray-900 dark:text-gray-100">No ha sido actualizado</p>
 
-                <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $debt->updated_at }}"></p>
+                @endif
+
             </div>
         </div>
     </div>
@@ -43,7 +48,8 @@
     @if($showActions)
         <div class="mt-5 flex justify-end gap-3 flex-wrap">
             <div>
-                <a target="_blank" href="{{ route('debts.exportWithPays', ["debt"=>$debt] + request()->only(['quantity','date'])) }}">
+                <a target="_blank"
+                    href="{{ route('debts.exportWithPays', ["debt" => $debt] + request()->only(['quantity', 'date'])) }}">
                     <x-terciary-button type="button">
                         Exportar PDF
                     </x-terciary-button>
@@ -56,7 +62,7 @@
                 </form>
             @endcan
             @can('update', $debt)
-                <a href="{{ route('debts.edit', ['debt'=>$debt,'redirect_to' => route('debts.show', $debt)]) }}">
+                <a href="{{ route('debts.edit', ['debt' => $debt, 'redirect_to' => route('debts.show', $debt)]) }}">
                     <x-terciary-button type="button">Editar</x-terciary-button>
                 </a>
             @endcan
