@@ -36,11 +36,11 @@
                 <th>Teléfono</th>
                 <td>{{ $contact->phone ?? '-' }}</td>
                 <th>Creado</th>
-                <td>{{ $contact->created_at }}</td>
+                <td>{{ $contact->created_at->format('d/m/Y H:i') }}</td>
             </tr>
             <tr>
                 <th>Última actualización</th>
-                <td colspan="3">{{ $contact->updated_at }}</td>
+                <td colspan="3">{{ $contact->updated_at->format('d/m/Y H:i') }}</td>
             </tr>
         </table>
     </div>
@@ -88,8 +88,8 @@
                         <td>${{ number_format($debt->quantity) }}</td>
                         <td>{{ $debt->date_start->format("d/m/Y") }}</td>
                         <td>{{ ucfirst($debt->status) }}</td>
-                        <td>{{ $debt->created_at }}</td>
-                        <td>{{ $debt->updated_at }}</td>
+                        <td>{{ $debt->created_at->format('d/m/Y H:i') }}</td>
+                        <td>{{ $debt->updated_at->format('d/m/Y H:i') }}</td>
                     </tr>
                 @empty
                     <tr>

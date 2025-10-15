@@ -92,7 +92,7 @@
                                     @endphp
                                     <td class="p-2 {{ $color }}">${{ $transaction->previus_quantity }}</td>
                                     <td class="p-2 {{ $color }}">${{ $transaction->after_quantity }}</td>
-                                    <td class="p-2">{{ $transaction->created_at }}</td>
+                                    <td class="p-2 fecha-entrada" data-fecha="{{ $transaction->created_at }}"></td>
                                     <td class="p-2 text-right">
                                         <div class="flex justify-end gap-2">
                                             @can('update', $transaction)
@@ -128,3 +128,15 @@
         </div>
     </div>
 </x-app-layout>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Seleccionamos todas las celdas que tienen las fechas
+        const fechaElements = document.querySelectorAll('.fecha-entrada');
+
+        // Recorremos cada celda y mostramos la fecha relativa
+        fechaElements.forEach((element) => {
+            const fecha = element.getAttribute('data-fecha');
+            element.innerText = dayjs(fecha).fromNow();
+        });
+    });
+</script>

@@ -70,7 +70,7 @@
                     <td>${{ number_format($tx->quantity) }}</td>
                     <td>${{ number_format($tx->previus_quantity) }}</td>
                     <td>${{ number_format($tx->after_quantity) }}</td>
-                    <td>{{ $tx->created_at }}</td>
+                    <td>{{ $tx->created_at->format('d/m/Y H:i') }}</td>
                 </tr>
             @empty
                 <tr>
