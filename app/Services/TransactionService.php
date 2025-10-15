@@ -165,7 +165,7 @@ class TransactionService
 
     public function getBudget()
     {
-        return $this->budgetRepo->getByUser(Auth::id());
+        return $this->budgetRepo->getByUser($this->userService->getUserLoggedIn()->id);
     }
 
     public function getAllWithoutPagination(array $filters = [])
@@ -174,5 +174,16 @@ class TransactionService
             ->causedBy($this->userService->getUserLoggedIn())
             ->log('Exportó listado de transacciones');
         return $this->transactionRepo->getAllWithoutPagination($filters);
+    }
+    public function getMonthlyIncomeVsExpenses(?string $from = null, ?string $to = null): array
+    {
+        $data = $this->transactionRepo->getMonthlyTotalsByTypeFilterByDate($this->userService->getUserLoggedIn()->id, $from, $to);
+        return [
+            'labels' => ['Ingresos', 'Egresos'],
+            'data' => [
+                $data['ingreso'] ?? 0,
+                $data['egreso'] ?? 0
+            ]
+        ];
     }
 }

@@ -71,11 +71,17 @@
                 <th>Teléfono</th>
                 <td>{{ $debt->contact->phone ?? '-' }}</td>
                 <th>Creado</th>
-                <td>{{ $debt->contact->created_at }}</td>
+                <td>{{ $debt->contact->created_at->format("d/m/Y H:i") }}</td>
             </tr>
             <tr>
                 <th>Última actualización</th>
-                <td colspan="3">{{ $debt->contact->updated_at }}</td>
+                <td colspan="3">
+                    @if ($debt->contact->created_at != $debt->contact->updated_at)
+                        {{ $debt->contact->updated_at->format("d/m/Y H:i") }}
+                    @else
+                        No ha sido actualizado
+                    @endif
+                </td>
             </tr>
         </table>
     </div>
@@ -97,9 +103,15 @@
             </tr>
             <tr>
                 <th>Creado:</th>
-                <td>{{ $debt->created_at }}</td>
+                <td>{{ $debt->created_at->format("d/m/Y H:i") }}</td>
                 <th>Actualizado:</th>
-                <td>{{ $debt->updated_at }}</td>
+                <td>
+                    @if ($debt->created_at != $debt->updated_at)
+                        {{ $debt->updated_at->format("d/m/Y H:i") }}
+                    @else
+                        No ha sido actualizado
+                    @endif
+                </td>
             </tr>
             <tr>
                 <th>Restante:</th>
@@ -141,14 +153,20 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($pays as $index=>$pay)
+            @forelse($pays as $index => $pay)
                 <tr>
-                    <td>{{ $index+1 }}</td>
+                    <td>{{ $index + 1 }}</td>
                     <td>${{ $pay->quantity }}</td>
                     <td>{{ $pay->date->format('d/m/Y') }}</td>
                     <td>{{ ucfirst($pay->debt->status) }}</td>
                     <td>{{ $pay->created_at}}</td>
-                    <td>{{ $pay->updated_at }}</td>
+                    <td>
+                        @if ($pay->created_at!=$pay->updated_at)
+                            {{ $pay->updated_at }}
+                        @else
+                            No ha sido actualizado
+                        @endif
+                    </td>
                 </tr>
             @empty
                 <tr>

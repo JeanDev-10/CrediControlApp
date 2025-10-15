@@ -59,7 +59,7 @@
                             <x-input-error :messages="$message" class="mt-2" />
                         @endforeach
                         {{-- Contenedor de previsualización --}}
-    <div id="preview-container" class="grid grid-cols-4 gap-2 mt-3"></div>
+    <div id="preview-container" class="grid grid-cols-1 sm:grid-cols-4 gap-2 mt-3"></div>
                     </div>
                     {{-- Modal para imagen expandida --}}
 <div id="image-modal"

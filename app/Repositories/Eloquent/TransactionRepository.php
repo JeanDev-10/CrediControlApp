@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Transaction;
 use App\Repositories\Interfaces\TransactionRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class TransactionRepository extends BaseRepository implements TransactionRepositoryInterface
 {
@@ -48,6 +49,23 @@ class TransactionRepository extends BaseRepository implements TransactionReposit
         if (! empty($filters['date'])) {
             $query->whereDate('created_at', $filters['date']);
         }
+
         return $query->latest()->get();
+    }
+
+    public function getMonthlyTotalsByTypeFilterByDate(int $userId, ?string $from = null, ?string $to = null): array
+    {
+        $query = Transaction::select('type', DB::raw('SUM(quantity) as total'))
+            ->where('user_id', $userId);
+        if ($from) {
+            $query->whereDate('created_at', '>=', $from);
+        }
+        if ($to) {
+            $query->whereDate('created_at', '<=', $to);
+        }
+
+        return $query->groupBy('type')
+            ->pluck('total', 'type')
+            ->toArray();
     }
 }

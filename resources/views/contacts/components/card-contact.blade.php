@@ -3,7 +3,7 @@
 <div>
     <div class="mt-1 bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 text-gray-700 dark:text-gray-300">
         <strong>Contacto asociado</strong>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-5">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mt-5">
             <div>
                 <x-input-label value="Nombre" />
                 <a href="{{ route("contacts.show", $contact->id) }}" class="mt-1 text-blue-400">{{ $contact->name }}</a>
@@ -19,12 +19,17 @@
             </div>
             <div>
                 <x-input-label value="Creado" />
-                <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $contact->created_at }}
+                <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $contact->created_at }}">
                 </p>
             </div>
             <div>
                 <x-input-label value="Última actualización" />
-                <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $contact->updated_at }}
+                @if ($contact->created_at!=$contact->updated_at)
+                <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $contact->updated_at }}">
+                @else
+                <p class="mt-1 text-gray-900 dark:text-gray-100">
+                    No ha sido actualizado
+                @endif
                 </p>
             </div>
         </div>
@@ -34,7 +39,8 @@
         {{-- Acciones --}}
         <div class="flex justify-end gap-3 mt-4">
             <div>
-                <a target="_blank" href="{{ route('contacts.exportWithDebts', ["contact"=>$contact]+ request()->only(['description','date_start','status'])) }}">
+                <a target="_blank"
+                    href="{{ route('contacts.exportWithDebts', ["contact" => $contact] + request()->only(['description', 'date_start', 'status'])) }}">
                     <x-terciary-button type="button">
                         Exportar PDF
                     </x-terciary-button>
@@ -53,12 +59,40 @@
 
             @can('delete', $contact)
                 <form action="{{ route('contacts.destroy', $contact) }}" method="POST"
-                    onsubmit="return confirm('¿Eliminar este contacto?')">
+                     id="delete-form-{{ $contact->id }}">
                     @csrf
                     @method('DELETE')
-                    <x-danger-button>Eliminar</x-danger-button>
+                    <x-danger-button type="button" onclick="confirmDelete({{ $contact->id }})">Eliminar</x-danger-button>
                 </form>
             @endcan
         </div>
     @endif
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Seleccionamos todas las celdas que tienen las fechas
+        const fechaElements = document.querySelectorAll('.fecha-entrada');
+
+        // Recorremos cada celda y mostramos la fecha relativa
+        fechaElements.forEach((element) => {
+            const fecha = element.getAttribute('data-fecha');
+            element.innerText = dayjs(fecha).fromNow();
+        });
+    });
+    function confirmDelete(contactId) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, se envía el formulario
+                document.getElementById('delete-form-' + contactId).submit();
+            }
+        });
+    }
+</script>

@@ -119,4 +119,5 @@ class DebtController extends Controller
 
         return $pdf->stream("reporte-deuda-{$debt->id}.pdf"); // 👈 se abre en navegador
     }
+
 }

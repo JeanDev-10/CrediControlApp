@@ -2,7 +2,7 @@
 <div>
     <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 text-gray-700 dark:text-gray-300">
         <strong>Deuda asociada</strong>
-        <div class="grid grid-cols-3 gap-4 mt-5">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-5">
             <div>
                 <x-input-label value="Descripción" />
 
@@ -30,12 +30,17 @@
             <div>
                 <x-input-label value="Creado" />
 
-                <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $debt->created_at }}</p>
+                <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $debt->created_at }}"></p>
             </div>
             <div>
                 <x-input-label value="Última actualización" />
+                @if ($debt->created_at != $debt->updated_at)
+                    <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $debt->updated_at }}"></p>
+                @else
+                    <p class="mt-1 text-gray-900 dark:text-gray-100">No ha sido actualizado</p>
 
-                <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $debt->updated_at }}</p>
+                @endif
+
             </div>
         </div>
     </div>
@@ -43,7 +48,8 @@
     @if($showActions)
         <div class="mt-5 flex justify-end gap-3 flex-wrap">
             <div>
-                <a target="_blank" href="{{ route('debts.exportWithPays', ["debt"=>$debt] + request()->only(['quantity','date'])) }}">
+                <a target="_blank"
+                    href="{{ route('debts.exportWithPays', ["debt" => $debt] + request()->only(['quantity', 'date'])) }}">
                     <x-terciary-button type="button">
                         Exportar PDF
                     </x-terciary-button>
@@ -56,7 +62,7 @@
                 </form>
             @endcan
             @can('update', $debt)
-                <a href="{{ route('debts.edit', ['debt'=>$debt,'redirect_to' => route('debts.show', $debt)]) }}">
+                <a href="{{ route('debts.edit', ['debt' => $debt, 'redirect_to' => route('debts.show', $debt)]) }}">
                     <x-terciary-button type="button">Editar</x-terciary-button>
                 </a>
             @endcan
@@ -65,12 +71,40 @@
             </a>
             @can('delete', $debt)
                 <form method="POST" action="{{ route('debts.destroy', $debt) }}"
-                    onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta deuda?');">
+                    id="delete-form-{{ $debt->id }}">
                     @csrf
                     @method('DELETE')
-                    <x-danger-button>Eliminar</x-danger-button>
+                    <x-danger-button type="button" onclick="confirmDelete({{ $debt->id }})">Eliminar</x-danger-button>
                 </form>
             @endcan
         </div>
     @endif
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Seleccionamos todas las celdas que tienen las fechas
+        const fechaElements = document.querySelectorAll('.fecha-entrada');
+
+        // Recorremos cada celda y mostramos la fecha relativa
+        fechaElements.forEach((element) => {
+            const fecha = element.getAttribute('data-fecha');
+            element.innerText = dayjs(fecha).fromNow();
+        });
+    });
+    function confirmDelete(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, se envía el formulario
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+</script>

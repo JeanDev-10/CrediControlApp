@@ -4,7 +4,7 @@
             {{ __('Nueva Transacción') }}
         </h2>
     </x-slot>
-    <div class="mt-5 w-1/3 text-center m-auto bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
+    <div class="mt-5 w-full sm:w-1/3 text-center m-auto bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
         @include("transactions.partials.budget-user", ['budget' => $budget])
     </div>
     <div class="pt-7 pb-10">

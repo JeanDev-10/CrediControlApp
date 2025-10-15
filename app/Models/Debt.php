@@ -58,7 +58,7 @@ class Debt extends Model
             set: fn ($value) => strtolower($value),
         );
     }
-    protected function createdAt(): Attribute
+    /* protected function createdAt(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => Carbon::parse($value)->format('d/m/Y H:i'),
@@ -69,5 +69,5 @@ class Debt extends Model
         return Attribute::make(
             get: fn ($value) => Carbon::parse($value)->format('d/m/Y H:i'),
         );
-    }
+    } */
 }

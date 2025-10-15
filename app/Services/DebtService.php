@@ -116,4 +116,8 @@ class DebtService
             ->log('Generó PDF de deudas');
         return $this->debtRepo->getAllWithoutPagination($filters);
     }
+    public function getTopContactsWithPendingDebts($limit = 10, $from = null, $to = null)
+    {
+        return $this->debtRepo->getTopContactsWithPendingDebts($limit, $from, $to);
+    }
 }

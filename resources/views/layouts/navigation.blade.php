@@ -68,12 +68,10 @@
                         </x-dropdown-link>
 
                         <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST" action="{{ route('logout') }}" id="logout-form">
                             @csrf
 
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                            <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); confirmLogout();">
                                 {{ __('Cerrar sesión') }}
                             </x-dropdown-link>
                         </form>
@@ -83,7 +81,7 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open=! open"
+                <button @click="open=!open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
@@ -103,7 +101,23 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('contacts.index')" :active="request()->routeIs('contacts.*')">
+                {{ __('Contactos') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.*')">
+                {{ __('Transacciones') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('debts.index')" :active="request()->routeIs('debts.*')">
+                {{ __('Deudas') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('pays.index')" :active="request()->routeIs('pays.*')">
+                {{ __('Pagos') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('audit.index')" :active="request()->routeIs('audit.*')">
+                {{ __('Auditoría') }}
+            </x-responsive-nav-link>
         </div>
+
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
@@ -118,12 +132,11 @@
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('logout') }}" id="logout-form">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();">
+                    <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
+                                        confirmLogout();">
                         {{ __('Cerrar sesión') }}
                     </x-responsive-nav-link>
                 </form>
@@ -131,3 +144,22 @@
         </div>
     </div>
 </nav>
+<script>
+    // Función para mostrar la alerta de confirmación
+    function confirmLogout() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Cerrar sesión terminará tu sesión actual.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cerrar sesión',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, enviamos el formulario de cierre de sesión
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+</script>

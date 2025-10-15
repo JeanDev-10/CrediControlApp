@@ -32,8 +32,8 @@
 
         </form>
     </div>
-    <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 text-black dark:text-gray-100">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-left">
+    <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 text-black dark:text-gray-100">
+        <table class=" min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-left">
             <thead class="border-b border-gray-200 dark:border-gray-700 text-black dark:text-gray-100">
                 <tr>
                     <th class="px-4 py-3">Descripción</th>
@@ -65,10 +65,10 @@
                                 <a href="{{ route('debts.show', $debt) }}"
                                     class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm">Ver</a>
                                 @can('delete', $debt)
-                                    <form action="{{ route('debts.destroy', ['debt'=>$debt,'redirect_to' => route('contacts.show', $contact)]) }}" method="POST">
+                                    <form action="{{ route('debts.destroy', ['debt'=>$debt,'redirect_to' => route('contacts.show', $contact)]) }}" method="POST" id="delete-form-{{ $debt->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <x-danger-button onclick="return confirm('Eliminar deuda?')">Eliminar</x-danger-button>
+                                        <x-danger-button type="button" onclick="confirmDelete({{ $debt->id }})">Eliminar</x-danger-button>
                                     </form>
                                 @endcan
                             </div>
@@ -89,3 +89,21 @@
         </div>
     </div>
 </div>
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, se envía el formulario
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+</script>
