@@ -57,7 +57,8 @@
                 <img id="modal-img" src="" class="max-w-full max-h-full rounded shadow-lg" />
             </div>
             <div class="flex justify-end mt-6">
-                <a href="{{ route('pays.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2" onclick="event.preventDefault(); confirmExit();">
+                <a href="{{ route('pays.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2"
+                    onclick="event.preventDefault(); confirmExit();">
                     Cancelar
                 </a>
                 <x-terciary-button class="ml-3">Actualizar</x-terciary-button>
@@ -71,10 +72,10 @@
                         <div class="relative border p-1 rounded">
                             <img src="{{ $image->url }}" class="w-full h-32 object-cover rounded">
                             <form action="{{ route('pays.images.destroy', $image->id) }}" method="POST"
-                                class="absolute top-1 right-1">
+                                class="absolute top-1 right-1" id="delete-form-image-{{ $image->id }}">
                                 @csrf
                                 @method('DELETE')
-                                <x-danger-button onclick="return confirm('Eliminar imagen?')"
+                                <x-danger-button type="button" onclick="event.preventDefault();confirmDelete({{ $image->id }})"
                                     class="text-xs px-2 py-1">X</x-danger-button>
                             </form>
                         </div>
@@ -82,9 +83,9 @@
                 </div>
 
                 <form action="{{ route('pays.images.destroyAll', $pay->id) }}" method="POST"
-                    class="mt-4 w-3/4 mx-auto sm:w-auto">
+                    class="mt-4 w-3/4 mx-auto sm:w-auto" id="delete-form-images">
                     @csrf @method('DELETE')
-                    <x-danger-button onclick="return confirm('Eliminar todas las imágenes?')">Eliminar todas las
+                    <x-danger-button onclick="event.preventDefault(); confirmDeleteAllImages()">Eliminar todas las
                         imágenes</x-danger-button>
                 </form>
             @endif
@@ -152,8 +153,39 @@
             reverseButtons: false
         }).then((result) => {
             if (result.isConfirmed) {
-                // Redirigimos a la URL contenida en el campo 'redirect_to'
                 window.location.href = redirectTo || '{{ route('pays.index') }}'; // Si no existe un 'redirect_to', redirige al índice
+            }
+        });
+    }
+    function confirmDelete(id) {
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Perderás las imágenes.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'No, quedarme',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-image-' + id).submit();
+            }
+        });
+    }
+    function confirmDeleteAllImages() {
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Perderás las imágenes.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'No, quedarme',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-images').submit();
             }
         });
     }
