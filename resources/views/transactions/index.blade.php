@@ -86,12 +86,12 @@
                                         @endphp
                                         <span class="{{ $color }}">{{ $transaction->type }}</span>
                                     </td>
-                                    <td class="p-2 {{ $color }}">${{ number_format($transaction->quantity,2) }}</td>
+                                    <td class="p-2 {{ $color }}">${{ number_format($transaction->quantity,2,'.', ',') }}</td>
                                     @php
                                         $color = $transaction->previus_quantity >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
                                     @endphp
-                                    <td class="p-2 {{ $color }}">${{ number_format($transaction->previus_quantity,2) }}</td>
-                                    <td class="p-2 {{ $color }}">${{ number_format($transaction->after_quantity,2) }}</td>
+                                    <td class="p-2 {{ $color }}">${{ number_format($transaction->previus_quantity,2,'.', ',') }}</td>
+                                    <td class="p-2 {{ $color }}">${{ number_format($transaction->after_quantity,2,'.', ',') }}</td>
                                     <td class="p-2 fecha-entrada" data-fecha="{{ $transaction->created_at }}"></td>
                                     <td class="p-2 text-right">
                                         <div class="flex justify-end gap-2">

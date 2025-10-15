@@ -70,7 +70,7 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ ucfirst($debt->description) }}</td>
                     <td>{{ $debt->contact->name ?? '-' }} {{ $debt->contact->lastname ?? '' }}</td>
-                    <td>${{ number_format($debt->quantity, 2) }}</td>
+                    <td>${{ number_format($debt->quantity, 2,'.',',') }}</td>
                     <td>{{ $debt->date_start->format('d/m/Y') }}</td>
                     <td>{{ ucfirst($debt->status) }}</td>
                 </tr>

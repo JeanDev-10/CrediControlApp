@@ -93,7 +93,7 @@
                 <th>Descripción:</th>
                 <td>{{ $debt->description }}</td>
                 <th>Cantidad total:</th>
-                <td>${{ $debt->quantity }}</td>
+                <td>${{ number_format($debt->quantity, 2, ',', '.') }}</td>
             </tr>
             <tr>
                 <th>Estado: </th>
@@ -113,14 +113,17 @@
                     @endif
                 </td>
             </tr>
-            <tr>
-                <th>Restante:</th>
-                <td colspan="3">{{ $remaining >= 0 ? '$' . $remaining : '---' }}</td>
-            </tr>
-            <tr>
-                <th>Total pagado:</th>
-                <td colspan="3">${{ $totalPaid }}</td>
-            </tr>
+            @if ($debt->status == "pendiente")
+                <tr>
+                    <th>Restante:</th>
+                    <td colspan="3">{{ $remaining >= 0 ? '$' . number_format($remaining, 2, ',', '.') : '---' }}</td>
+                </tr>
+                <tr>
+                    <th>Total pagado:</th>
+                    <td colspan="3">${{ number_format($totalPaid, 2, ',', '.') }}</td>
+                </tr>
+            @endif
+
         </table>
     </div>
     <h3>Pagos</h3>
@@ -156,12 +159,12 @@
             @forelse($pays as $index => $pay)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>${{ $pay->quantity }}</td>
+                    <td>${{ number_format($pay->quantity, 2, '.', ',') }}</td>
                     <td>{{ $pay->date->format('d/m/Y') }}</td>
                     <td>{{ ucfirst($pay->debt->status) }}</td>
                     <td>{{ $pay->created_at}}</td>
                     <td>
-                        @if ($pay->created_at!=$pay->updated_at)
+                        @if ($pay->created_at != $pay->updated_at)
                             {{ $pay->updated_at }}
                         @else
                             No ha sido actualizado
@@ -173,6 +176,13 @@
                     <td colspan="6" style="text-align: center; color: #777;">No hay pagos registrados.</td>
                 </tr>
             @endforelse
+            @if ($debt->status !== "pendiente")
+                <tr>
+                    <td colspan="6" style="text-align: center; color: #777;"">Deuda marcada como
+                        pagada.
+                    </td>
+                </tr>
+            @endif
         </tbody>
     </table>
 </body>

@@ -126,7 +126,7 @@
                     <tr>
                         <td>{{ $i + 1 }}</td>
                         <td>{{ ucfirst($debt->description) }}</td>
-                        <td>${{ number_format($debt->quantity) }}</td>
+                        <td>${{ number_format($debt->quantity,2,'.', ',') }}</td>
                         <td>{{ $debt->date_start->format("d/m/Y") }}</td>
                         <td>{{ ucfirst($debt->status) }}</td>
                         <td>{{ $debt->created_at->format('d/m/Y H:i') }}</td>
