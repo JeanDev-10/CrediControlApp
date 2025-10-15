@@ -68,11 +68,10 @@
                         </x-dropdown-link>
 
                         <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST" action="{{ route('logout') }}" id="logout-form">
                             @csrf
 
-                            <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                            <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); confirmLogout();">
                                 {{ __('Cerrar sesión') }}
                             </x-dropdown-link>
                         </form>
@@ -133,11 +132,11 @@
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('logout') }}" id="logout-form">
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
-                                        this.closest('form').submit();">
+                                        confirmLogout();">
                         {{ __('Cerrar sesión') }}
                     </x-responsive-nav-link>
                 </form>
@@ -145,3 +144,22 @@
         </div>
     </div>
 </nav>
+<script>
+    // Función para mostrar la alerta de confirmación
+    function confirmLogout() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Cerrar sesión terminará tu sesión actual.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cerrar sesión',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, enviamos el formulario de cierre de sesión
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+</script>
