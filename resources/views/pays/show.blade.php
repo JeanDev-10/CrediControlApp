@@ -30,11 +30,17 @@
                     </div>
                     <div>
                         <x-input-label value="Registro del pago:" />
-                        <p class="text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $pay->created_at }}"></p>
+                        <p class="text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $pay->created_at }}">
+                        </p>
                     </div>
                     <div>
                         <x-input-label value="Actualización del registro:" />
-                        <p class="text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $pay->updated_at }}"></p>
+                        @if ($pay->created_at != $pay->updated_at)
+                            <p class="text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $pay->updated_at }}">
+                            </p>
+                        @else
+                            <p class="text-gray-900 dark:text-gray-100">No ha sido actualizado</p>
+                        @endif
                     </div>
                 </div>
             </div>
