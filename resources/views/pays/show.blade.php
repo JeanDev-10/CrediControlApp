@@ -30,11 +30,11 @@
                     </div>
                     <div>
                         <x-input-label value="Registro del pago:" />
-                        <p class="text-gray-900 dark:text-gray-100">{{ $pay->created_at }}</p>
+                        <p class="text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $pay->created_at }}"></p>
                     </div>
                     <div>
                         <x-input-label value="Actualización del registro:" />
-                        <p class="text-gray-900 dark:text-gray-100">{{ $pay->updated_at }}</p>
+                        <p class="text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $pay->updated_at }}"></p>
                     </div>
                 </div>
             </div>
@@ -63,7 +63,8 @@
                     </a>
                 @endcan
                 @can('delete', $pay)
-                    <form action="{{ route('pays.destroy', ['pay' => $pay, 'redirect_to' => route('debts.show', $pay->debt)]) }}"
+                    <form
+                        action="{{ route('pays.destroy', ['pay' => $pay, 'redirect_to' => route('debts.show', $pay->debt)]) }}"
                         method="POST" onsubmit="return confirm('Eliminar pago?');">
                         @csrf
                         @method('DELETE')
@@ -88,6 +89,9 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // Seleccionamos todas las celdas que tienen las fechas
+
+        humanizeDatesOfDebts();
         const imgs = document.querySelectorAll(".preview-img"); // Todas las imágenes dentro del contenedor
         const modal = document.getElementById("image-modal");
         const modalImg = document.getElementById("modal-img");
@@ -123,4 +127,14 @@
             }
         });
     });
+
+    const humanizeDatesOfDebts = () => {
+        const fechaElements = document.querySelectorAll('.fecha-entrada');
+
+        // Recorremos cada celda y mostramos la fecha relativa
+        fechaElements.forEach((element) => {
+            const fecha = element.getAttribute('data-fecha');
+            element.innerText = dayjs(fecha).fromNow();
+        });
+    }
 </script>
