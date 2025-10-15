@@ -70,7 +70,7 @@
 </div>
                     <div class="flex justify-end mt-6">
                         <a href="{{ route('pays.index') }}"
-                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2">
+                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2" onclick="event.preventDefault(); confirmExit();">
                             Cancelar
                         </a>
                         <x-terciary-button class="ml-3">Guardar</x-terciary-button>
@@ -126,4 +126,23 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+ function confirmExit() {
+            // Obtenemos el valor del campo 'redirect_to'
+            const redirectTo = document.querySelector('[name="redirect_to"]')?.value;
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Perderás los cambios no guardados.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, salir',
+                cancelButtonText: 'No, quedarme',
+                reverseButtons: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirigimos a la URL contenida en el campo 'redirect_to'
+                    window.location.href = redirectTo || '{{ route('pays.index') }}'; // Si no existe un 'redirect_to', redirige al índice
+                }
+            });
+        }
 </script>

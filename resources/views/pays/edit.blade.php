@@ -57,7 +57,7 @@
                 <img id="modal-img" src="" class="max-w-full max-h-full rounded shadow-lg" />
             </div>
             <div class="flex justify-end mt-6">
-                <a href="{{ route('pays.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2">
+                <a href="{{ route('pays.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2" onclick="event.preventDefault(); confirmExit();">
                     Cancelar
                 </a>
                 <x-terciary-button class="ml-3">Actualizar</x-terciary-button>
@@ -81,7 +81,8 @@
                     @endforeach
                 </div>
 
-                <form action="{{ route('pays.images.destroyAll', $pay->id) }}" method="POST" class="mt-4 w-3/4 mx-auto sm:w-auto">
+                <form action="{{ route('pays.images.destroyAll', $pay->id) }}" method="POST"
+                    class="mt-4 w-3/4 mx-auto sm:w-auto">
                     @csrf @method('DELETE')
                     <x-danger-button onclick="return confirm('Eliminar todas las imágenes?')">Eliminar todas las
                         imágenes</x-danger-button>
@@ -137,4 +138,23 @@
             }
         });
     });
+    function confirmExit() {
+        // Obtenemos el valor del campo 'redirect_to'
+        const redirectTo = document.querySelector('[name="redirect_to"]')?.value;
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Perderás los cambios no guardados.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, salir',
+            cancelButtonText: 'No, quedarme',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirigimos a la URL contenida en el campo 'redirect_to'
+                window.location.href = redirectTo || '{{ route('pays.index') }}'; // Si no existe un 'redirect_to', redirige al índice
+            }
+        });
+    }
 </script>
