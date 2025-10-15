@@ -19,6 +19,7 @@
         "vite": "^7.0.4"
     },
     "dependencies": {
-        "dayjs": "^1.11.18"
+        "dayjs": "^1.11.18",
+        "sweetalert2": "^11.26.2"
     }
 }

@@ -59,10 +59,10 @@
 
             @can('delete', $contact)
                 <form action="{{ route('contacts.destroy', $contact) }}" method="POST"
-                    onsubmit="return confirm('¿Eliminar este contacto?')">
+                     id="delete-form-{{ $contact->id }}">
                     @csrf
                     @method('DELETE')
-                    <x-danger-button>Eliminar</x-danger-button>
+                    <x-danger-button type="button" onclick="confirmDelete({{ $contact->id }})">Eliminar</x-danger-button>
                 </form>
             @endcan
         </div>
@@ -79,4 +79,20 @@
             element.innerText = dayjs(fecha).fromNow();
         });
     });
+    function confirmDelete(contactId) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, se envía el formulario
+                document.getElementById('delete-form-' + contactId).submit();
+            }
+        });
+    }
 </script>
