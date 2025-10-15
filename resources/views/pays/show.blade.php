@@ -71,10 +71,10 @@
                 @can('delete', $pay)
                     <form
                         action="{{ route('pays.destroy', ['pay' => $pay, 'redirect_to' => route('debts.show', $pay->debt)]) }}"
-                        method="POST" onsubmit="return confirm('Eliminar pago?');">
+                        method="POST" id="delete-form-{{ $pay->id }}">
                         @csrf
                         @method('DELETE')
-                        <x-danger-button>Eliminar</x-danger-button>
+                        <x-danger-button type="button" onclick="confirmDelete({{ $pay->id }})">Eliminar</x-danger-button>
                     </form>
                 @endcan
             </div>
@@ -141,6 +141,23 @@
         fechaElements.forEach((element) => {
             const fecha = element.getAttribute('data-fecha');
             element.innerText = dayjs(fecha).fromNow();
+        });
+    }
+
+    function confirmDelete(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, se envía el formulario
+                document.getElementById('delete-form-' + id).submit();
+            }
         });
     }
 </script>

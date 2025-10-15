@@ -3,7 +3,7 @@
     {{-- Filtros --}}
     <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 text-black dark:text-gray-100">
         <div class="flex flex-wrap justify-between items-center gap-6">
-            <strong >Pagos</strong>
+            <strong>Pagos</strong>
             <div class="flex items-center gap-6">
                 <strong>
                     Total a pagar:
@@ -23,7 +23,7 @@
                     <strong>
                         Restante:
                         <span class="text-red-600 dark:text-red-400">
-                            ${{ number_format($remaining,2) }}
+                            ${{ number_format($remaining, 2) }}
                         </span>
                     </strong>
                 @endif
@@ -89,10 +89,11 @@
                                 @can('delete', $pay)
                                     <form
                                         action="{{ route('pays.destroy', ['pay' => $pay, 'redirect_to' => route('debts.show', $debt)]) }}"
-                                        method="POST">
+                                        method="POST" id="delete-form-{{ $pay->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <x-danger-button onclick="return confirm('Eliminar pago?')">Eliminar</x-danger-button>
+                                        <x-danger-button type="button"
+                                            onclick="confirmDelete({{ $pay->id }})">Eliminar</x-danger-button>
                                     </form>
                                 @endcan
                             </div>
@@ -113,3 +114,21 @@
     </div>
 </div>
 </div>
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, se envía el formulario
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+</script>

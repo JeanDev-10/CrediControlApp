@@ -93,11 +93,11 @@
                                             <a href="{{ route('pays.show', $pay) }}"
                                                 class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm">Ver</a>
                                             @can('delete', $pay)
-                                                <form action="{{ route('pays.destroy', $pay) }}" method="POST">
+                                                <form action="{{ route('pays.destroy', $pay) }}" method="POST" id="delete-form-{{ $pay->id }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <x-danger-button
-                                                        onclick="return confirm('Eliminar pago?')">Eliminar</x-danger-button>
+                                                    <x-danger-button type="button"
+                                                        onclick="confirmDelete({{$pay->id}})">Eliminar</x-danger-button>
                                                 </form>
                                             @endcan
                                         </div>
@@ -120,4 +120,21 @@
         </div>
     </div>
 </x-app-layout>
-
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, se envía el formulario
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+</script>
