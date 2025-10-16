@@ -8,7 +8,7 @@
     <div class="py-6">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <x-auth-session-error class="mb-4" :status="session('error')" />
-            <x-auth-session-status class="mb-4" :status="session('status')" />
+            <x-auth-session-status class="mb-4" :status="session('success')" />
 
             {{-- Datos del contacto --}}
             @include("contacts.components.card-contact", ['contact' => $pay->debt->contact, 'showActions' => false])
