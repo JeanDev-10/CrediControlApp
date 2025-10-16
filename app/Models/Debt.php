@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Observers\DebtObserver;
 use App\Policies\DebtPolicy;
+use App\Services\Interfaces\ImageServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
@@ -33,6 +34,19 @@ class Debt extends Model
         'date_start' => 'date',
     ];
 
+    protected static function booted()
+    {
+        static::deleting(function (Debt $debt) {
+            // Eliminar imágenes asociadas a los pagos del debt
+            foreach ($debt->pays as $pay) {
+                foreach ($pay->images as $image) {
+                    $imageService = app(ImageServiceInterface::class);
+                    $imageService->deleteImage($image->image_uuid);
+                }
+            }
+        });
+    }
+
     // Relaciones
     public function user()
     {
@@ -43,6 +57,7 @@ class Debt extends Model
     {
         return $this->belongsTo(Contact::class);
     }
+
     public function pays()
     {
         return $this->hasMany(Pay::class);
