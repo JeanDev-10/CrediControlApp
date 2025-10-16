@@ -86,7 +86,9 @@ class TransactionService
             $after = $data['type'] === 'ingreso'
                 ? $previus + $data['quantity']
                 : $previus - $data['quantity'];
-
+            if($after<0){
+                throw new \Exception('No hay suficiente dinero en el presupuesto para realizar esta transacción.');
+            }
             $updatedTransaction = $this->transactionRepo->update($id, [
                 'description' => $data['description'],
                 'type' => $data['type'],

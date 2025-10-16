@@ -39,7 +39,8 @@
 
                     <div class="flex justify-end">
                         <a href="{{ route('contacts.index') }}"
-                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2">
+                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2"
+                            onclick="event.preventDefault(); confirmExit();">
                             Cancelar
                         </a>
                         <x-terciary-button>
@@ -51,3 +52,20 @@
         </div>
     </div>
 </x-app-layout>
+<script>
+        function confirmExit() {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Perderás los cambios no guardados.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, salir',
+                cancelButtonText: 'No, quedarme',
+                reverseButtons: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '{{ route('contacts.index') }}'; // Redirige a la lista de contactos
+                }
+            });
+        }
+</script>

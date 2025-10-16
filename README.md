@@ -122,9 +122,11 @@ php artisan serve
 
 ## APP funcionando
 
--   ![Dashboard](/public/assets/auth.png)
--   ![Contacts](/public/assets/user.png)
--   ![Transactions](/public/assets/transactions.png)
--   ![Debs](/public/assets/debts.png)
--   ![Pay](/public/assets/pays.png)
--   ![Audit](/public/assets/admin.png)
+-   ![Dashboard](/public/assets/dashboard.jpeg)
+-   ![Contacts](/public/assets/contacts.jpeg)
+-   ![Transactions](/public/assets/transactions.jpeg)
+-   ![Debs](/public/assets/debts.jpeg)
+-   ![Pay](/public/assets/pays.jpeg)
+-   ![Audit](/public/assets/audits.jpeg)
+-   ![Audit](/public/assets/contact_with_debts.jpeg)
+-   ![Audit](/public/assets/debt_with_pays.jpeg)

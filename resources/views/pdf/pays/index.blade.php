@@ -51,7 +51,7 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $pay->debt->contact->name ?? '-' }} {{ $pay->debt->contact->lastname ?? '' }}</td>
                     <td>{{ ucfirst($pay->debt->description) }}</td>
-                    <td>${{ number_format($pay->quantity, 2) }}</td>
+                    <td>${{ number_format($pay->quantity,2,',','.') }}</td>
                     <td>{{ $pay->date->format('d/m/Y') }}</td>
                     <td>{{ ucfirst($pay->debt->status) }}</td>
                 </tr>

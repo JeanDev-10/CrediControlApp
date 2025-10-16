@@ -48,7 +48,7 @@
                     {{-- Botones --}}
                     <div class="flex justify-end gap-3">
                         <a href="{{ route('transactions.index') }}"
-                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2">
+                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md mr-2" onclick="event.preventDefault(); confirmExit();">
                             Cancelar
                         </a>
                         <x-terciary-button>
@@ -60,3 +60,24 @@
         </div>
     </div>
 </x-app-layout>
+<script>
+        function confirmExit() {
+            // Obtenemos el valor del campo 'redirect_to'
+            const redirectTo = document.querySelector('[name="redirect_to"]')?.value;
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Perderás los cambios no guardados.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, salir',
+                cancelButtonText: 'No, quedarme',
+                reverseButtons: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirigimos a la URL contenida en el campo 'redirect_to'
+                    window.location.href = redirectTo || '{{ route('transactions.index') }}'; // Si no existe un 'redirect_to', redirige al índice
+                }
+            });
+        }
+</script>

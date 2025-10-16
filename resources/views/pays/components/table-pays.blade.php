@@ -4,30 +4,34 @@
     <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 text-black dark:text-gray-100">
         <div class="flex flex-wrap justify-between items-center gap-6">
             <strong>Pagos</strong>
-            <div class="flex items-center gap-6">
-                <strong>
-                    Total a pagar:
-                    <span class="text-green-600 dark:text-green-400">
-                        ${{ $debt->quantity }}
-                    </span>
-                </strong>
+            @if ($debt->status == "pendiente")
 
-                <strong>
-                    Total pagado:
-                    <span class="text-green-600 dark:text-green-400">
-                        ${{ $totalPaid }}
-                    </span>
-                </strong>
-
-                @if($remaining >= 0)
+                <div class="flex items-center gap-6">
                     <strong>
-                        Restante:
-                        <span class="text-red-600 dark:text-red-400">
-                            ${{ number_format($remaining, 2) }}
+                        Total a pagar:
+                        <span class="text-green-600 dark:text-green-400">
+                            ${{ number_format($debt->quantity, 2, ',', '.') }}
                         </span>
                     </strong>
-                @endif
-            </div>
+
+                    <strong>
+                        Total pagado:
+                        <span class="text-green-600 dark:text-green-400">
+                            ${{ number_format($totalPaid, 2, ',', '.') }}
+                        </span>
+                    </strong>
+
+                    @if($remaining >= 0)
+                        <strong>
+                            Restante:
+                            <span class="text-red-600 dark:text-red-400">
+                                ${{ number_format($remaining, 2, ',', '.') }}
+                            </span>
+                        </strong>
+                    @endif
+                </div>
+            @endif
+
         </div>
 
         <form method="GET" action="{{ route('debts.show', $debt) }}" class="flex flex-wrap gap-3 items-center mt-5 ">
@@ -67,7 +71,7 @@
             <tbody class="border-b border-gray-200 dark:border-gray-700 text-black dark:text-gray-100">
                 @forelse($pays as $pay)
                     <tr>
-                        <td class="px-4 py-3 text-center text-green-600 dark:text-green-400">${{ $pay->quantity }}
+                        <td class="px-4 py-3 text-center text-green-600 dark:text-green-400">${{ number_format($pay->quantity,2,',','.') }}
                         </td>
                         <td class="px-4 py-3 text-center">{{ $pay->date->format("Y/m/d") }}</td>
                         <td class="px-4 py-3 text-center">
@@ -105,6 +109,13 @@
                         </td>
                     </tr>
                 @endforelse
+                @if ($debt->status !== "pendiente")
+                    <tr>
+                        <td colspan="5" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">Deuda marcada como
+                            pagada.
+                        </td>
+                    </tr>
+                @endif
             </tbody>
         </table>
 

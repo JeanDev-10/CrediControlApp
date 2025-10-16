@@ -73,7 +73,7 @@
                                             {{ $debt->contact->name ?? '-' }} {{ $debt->contact->lastname ?? '' }}
                                         </a>
                                     </td>
-                                    <td class="px-4 py-3 text-center">${{ $debt->quantity }}</td>
+                                    <td class="px-4 py-3 text-center">${{ number_format($debt->quantity,2,'.',',') }}</td>
                                     <td class="px-4 py-3 text-center">{{ $debt->date_start->format('d/m/Y') }}</td>
                                     <td class="px-4 py-3 text-center">
                                         <span class="px-2 py-1 rounded-full text-xs font-semibold {{ $debt->status === 'pendiente' ? 'bg-yellow-100 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-100' : 'bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-100' }}">

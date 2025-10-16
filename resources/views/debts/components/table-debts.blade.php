@@ -47,7 +47,7 @@
                 @forelse($debts as $debt)
                     <tr>
                         <td class="px-4 py-3">{{ $debt->description }}</td>
-                        <td class="px-4 py-3 text-center">${{ $debt->quantity }}</td>
+                        <td class="px-4 py-3 text-center">${{ number_format($debt->quantity,2,'.', ',') }}</td>
                         <td class="px-4 py-3 text-center">{{ $debt->date_start->format('d/m/Y') }}</td>
                         <td class="px-4 py-3 text-center">
                             <span

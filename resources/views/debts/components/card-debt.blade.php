@@ -11,7 +11,7 @@
             <div>
                 <x-input-label value="Cantidad" />
 
-                <p class="mt-1 text-gray-900 dark:text-gray-100">${{ $debt->quantity }}</p>
+                <p class="mt-1 text-gray-900 dark:text-gray-100">${{ number_format($debt->quantity,2,'.', ',') }}</p>
             </div>
             <div>
                 <x-input-label value="Fecha inicio" />
@@ -56,9 +56,9 @@
                 </a>
             </div>
             @can('markAsPaid', $debt)
-                <form action="{{ route('debts.pay', $debt) }}" method="POST">
+                <form action="{{ route('debts.pay', $debt) }}" method="POST" id="markAsPaidForm">
                     @csrf
-                    <x-primary-button onclick="return confirm('Marcar como pagada?')">Marcar pagada</x-primary-button>
+                    <x-primary-button onclick="event.preventDefault();markAsPaid()">Marcar pagada</x-primary-button>
                 </form>
             @endcan
             @can('update', $debt)
@@ -104,6 +104,22 @@
             if (result.isConfirmed) {
                 // Si el usuario confirma, se envía el formulario
                 document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+    function markAsPaid(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, marcar como pagada',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, se envía el formulario
+                document.getElementById('markAsPaidForm').submit();
             }
         });
     }

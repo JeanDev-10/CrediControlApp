@@ -56,7 +56,7 @@
                     </div>
 
                     <div class="flex justify-end mt-6">
-                        <x-secondary-button onclick="history.back()">Cancelar</x-secondary-button>
+                        <x-secondary-button onclick="event.preventDefault(); confirmExit();">Cancelar</x-secondary-button>
                         <x-primary-button class="ml-3">Actualizar</x-primary-button>
                     </div>
                 </form>
@@ -64,3 +64,24 @@
         </div>
     </div>
 </x-app-layout>
+<script>
+        function confirmExit() {
+            // Obtenemos el valor del campo 'redirect_to'
+            const redirectTo = document.querySelector('[name="redirect_to"]')?.value;
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Perderás los cambios no guardados.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, salir',
+                cancelButtonText: 'No, quedarme',
+                reverseButtons: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirigimos a la URL contenida en el campo 'redirect_to'
+                    window.location.href = redirectTo || '{{ route('debts.index') }}'; // Si no existe un 'redirect_to', redirige al índice
+                }
+            });
+        }
+</script>

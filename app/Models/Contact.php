@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Observers\ContactObserver;
 use App\Policies\ContactPolicy;
+use App\Services\Interfaces\ImageServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
@@ -25,10 +26,27 @@ class Contact extends Model
         'user_id',
     ];
 
+    protected static function booted()
+    {
+        static::deleting(function (Contact $contact) {
+            // Eliminar las deudas asociadas al contacto
+            foreach ($contact->debts as $debt) {
+                // Eliminar imágenes asociadas a los pagos de la deuda
+                foreach ($debt->pays as $pay) {
+                    foreach ($pay->images as $image) {
+                        $imageService = app(ImageServiceInterface::class);
+                        $imageService->deleteImage($image->image_uuid); // Elimina físicamente
+                    }
+                }
+            }
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     public function debts()
     {
         return $this->HasMany(Debt::class);
