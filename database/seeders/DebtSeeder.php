@@ -13,7 +13,7 @@ class DebtSeeder extends Seeder
     public function run(): void
     {
         Debt::factory()->count(100)->create([
-            'user_id' => 1,
+            'user_id' => 2,
         ])->each(function ($debt) {
             $debt->update([
                 'contact_id' => rand(1, 20),

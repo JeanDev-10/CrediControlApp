@@ -18,20 +18,21 @@ class UserSeeder extends Seeder
         // User::factory(10)->create();
         $admin_role = Role::create(['name' => 'admin']);
         $client_role = Role::create(['name' => 'client']);
-        Permission::firstOrCreate(['name' => 'user.create']);
-        Permission::firstOrCreate(['name' => 'user.show']);
-        Permission::firstOrCreate(['name' => 'user.update']);
-        Permission::firstOrCreate(['name' => 'user.index']);
-        Permission::firstOrCreate(['name' => 'user.toogleIsActive']);
-        Permission::firstOrCreate(['name' => 'user.exportToPdf']);
+        Permission::firstOrCreate(['name' => 'users.index']);
+        Permission::firstOrCreate(['name' => 'users.show']);
+        Permission::firstOrCreate(['name' => 'users.create']);
+        Permission::firstOrCreate(['name' => 'users.update']);
+        Permission::firstOrCreate(['name' => 'users.destroy']);
+        Permission::firstOrCreate(['name' => 'users.toogleIsActive']);
+        Permission::firstOrCreate(['name' => 'users.exportToPdf']);
         $admin = User::create([
             'name' => 'Jean Pierre',
             'lastname' => 'Rodríguez Zambrano',
             'email' => 'admin@hotmail.com',
             'password' => bcrypt('Jean1234@.'),
         ]);
-        $admin->assignRole('admin');
         $admin_role->syncPermissions(Permission::all());
+        $admin->assignRole('admin');
         User::create([
             'name' => 'Jean Pierre',
             'lastname' => 'Rodríguez',
@@ -44,5 +45,10 @@ class UserSeeder extends Seeder
             'email' => 'test@hotmail.com',
             'password' => bcrypt('password1234'),
         ])->assignRole($client_role);
+         // Crear usuarios con la fábrica y asignarles roles
+        User::factory(20)->create()->each(function ($user) {
+            // Asignar el rol 'client' a cada usuario creado
+            $user->assignRole('client');
+        });
     }
 }

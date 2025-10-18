@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email', 'min:8'],
             'password' => ['required', 'string'],
         ];
     }
@@ -37,19 +38,28 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function authenticate(): void
+    public function authenticate()
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        // Comprueba si el usuario existe y si su cuenta está activa
+        $user = User::where('email', $this->input('email'))->first();
 
+        if ($user && ! $user->is_active) {
             throw ValidationException::withMessages([
-                'password' => trans('Las credenciales no coinciden con nuestros registros.'),
+                'email' => ['Su cuenta está desactivada. Por favor póngase en contacto con el administrador.'],
             ]);
         }
 
-        RateLimiter::clear($this->throttleKey());
+        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+           RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'email' => trans('auth.failed'),
+            ]);
+        }
+
+       RateLimiter::clear($this->throttleKey());
     }
 
     /**

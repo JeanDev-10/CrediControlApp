@@ -10,6 +10,7 @@ use App\Repositories\Eloquent\DebtRepository;
 use App\Repositories\Eloquent\ImageRepository;
 use App\Repositories\Eloquent\PayRepository;
 use App\Repositories\Eloquent\TransactionRepository;
+use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Interfaces\AuditRepositoryInterface;
 use App\Repositories\Interfaces\BudgetRepositoryInterface;
 use App\Repositories\Interfaces\ContactRepositoryInterface;
@@ -18,6 +19,7 @@ use App\Repositories\Interfaces\DebtRepositoryInterface;
 use App\Repositories\Interfaces\ImageRepositoryInterface;
 use App\Repositories\Interfaces\PayRepositoryInterface;
 use App\Repositories\Interfaces\TransactionRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Services\local\ImageServiceLocal;
 use App\Services\Interfaces\ImageServiceInterface;
 use AuditRepository;
@@ -39,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ImageRepositoryInterface::class, ImageRepository::class);
         $this->app->bind(AuditRepositoryInterface::class, EloquentAuditRepository::class);
         $this->app->bind(DashboardRepositoryInterface::class, DashboardRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 
     /**
