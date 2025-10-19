@@ -81,7 +81,7 @@ class UserController extends Controller
      */
     public function destroy(User $user, Request $request)
     {
-        $this->authorize("destroy",$user);
+        $this->authorize("delete",$user);
         $redirectUrl = $request->input('redirect_to');
         $this->service->delete($user->id);
         return redirect($redirectUrl ?? route('users.index'))
