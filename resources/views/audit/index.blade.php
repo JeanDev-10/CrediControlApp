@@ -30,15 +30,18 @@
                                 class="border p-2 rounded w-full" />
                         </div>
                         <div class="w-full my-3 sm:w-auto sm:mt-5">
-                            <x-secondary-button type="submit" class="sm:mt-2 w-full sm:w-auto">Filtrar</x-secondary-button>
+                            <x-secondary-button type="submit"
+                                class="sm:mt-2 w-full sm:w-auto">Filtrar</x-secondary-button>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-4 m-auto sm:m-0">
-                        <a target="_blank"
-                            href="{{ route('audits.export', request()->only(['description', 'from', 'to'])) }}">
-                            <x-terciary-button type="button" class="w-full sm:w-auto">Exportar
-                                PDF</x-terciary-button>
-                        </a>
+                        <x-link-button target="_blank"
+                            href="{{ route('audits.export', request()->only(['description', 'from', 'to'])) }}"
+                            variant="tertiary" class="sm:mt-2">
+                            Exportar
+                            PDF
+                        </x-link-button>
+
                     </div>
 
                 </form>

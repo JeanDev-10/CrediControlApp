@@ -33,14 +33,14 @@
                         </div>
                         <x-secondary-button type="submit" class="mt-4 w-full sm:w-auto">Filtrar</x-secondary-button>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 m-auto sm:m-0">
-                        <a target="_blank" class="ml-auto mt-4"
-                            href="{{ route('pays.export', request()->only(['contact_name', 'quantity', 'date'])) }}">
-                            <x-terciary-button type="button">Exportar PDF</x-terciary-button>
-                        </a>
-                        <a href="{{ route('pays.create') }}" class="mt-4 w-full sm:w-auto">
-                            <x-primary-button type="button">{{ __('Nuevo Pago') }}</x-primary-button>
-                        </a>
+                    <div class="grid grid-cols-2 gap-4 m-auto sm:m-0 sm:mt-2">
+                        <x-link-button href="{{ route('pays.export', request()->only(['name', 'lastname'])) }}"
+                            target="_blank">
+                            Exportar PDF</x-link-button>
+
+                        <x-link-button href="{{ route('pays.create') }}" variant="tertiary">
+                            Nueva Pago
+                        </x-link-button>
                     </div>
                 </form>
             </div>
@@ -69,7 +69,7 @@
                                         </a>
                                     </td>
                                     <td class="px-4 py-3 text-center text-green-600 dark:text-green-400">
-                                        ${{ number_format($pay->quantity,2,',','.') }}</td>
+                                        ${{ number_format($pay->quantity, 2, ',', '.') }}</td>
                                     <td class="px-4 py-3 text-center">
                                         <a href="{{ route('debts.show', $pay->debt) }}"
                                             class="text-blue-700 hover:text-blue-600 dark:text-blue-300 hover:text-blue-200">
@@ -86,14 +86,15 @@
                                     <td class="px-4 py-3 text-center">
                                         <div class="flex flex-wrap justify-center gap-2">
                                             @can('update', $pay)
-                                                <a href="{{ route('pays.edit', $pay) }}">
-                                                    <x-terciary-button type="button">Editar</x-terciary-button>
-                                                </a>
+                                                <x-link-button href="{{ route('pays.edit', $pay) }}" >
+                                                    Editar
+                                                </x-link-button>
                                             @endcan
                                             <a href="{{ route('pays.show', $pay) }}"
                                                 class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm">Ver</a>
                                             @can('delete', $pay)
-                                                <form action="{{ route('pays.destroy', $pay) }}" method="POST" id="delete-form-{{ $pay->id }}">
+                                                <form action="{{ route('pays.destroy', $pay) }}" method="POST"
+                                                    id="delete-form-{{ $pay->id }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <x-danger-button type="button"

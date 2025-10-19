@@ -48,10 +48,12 @@
 
 
             @can("markAsPaid", $debt)
-                <a href="{{ route('pays.create', ["debt_id" => $debt->id, 'redirect_to' => route('debts.show', $debt)]) }}"
-                    class="ml-auto mt-4">
-                    <x-primary-button type="button">{{ __('Nuevo Pago') }}</x-primary-button>
-                </a>
+                        <x-link-button href="{{ route('pays.create', array_merge(
+                    ['debt_id' => $debt->id],
+                    ['redirect_to' => route('debts.show', $debt)]
+                )) }}" class="ml-auto mt-4">
+                            Nuevo Pago
+                        </x-link-button>
             @endcan
 
         </form>
@@ -71,7 +73,8 @@
             <tbody class="border-b border-gray-200 dark:border-gray-700 text-black dark:text-gray-100">
                 @forelse($pays as $pay)
                     <tr>
-                        <td class="px-4 py-3 text-center text-green-600 dark:text-green-400">${{ number_format($pay->quantity,2,',','.') }}
+                        <td class="px-4 py-3 text-center text-green-600 dark:text-green-400">
+                            ${{ number_format($pay->quantity, 2, ',', '.') }}
                         </td>
                         <td class="px-4 py-3 text-center">{{ $pay->date->format("Y/m/d") }}</td>
                         <td class="px-4 py-3 text-center">
@@ -83,10 +86,9 @@
                         <td class="px-4 py-3 text-center">
                             <div class="flex flex-wrap justify-center gap-2">
                                 @can('update', $pay)
-                                    <a
-                                        href="{{ route('pays.edit', ['pay' => $pay, 'redirect_to' => route('debts.show', $debt)]) }}">
-                                        <x-terciary-button type="button">Editar</x-terciary-button>
-                                    </a>
+                                    <x-link-button
+                                        href="{{ route('pays.edit', ['pay' => $pay, 'redirect_to' => route('debts.show', $debt)]) }}"
+                                        variant="tertiary">Editar</x-link-button>
                                 @endcan
                                 <a href="{{ route('pays.show', $pay) }}"
                                     class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm">Ver</a>

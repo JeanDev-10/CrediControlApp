@@ -22,7 +22,7 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <div>
                         <x-input-label value="Cantidad:" />
-                        <p class="text-green-600 dark:text-green-400">${{ number_format($pay->quantity,2,',','.') }}</p>
+                        <p class="text-green-600 dark:text-green-400">${{ number_format($pay->quantity, 2, ',', '.') }}</p>
                     </div>
                     <div>
                         <x-input-label value="Fecha de pago:" />
@@ -60,13 +60,13 @@
 
             {{-- Acciones --}}
             <div class="flex justify-end gap-3">
-                <a href="{{ route('pays.index') }}">
-                    <x-secondary-button>Volver</x-secondary-button>
-                </a>
+                <x-link-button href="{{ route('pays.index') }}" variant="secondary">Volver</x-link-button>
                 @can('update', $pay)
-                    <a href="{{ route('pays.edit', ['pay' => $pay, 'redirect_to' => route('pays.show', $pay->id)]) }}">
-                        <x-terciary-button type="button">Editar</x-terciary-button>
-                    </a>
+                    <x-link-button
+                        href="{{ route('pays.edit', ['pay' => $pay, 'redirect_to' => route('pays.show', $pay->id)]) }}"
+                        variant="tertiary">
+                        Editar
+                    </x-link-button>
                 @endcan
                 @can('delete', $pay)
                     <form

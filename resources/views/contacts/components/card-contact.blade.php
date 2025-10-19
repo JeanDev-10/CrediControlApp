@@ -24,42 +24,38 @@
             </div>
             <div>
                 <x-input-label value="Última actualización" />
-                @if ($contact->created_at!=$contact->updated_at)
-                <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $contact->updated_at }}">
-                @else
-                <p class="mt-1 text-gray-900 dark:text-gray-100">
-                    No ha sido actualizado
-                @endif
+                @php
+                    $hasBeenUpdated = $contact->created_at != $contact->updated_at;
+                @endphp
+                <p class="mt-1 text-gray-900 dark:text-gray-100 {{ $hasBeenUpdated ? 'fecha-entrada' : '' }}"
+                    @if($hasBeenUpdated) data-fecha="{{ $contact->updated_at }}" @endif>
+                    {{ $hasBeenUpdated ? '' : 'No ha sido actualizado' }}
                 </p>
             </div>
+
         </div>
     </div>
+    @if ($showActions)
 
-    @if($showActions)
         {{-- Acciones --}}
         <div class="flex justify-end gap-3 mt-4">
-            <div>
-                <a target="_blank"
-                    href="{{ route('contacts.exportWithDebts', ["contact" => $contact] + request()->only(['description', 'date_start', 'status'])) }}">
-                    <x-terciary-button type="button">
-                        Exportar PDF
-                    </x-terciary-button>
-                </a>
-            </div>
+
+            <x-link-button href="{{ route('contacts.exportWithDebts',array_merge(['contact'=>$contact],request()->only(['description', 'date_start', 'status']))) }}"  target="_blank"
+                variant="tertiary">
+                Exportar PDF
+            </x-link-button>
+
             @can('update', $contact)
-                <a
+                <x-link-button
                     href="{{ route('contacts.edit', ['contact' => $contact, 'redirect_to' => route('contacts.show', $contact)]) }}">
-                    <x-primary-button type="button">Editar</x-primary-button>
-                </a>
+                    Editar
+                </x-link-button>
             @endcan
-
-            <a href="{{ route('contacts.index') }}">
-                <x-secondary-button>Volver</x-secondary-button>
-            </a>
-
+            <x-link-button href="{{ route('contacts.index') }}" variant="secondary">
+                Volver
+            </x-link-button>
             @can('delete', $contact)
-                <form action="{{ route('contacts.destroy', $contact) }}" method="POST"
-                     id="delete-form-{{ $contact->id }}">
+                <form action="{{ route('contacts.destroy', $contact) }}" method="POST" id="delete-form-{{ $contact->id }}">
                     @csrf
                     @method('DELETE')
                     <x-danger-button type="button" onclick="confirmDelete({{ $contact->id }})">Eliminar</x-danger-button>

@@ -23,13 +23,14 @@
                 </form>
 
                 <!-- Acciones -->
-                <div class="grid grid-cols-2 gap-2 sm:gap-0 w-full lg:w-auto">
-                    <a target="_blank" href="{{ route('contacts.export', request()->only(['name', 'lastname'])) }}">
-                        <x-terciary-button type="button">Exportar PDF</x-terciary-button>
-                    </a>
-                    <a href="{{ route('contacts.create') }}">
-                        <x-primary-button type="button">Crear Contacto</x-primary-button>
-                    </a>
+                <div class="grid grid-cols-2 gap-2 sm:gap-4 w-full lg:w-auto">
+                    <x-link-button href="{{ route('contacts.export', request()->only(['name', 'lastname'])) }}"
+                        target="_blank">
+                        Exportar PDF</x-link-button>
+
+                    <x-link-button href="{{ route('contacts.create') }}" variant="tertiary">
+                        Crear Contacto
+                    </x-link-button>
                 </div>
             </div>
 
@@ -62,13 +63,16 @@
                                 @endif
                                 <td
                                     class="px-4 py-4 text-black dark:text-gray-100 space-y-1 sm:space-y-0 sm:space-x-1 flex flex-col sm:flex-row flex-wrap">
-                                    <a href="{{ route('contacts.edit', $contact) }}">
-                                        <x-primary-button type="button">Editar</x-primary-button>
-                                    </a>
-                                    <a href="{{ route('contacts.show', $contact) }}">
-                                        <x-secondary-button>Ver</x-secondary-button>
-                                    </a>
-                                    <form method="POST" action="{{ route('contacts.destroy', $contact) }}" class="inline" id="delete-form-{{ $contact->id }}">
+                                    <x-link-button href="{{ route('contacts.edit', $contact) }}" variant="primary">
+                                        Editar
+                                    </x-link-button>
+
+                                    <x-link-button href="{{ route('contacts.show', $contact) }}" variant="secondary">
+                                        Ver
+                                    </x-link-button>
+
+                                    <form method="POST" action="{{ route('contacts.destroy', $contact) }}" class="inline"
+                                        id="delete-form-{{ $contact->id }}">
                                         @csrf
                                         @method('DELETE')
                                         <x-danger-button type="button" onclick="confirmDelete({{ $contact->id }})">
