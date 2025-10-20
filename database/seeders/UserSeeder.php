@@ -25,6 +25,8 @@ class UserSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'users.destroy']);
         Permission::firstOrCreate(['name' => 'users.toogleIsActive']);
         Permission::firstOrCreate(['name' => 'users.exportToPdf']);
+        Permission::firstOrCreate(['name' => 'audits.exportToPdf']);
+        Permission::firstOrCreate(['name' => 'audits.index']);
         $admin = User::create([
             'name' => 'Jean Pierre',
             'lastname' => 'Rodríguez Zambrano',

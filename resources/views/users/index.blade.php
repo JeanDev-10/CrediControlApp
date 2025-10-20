@@ -31,13 +31,15 @@
                     <x-secondary-button type="submit">Buscar</x-secondary-button>
                 </form>
 
-                <div class="grid grid-cols-2 gap-2 sm:gap-0 w-full lg:w-auto">
-                    <a target="_blank" href="{{ route('users.export', request()->only(['name', 'lastname','email','is_active'])) }}">
-                        <x-terciary-button type="button">Exportar PDF</x-terciary-button>
-                    </a>
-                    <a href="{{ route('users.create') }}">
-                        <x-primary-button type="button">Crear Usuario</x-primary-button>
-                    </a>
+                <div class="grid grid-cols-2 gap-2 sm:gap-2 w-full lg:w-auto">
+                    <x-link-button target="_blank"
+                        href="{{ route('users.export', request()->only(['name', 'lastname', 'email', 'is_active'])) }}">
+                        Exportar PDF
+                    </x-link-button>
+                    <x-link-button href="{{ route('users.create') }}" variant="tertiary">
+                        Crear Usuario
+                    </x-link-button>
+
                 </div>
             </div>
 
@@ -79,12 +81,13 @@
                                 @endif
 
                                 <td class="px-4 py-4 flex gap-2 flex-wrap">
-                                    <a href="{{ route('users.edit', $user) }}">
-                                        <x-primary-button>Editar</x-primary-button>
-                                    </a>
-                                    <a href="{{ route('users.show', $user) }}">
-                                        <x-secondary-button>Ver</x-secondary-button>
-                                    </a>
+                                    <x-link-button href="{{ route('users.edit', $user) }}">
+                                        Editar
+                                    </x-link-button>
+                                    <x-link-button href="{{ route('users.show', $user) }}" variant="tertiary">
+                                        Ver
+                                    </x-link-button>
+
                                     <form method="POST" action="{{ route('users.destroy', $user) }}"
                                         id="delete-form-{{ $user->id }}">
                                         @csrf

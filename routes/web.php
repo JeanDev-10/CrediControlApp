@@ -84,10 +84,10 @@ Route::middleware(['auth', 'ensureUserIsActive'])->group(function () {
         ->name('pays.images.destroyAll')->middleware('role:client');
 
     // auditar
-    Route::get('/audit', [AuditController::class, 'index'])->name('audit.index');
+    Route::get('/audits', [AuditController::class, 'index'])->name('audit.index')->middleware("permission:audits.index");
     // exportar a pdf auditoria
     // routes/web.php
-    Route::get('/audit/export/pdf', [AuditController::class, 'exportPdf'])->name('audits.export');
+    Route::get('/audits/export/pdf', [AuditController::class, 'exportPdf'])->name('audits.export')->middleware("permission:audits.index");
 
 });
 

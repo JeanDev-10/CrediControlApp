@@ -39,19 +39,19 @@
 </div>
 
 <div class="flex justify-end gap-3 mt-4">
-    <a href="{{ route('users.index') }}">
-        <x-secondary-button>Volver</x-secondary-button>
-    </a>
-    <a href="{{ route('users.edit', ['user' => $user, 'redirect_to' => route('users.show', $user)]) }}">
-        <x-primary-button>Editar</x-primary-button>
-    </a>
+    <x-link-button href="{{ route('users.index') }}" variant="secondary">
+        Volver
+    </x-link-button>
+    <x-link-button href="{{ route('users.edit', ['user' => $user, 'redirect_to' => route('users.show', $user)]) }}" >
+        Editar
+    </x-link-button>
     @can('update', $user)
         <form method="POST"
             action="{{ route('users.toggleIsActive', ['user' => $user, 'redirect_to' => route('users.show', $user)]) }}">
             @csrf
             @method('PATCH')
             <input type="hidden" name="redirect_to" value="{{ route("users.show", $user) }}">
-            <x-terciary-button>Cambiar estado</x-terciary-button>
+            <x-primary-button type="submit">Cambiar estado</x-primary-button>
         </form>
     @endcan
 </div>
