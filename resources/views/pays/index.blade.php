@@ -34,9 +34,10 @@
                         <x-secondary-button type="submit" class="mt-4 w-full sm:w-auto">Filtrar</x-secondary-button>
                     </div>
                     <div class="grid grid-cols-2 gap-4 m-auto sm:m-0 sm:mt-2">
-                        <x-link-button href="{{ route('pays.export', request()->only(['name', 'lastname'])) }}"
-                            target="_blank">
-                            Exportar PDF</x-link-button>
+
+                        <a href="{{ route('pays.export', request()->only(['contact_name', 'quantity','date'])) }}"
+                            target="_blank" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 border border-blue-300 dark:border-blue-500 font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-blue-800 disabled:opacity-25 transition ease-in-out duration-150">
+                            Exportar PDF</a>
 
                         <x-link-button href="{{ route('pays.create') }}" variant="tertiary">
                             Nueva Pago

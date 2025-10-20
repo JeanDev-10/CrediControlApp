@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Repositories\Eloquent;
+
 use App\Repositories\Interfaces\AuditRepositoryInterface;
 use Spatie\Activitylog\Models\Activity;
 
@@ -14,7 +16,7 @@ class AuditRepository implements AuditRepositoryInterface
 
     public function getAll(array $filters = [], int $perPage = 10)
     {
-        $query = $this->model::where('causer_id', auth()->id());
+        $query = $this->model::query();
 
         // Filtro por descripción
         if (! empty($filters['description'])) {
@@ -24,6 +26,9 @@ class AuditRepository implements AuditRepositoryInterface
         // Filtro por fecha
         if (! empty($filters['from']) && ! empty($filters['to'])) {
             $query->whereBetween('created_at', [$filters['from'], $filters['to']]);
+        }
+        if (! empty($filters['user_id'])) {
+            $query->where('causer_id', $filters['user_id']);
         }
 
         return $query->latest()->paginate($perPage)->withQueryString();
@@ -31,7 +36,7 @@ class AuditRepository implements AuditRepositoryInterface
 
     public function getAllWithoutPaginations(array $filters = [])
     {
-        $query = $this->model::where('causer_id', auth()->id());
+        $query = $this->model::query();
 
         // Filtro por descripción
         if (! empty($filters['description'])) {
@@ -41,6 +46,9 @@ class AuditRepository implements AuditRepositoryInterface
         // Filtro por fecha
         if (! empty($filters['from']) && ! empty($filters['to'])) {
             $query->whereBetween('created_at', [$filters['from'], $filters['to']]);
+        }
+        if (! empty($filters['user_id'])) {
+            $query->where('causer_id', $filters['user_id']);
         }
 
         return $query->latest()->get();

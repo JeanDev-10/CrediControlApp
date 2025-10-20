@@ -23,11 +23,10 @@
                 </form>
 
                 <!-- Acciones -->
-                <div class="grid grid-cols-2 gap-2 sm:gap-4 w-full lg:w-auto">
-                    <x-link-button href="{{ route('contacts.export', request()->only(['name', 'lastname'])) }}"
-                        target="_blank">
-                        Exportar PDF</x-link-button>
-
+                <div class="grid grid-cols-2 gap-2 sm:gap-4 w-full sm:w-auto">
+                    <a href="{{ route('contacts.export', request()->only(['name', 'lastname'])) }}" target="_blank"
+                        class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 border border-blue-300 dark:border-blue-500 font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-blue-800 disabled:opacity-25 transition ease-in-out duration-150">
+                        Exportar PDF</a>
                     <x-link-button href="{{ route('contacts.create') }}" variant="tertiary">
                         Crear Contacto
                     </x-link-button>

@@ -97,9 +97,7 @@ class UserService
      */
     public function exportAll(array $filters = [])
     {
-        activity()
-            ->causedBy($this->getUserLoggedIn())
-            ->log('Exportó el listado de usuarios a PDF');
+
         if (isset($filters['is_active'])) {
             $filters['is_active'] = (int) $filters['is_active'];
         }

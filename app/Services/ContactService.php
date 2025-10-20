@@ -58,10 +58,6 @@ class ContactService
 
     public function exportAll(array $filters = [])
     {
-        activity()
-            ->causedBy($this->userService->getUserLoggedIn())
-            ->log('Generó PDF de contactos');
-
         return $this->repository->getAllForExport($filters);
     }
 }

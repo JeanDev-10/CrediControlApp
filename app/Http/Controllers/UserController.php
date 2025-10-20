@@ -111,7 +111,9 @@ class UserController extends Controller
             'filters' => $filters,
             'user'=>$this->service->getUserLoggedIn()
         ]);
-
+        activity()
+            ->causedBy($this->service->getUserLoggedIn())
+            ->log('Exportó el listado de usuarios a PDF');
         return $pdf->stream('usuarios.pdf');
     }
 }
