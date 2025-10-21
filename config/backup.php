@@ -197,12 +197,12 @@ return [
      */
     'notifications' => [
         'notifications' => [
-            \Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class => ['mail'],
+            \Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class => ['mail', 'discord'],
+            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => ['mail', 'discord'],
+            \Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class => ['mail', 'discord'],
+            \Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class => ['mail', 'discord'],
+            \Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class => ['mail', 'discord'],
+            \Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class => ['mail', 'discord'],
         ],
 
         /*
@@ -234,12 +234,12 @@ return [
         ],
 
         'discord' => [
-            'webhook_url' => '',
+            'webhook_url' => env('DISCORD_ALERTS_WEBHOOK_URL'),
 
             /*
              * If this is an empty string, the name field on the webhook will be used.
              */
-            'username' => '',
+            'username' => 'Laravel Backup',
 
             /*
              * If this is an empty string, the avatar on the webhook will be used.
