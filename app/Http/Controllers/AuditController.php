@@ -29,8 +29,9 @@ class AuditController extends Controller
         // Destructura el arreglo para obtener variables separadas
         $logs = $result['logs'];
         $user = $result['user'];
+        $userLogged=$this->userService->getUserLoggedIn();
         // Pasar los logs a la vista PDF
-        $pdf = Pdf::loadView('pdf.audits.index', compact('logs', 'user', 'filters'));
+        $pdf = Pdf::loadView('pdf.audits.index', compact('logs', 'user', 'filters','userLogged'));
 
         // Descargar el PDF
         return $pdf->stream('mi-auditoria.pdf');

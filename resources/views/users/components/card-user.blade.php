@@ -42,9 +42,9 @@
     <x-link-button href="{{ route('users.index') }}" variant="secondary">
         Volver
     </x-link-button>
-    <x-link-button href="{{ route('users.edit', ['user' => $user, 'redirect_to' => route('users.show', $user)]) }}" >
+    <a href="{{ route('users.edit', ['user' => $user, 'redirect_to' => route('users.show', $user)]) }}" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
         Editar
-    </x-link-button>
+    </a>
     @can('update', $user)
         <form method="POST"
             action="{{ route('users.toggleIsActive', ['user' => $user, 'redirect_to' => route('users.show', $user)]) }}">
@@ -54,6 +54,16 @@
             <x-primary-button type="submit">Cambiar estado</x-primary-button>
         </form>
     @endcan
+    @can("delete", $user)
+        <form method="POST" action="{{ route('users.destroy', $user) }}" id="delete-form-{{ $user->id }}">
+            @csrf
+            @method('DELETE')
+            <x-danger-button type="button" onclick="confirmDelete({{ $user->id }})">
+                Eliminar
+            </x-danger-button>
+        </form>
+    @endcan
+
 </div>
 
 <script>
@@ -63,4 +73,16 @@
             el.innerText = dayjs(fecha).fromNow();
         });
     });
+    function confirmDelete(userId) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then(result => {
+            if (result.isConfirmed) document.getElementById('delete-form-' + userId).submit();
+        });
+    }
 </script>

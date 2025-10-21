@@ -39,7 +39,7 @@
 <body>
     <div class="header">
         <h2>Reporte de auditoria</h2>
-        <p><strong>Generado por:</strong> {{ $user->name }} {{ $user->lastname }}</p>
+        <p><strong>Generado por:</strong> {{ $userLogged->name }} {{ $userLogged->lastname }}</p>
         <p><strong>Fecha:</strong> {{ now()->format('d/m/Y H:i') }}</p>
     </div>
     {{-- Filtros aplicados --}}

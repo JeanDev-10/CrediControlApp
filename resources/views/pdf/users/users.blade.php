@@ -50,7 +50,7 @@
                 <li><strong>Email:</strong> {{ $filters['email'] }}</li>
             @endif
             @if(isset($filters['is_active']))
-                <li><strong>Estado:</strong> {{ $filters['is_active'] === 1 ? 'Activo' : 'Inactivo' }}</li>
+                <li><strong>Estado:</strong> {{ $filters['is_active'] == 1 ? 'Activo' : 'Inactivo' }}</li>
             @endif
         </ul>
     @else

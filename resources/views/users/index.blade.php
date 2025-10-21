@@ -32,13 +32,13 @@
                 </form>
 
                 <div class="grid grid-cols-2 gap-2 sm:gap-2 w-full lg:w-auto">
-                    <x-link-button target="_blank"
-                        href="{{ route('users.export', request()->only(['name', 'lastname', 'email', 'is_active'])) }}">
+                    <a target="_blank"
+                        href="{{ route('users.export', request()->only(['name', 'lastname', 'email', 'is_active'])) }}" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                         Exportar PDF
-                    </x-link-button>
-                    <x-link-button href="{{ route('users.create') }}" variant="tertiary">
+                    </a>
+                    <a href="{{ route('users.create') }}" class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 border border-blue-300 dark:border-blue-500 font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-blue-800 disabled:opacity-25 transition ease-in-out duration-150">
                         Crear Usuario
-                    </x-link-button>
+                    </a>
 
                 </div>
             </div>

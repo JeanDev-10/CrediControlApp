@@ -26,11 +26,11 @@
                 </select>
             </div>
             <x-secondary-button type="submit" class="mt-4">Filtrar</x-secondary-button>
-            <x-link-button
+            <a
                 href="{{ route('debts.create', ['contact_id' => $contact->id, 'redirect_to' => route('contacts.show', $contact)])}}"
-                class="ml-auto mt-4">
+                class="ml-auto mt-4 inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                 Nueva Deuda
-            </x-link-button>
+            </a>
             </a>
 
         </form>
@@ -61,15 +61,15 @@
                         <td class="px-4 py-3 text-center">
                             <div class="flex flex-wrap justify-center gap-2">
                                 @can('update', $debt)
-                                    <x-link-button
+                                    <a
                                         href="{{ route('debts.edit', ['debt' => $debt, 'redirect_to' => route('contacts.show', $contact)]) }}"
-                                        variant="tertiary">
+                                        class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 border border-blue-300 dark:border-blue-500 font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-blue-800 disabled:opacity-25 transition ease-in-out duration-150">
                                         Editar
-                                    </x-link-button>
+                                    </a>
 
                                 @endcan
                                 <x-link-button href="{{ route('debts.show', $debt) }}"
-                                    class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm">
+                                    class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm" variant="secondary">
                                     Ver
                                 </x-link-button>
                                 @can('delete', $debt)
