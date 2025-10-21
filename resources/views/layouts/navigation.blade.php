@@ -11,36 +11,56 @@
                 </div>
 
                 <!-- Navigation Links -->
+                @role("client")
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                @endrole
+                @can("users.index")
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                            {{ __('Usuarios') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+                @role("client")
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('contacts.index')" :active="request()->routeIs('contacts.*')">
                         {{ __('Contactos') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.*')">
-                        {{ __('Transacciones') }}
-                    </x-nav-link>
-                </div>
+                @endrole
+                @role("client")
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.*')">
+                            {{ __('Transacciones') }}
+                        </x-nav-link>
+                    </div>
+                @endrole
+                @role("client")
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('debts.index')" :active="request()->routeIs('debts.*')">
                         {{ __('Deudas') }}
                     </x-nav-link>
                 </div>
+                @endrole
+                @role("client")
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('pays.index')" :active="request()->routeIs('pays.*')">
                         {{ __('Pagos') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('audit.index')" :active="request()->routeIs('audit.*')">
-                        {{ __('Auditoria') }}
-                    </x-nav-link>
-                </div>
+                @endrole
+                @can("audits.index")
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('audit.index')" :active="request()->routeIs('audit.*')">
+                            {{ __('Auditoria') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+
             </div>
 
             <!-- Settings Dropdown -->
@@ -98,24 +118,42 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+            @role("client")
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+                @endrole
             </x-responsive-nav-link>
+            @can("users.index")
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                    {{ __('Usuarios') }}
+                </x-responsive-nav-link>
+            @endcan
+            @role("client")
             <x-responsive-nav-link :href="route('contacts.index')" :active="request()->routeIs('contacts.*')">
                 {{ __('Contactos') }}
             </x-responsive-nav-link>
+            @endrole
+            @role("client")
             <x-responsive-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.*')">
                 {{ __('Transacciones') }}
             </x-responsive-nav-link>
+            @endrole
+            @role("client")
             <x-responsive-nav-link :href="route('debts.index')" :active="request()->routeIs('debts.*')">
                 {{ __('Deudas') }}
             </x-responsive-nav-link>
+            @endrole
+            @role("client")
             <x-responsive-nav-link :href="route('pays.index')" :active="request()->routeIs('pays.*')">
                 {{ __('Pagos') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('audit.index')" :active="request()->routeIs('audit.*')">
-                {{ __('Auditoría') }}
-            </x-responsive-nav-link>
+            @endrole
+            @can("audits.index")
+                <x-responsive-nav-link :href="route('audit.index')" :active="request()->routeIs('audit.*')">
+                    {{ __('Auditoría') }}
+                </x-responsive-nav-link>
+            @endcan
+
         </div>
 
 

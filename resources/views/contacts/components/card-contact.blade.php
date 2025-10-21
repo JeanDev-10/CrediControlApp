@@ -24,42 +24,39 @@
             </div>
             <div>
                 <x-input-label value="Última actualización" />
-                @if ($contact->created_at!=$contact->updated_at)
-                <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $contact->updated_at }}">
-                @else
-                <p class="mt-1 text-gray-900 dark:text-gray-100">
-                    No ha sido actualizado
-                @endif
+                @php
+                    $hasBeenUpdated = $contact->created_at != $contact->updated_at;
+                @endphp
+                <p class="mt-1 text-gray-900 dark:text-gray-100 {{ $hasBeenUpdated ? 'fecha-entrada' : '' }}"
+                    @if($hasBeenUpdated) data-fecha="{{ $contact->updated_at }}" @endif>
+                    {{ $hasBeenUpdated ? '' : 'No ha sido actualizado' }}
                 </p>
             </div>
+
         </div>
     </div>
+    @if ($showActions)
 
-    @if($showActions)
         {{-- Acciones --}}
         <div class="flex justify-end gap-3 mt-4">
-            <div>
-                <a target="_blank"
-                    href="{{ route('contacts.exportWithDebts', ["contact" => $contact] + request()->only(['description', 'date_start', 'status'])) }}">
-                    <x-terciary-button type="button">
-                        Exportar PDF
-                    </x-terciary-button>
-                </a>
-            </div>
-            @can('update', $contact)
-                <a
-                    href="{{ route('contacts.edit', ['contact' => $contact, 'redirect_to' => route('contacts.show', $contact)]) }}">
-                    <x-primary-button type="button">Editar</x-primary-button>
-                </a>
-            @endcan
 
-            <a href="{{ route('contacts.index') }}">
-                <x-secondary-button>Volver</x-secondary-button>
+            <a href="{{ route('contacts.exportWithDebts',array_merge(['contact'=>$contact],request()->only(['description', 'date_start', 'status']))) }}"  target="_blank"
+                class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                Exportar PDF
             </a>
 
+
+            @can('update', $contact)
+                <a
+                    href="{{ route('contacts.edit', ['contact' => $contact, 'redirect_to' => route('contacts.show', $contact)]) }}" class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 border border-blue-300 dark:border-blue-500 font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-blue-800 disabled:opacity-25 transition ease-in-out duration-150">
+                    Editar
+                </a>
+            @endcan
+            <x-link-button href="{{ route('contacts.index') }}" variant="secondary">
+                Volver
+            </x-link-button>
             @can('delete', $contact)
-                <form action="{{ route('contacts.destroy', $contact) }}" method="POST"
-                     id="delete-form-{{ $contact->id }}">
+                <form action="{{ route('contacts.destroy', $contact) }}" method="POST" id="delete-form-{{ $contact->id }}">
                     @csrf
                     @method('DELETE')
                     <x-danger-button type="button" onclick="confirmDelete({{ $contact->id }})">Eliminar</x-danger-button>

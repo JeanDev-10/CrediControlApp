@@ -29,13 +29,16 @@ class Contact extends Model
     protected static function booted()
     {
         static::deleting(function (Contact $contact) {
+            // Eliminar las deudas y las imágenes asociadas
             // Eliminar las deudas asociadas al contacto
             foreach ($contact->debts as $debt) {
                 // Eliminar imágenes asociadas a los pagos de la deuda
                 foreach ($debt->pays as $pay) {
                     foreach ($pay->images as $image) {
+                        // Obtener el servicio de imágenes
                         $imageService = app(ImageServiceInterface::class);
-                        $imageService->deleteImage($image->image_uuid); // Elimina físicamente
+                        // Eliminar físicamente la imagen utilizando el UUID
+                        $imageService->deleteImage($image->image_uuid);
                     }
                 }
             }

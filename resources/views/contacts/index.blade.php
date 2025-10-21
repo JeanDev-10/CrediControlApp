@@ -23,13 +23,13 @@
                 </form>
 
                 <!-- Acciones -->
-                <div class="grid grid-cols-2 gap-2 sm:gap-0 w-full lg:w-auto">
-                    <a target="_blank" href="{{ route('contacts.export', request()->only(['name', 'lastname'])) }}">
-                        <x-terciary-button type="button">Exportar PDF</x-terciary-button>
-                    </a>
-                    <a href="{{ route('contacts.create') }}">
-                        <x-primary-button type="button">Crear Contacto</x-primary-button>
-                    </a>
+                <div class="grid grid-cols-2 gap-2 sm:gap-4 w-full sm:w-auto">
+                    <a href="{{ route('contacts.export', request()->only(['name', 'lastname'])) }}" target="_blank"
+                        class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 border border-blue-300 dark:border-blue-500 font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-blue-800 disabled:opacity-25 transition ease-in-out duration-150 ">
+                        Exportar PDF</a>
+                    <x-link-button href="{{ route('contacts.create') }}" variant="tertiary">
+                        Crear Contacto
+                    </x-link-button>
                 </div>
             </div>
 
@@ -62,13 +62,16 @@
                                 @endif
                                 <td
                                     class="px-4 py-4 text-black dark:text-gray-100 space-y-1 sm:space-y-0 sm:space-x-1 flex flex-col sm:flex-row flex-wrap">
-                                    <a href="{{ route('contacts.edit', $contact) }}">
-                                        <x-primary-button type="button">Editar</x-primary-button>
-                                    </a>
-                                    <a href="{{ route('contacts.show', $contact) }}">
-                                        <x-secondary-button>Ver</x-secondary-button>
-                                    </a>
-                                    <form method="POST" action="{{ route('contacts.destroy', $contact) }}" class="inline" id="delete-form-{{ $contact->id }}">
+                                    <x-link-button href="{{ route('contacts.edit', $contact) }}" variant="primary">
+                                        Editar
+                                    </x-link-button>
+
+                                    <x-link-button href="{{ route('contacts.show', $contact) }}" variant="secondary">
+                                        Ver
+                                    </x-link-button>
+
+                                    <form method="POST" action="{{ route('contacts.destroy', $contact) }}" class="inline"
+                                        id="delete-form-{{ $contact->id }}">
                                         @csrf
                                         @method('DELETE')
                                         <x-danger-button type="button" onclick="confirmDelete({{ $contact->id }})">

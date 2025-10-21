@@ -11,7 +11,7 @@
             <div>
                 <x-input-label value="Cantidad" />
 
-                <p class="mt-1 text-gray-900 dark:text-gray-100">${{ number_format($debt->quantity,2,'.', ',') }}</p>
+                <p class="mt-1 text-gray-900 dark:text-gray-100">${{ number_format($debt->quantity, 2, '.', ',') }}</p>
             </div>
             <div>
                 <x-input-label value="Fecha inicio" />
@@ -38,40 +38,36 @@
                     <p class="mt-1 text-gray-900 dark:text-gray-100 fecha-entrada" data-fecha="{{ $debt->updated_at }}"></p>
                 @else
                     <p class="mt-1 text-gray-900 dark:text-gray-100">No ha sido actualizado</p>
-
                 @endif
 
             </div>
         </div>
     </div>
+    @if ($showActions)
 
-    @if($showActions)
         <div class="mt-5 flex justify-end gap-3 flex-wrap">
-            <div>
-                <a target="_blank"
-                    href="{{ route('debts.exportWithPays', ["debt" => $debt] + request()->only(['quantity', 'date'])) }}">
-                    <x-terciary-button type="button">
-                        Exportar PDF
-                    </x-terciary-button>
-                </a>
-            </div>
+            <a
+                href="{{ route('debts.exportWithPays', array_merge(['debt' => $debt], request()->only(['quantity', 'date']))) }}"
+                 target="_blank" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                Exportar PDF
+            </a>
             @can('markAsPaid', $debt)
                 <form action="{{ route('debts.pay', $debt) }}" method="POST" id="markAsPaidForm">
                     @csrf
-                    <x-primary-button onclick="event.preventDefault();markAsPaid()">Marcar pagada</x-primary-button>
+                    <x-secondary-button onclick="event.preventDefault();markAsPaid()">Marcar pagada</x-secondary-button>
                 </form>
             @endcan
             @can('update', $debt)
-                <a href="{{ route('debts.edit', ['debt' => $debt, 'redirect_to' => route('debts.show', $debt)]) }}">
-                    <x-terciary-button type="button">Editar</x-terciary-button>
+                <a href="{{ route('debts.edit', ['debt' => $debt, 'redirect_to' => route('debts.show', $debt)]) }}"
+                   class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" >
+                    Editar
                 </a>
             @endcan
-            <a href="{{ route('debts.index') }}">
-                <x-secondary-button>Volver</x-secondary-button>
-            </a>
+            <x-link-button href="{{ route('debts.index') }}" variant="secondary">
+                Volver
+            </x-link-button>
             @can('delete', $debt)
-                <form method="POST" action="{{ route('debts.destroy', $debt) }}"
-                    id="delete-form-{{ $debt->id }}">
+                <form method="POST" action="{{ route('debts.destroy', $debt) }}" id="delete-form-{{ $debt->id }}">
                     @csrf
                     @method('DELETE')
                     <x-danger-button type="button" onclick="confirmDelete({{ $debt->id }})">Eliminar</x-danger-button>

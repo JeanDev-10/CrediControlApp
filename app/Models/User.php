@@ -4,15 +4,20 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Observers\UserObserver;
+use App\Services\Interfaces\ImageServiceInterface;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +29,7 @@ class User extends Authenticatable
         'lastname',
         'email',
         'password',
+        'is_active'
     ];
 
     /**
@@ -48,6 +54,27 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected static function booted()
+    {
+        static::deleting(function (User $user) {
+            // Eliminar las deudas y las imágenes asociadas
+            foreach ($user->contacts as $contact) {
+                // Eliminar las deudas asociadas al contacto
+                foreach ($contact->debts as $debt) {
+                    // Eliminar imágenes asociadas a los pagos de la deuda
+                    foreach ($debt->pays as $pay) {
+                        foreach ($pay->images as $image) {
+                            // Obtener el servicio de imágenes
+                            $imageService = app(ImageServiceInterface::class);
+                            // Eliminar físicamente la imagen utilizando el UUID
+                            $imageService->deleteImage($image->image_uuid);
+                        }
+                    }
+                }
+            }
+        });
+    }
     protected function name(): Attribute
     {
         return Attribute::make(
@@ -66,4 +93,9 @@ class User extends Authenticatable
             set: fn ($value) => strtolower($value),
         );
     }
+
+    public function contacts(){
+        return $this->hasMany(Contact::class);
+    }
+
 }

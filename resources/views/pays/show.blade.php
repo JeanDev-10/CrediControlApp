@@ -22,7 +22,8 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <div>
                         <x-input-label value="Cantidad:" />
-                        <p class="text-green-600 dark:text-green-400">${{ number_format($pay->quantity,2,',','.') }}</p>
+                        <p class="text-green-600 dark:text-green-400">${{ number_format($pay->quantity, 2, ',', '.') }}
+                        </p>
                     </div>
                     <div>
                         <x-input-label value="Fecha de pago:" />
@@ -60,12 +61,11 @@
 
             {{-- Acciones --}}
             <div class="flex justify-end gap-3">
-                <a href="{{ route('pays.index') }}">
-                    <x-secondary-button>Volver</x-secondary-button>
-                </a>
+                <x-link-button href="{{ route('pays.index') }}" variant="secondary">Volver</x-link-button>
                 @can('update', $pay)
-                    <a href="{{ route('pays.edit', ['pay' => $pay, 'redirect_to' => route('pays.show', $pay->id)]) }}">
-                        <x-terciary-button type="button">Editar</x-terciary-button>
+                    <a href="{{ route('pays.edit', ['pay' => $pay, 'redirect_to' => route('pays.show', $pay->id)]) }}"
+                        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 border border-blue-300 dark:border-blue-500 font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-blue-800 disabled:opacity-25 transition ease-in-out duration-150">
+                        Editar
                     </a>
                 @endcan
                 @can('delete', $pay)
