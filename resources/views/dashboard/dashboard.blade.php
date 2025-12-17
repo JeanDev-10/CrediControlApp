@@ -13,7 +13,7 @@
     @endrole
     {{-- === CARDS === --}}
     @role("client")
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4 max-w-7xl mx-auto ">
         {{-- Total de contactos --}}
         <x-card-stat title="Contactos Registrados" :value="$stats['total_contacts']" color="text-blue-600">
             <x-slot name="icon">
