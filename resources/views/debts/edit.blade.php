@@ -54,7 +54,6 @@
                         <x-input-error :messages="$errors->get('contact_id')" class="mt-2" />
                         <small class="text-gray-500 dark:text-gray-400">Escribe para filtrar rápidamente.</small>
                     </div>
-
                     <div class="flex justify-end mt-6">
                         <x-secondary-button onclick="event.preventDefault(); confirmExit();">Cancelar</x-secondary-button>
                         <x-primary-button class="ml-3">Actualizar</x-primary-button>
