@@ -21,4 +21,24 @@ class UpdateDebtRequest extends FormRequest
             'status' => 'nullable|in:pendiente,pagada',
         ];
     }
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $debt = $this->route('debt');
+
+            if (!$debt) {
+                return;
+            }
+
+            $paidAmount = $debt->pays()->sum('quantity');
+            $newQuantity = (float) $this->input('quantity');
+
+            if ($newQuantity < $paidAmount) {
+                $validator->errors()->add(
+                    'quantity',
+                    "La cantidad no puede ser menor a lo ya pagado ($paidAmount)."
+                );
+            }
+        });
+    }
 }
